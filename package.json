@@ -1,4 +1,4 @@
-{ "name": "…"
+{ "name": "bare-select"
 , "version": "0.0.0-work-in-progress"
 , "description": "…"
 
@@ -34,9 +34,11 @@
 , "keywords":
   [ "…"
   ]
-, "author": "Tomek Wiszniewski <t.wiszniewski@gmail.com>"
+, "contributors":
+  [ "Tomek Wiszniewski <t.wiszniewski@gmail.com>"
+  ]
 , "repository":
   { "type": "git"
-  , "url": "git@github.com:tomekwi/….git"
+  , "url": "git@github.com:studio-b12/bare-select.git"
   }
 }
