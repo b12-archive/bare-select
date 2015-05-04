@@ -1,6 +1,7 @@
 import emit from 'stereo/emit';
 import on from 'stereo/on';
 import when from 'stereo/when';
+import snatch from 'stereo/catch';
 
 const getCaption = (rootChildren) => () => {
   if (rootChildren[0].tagName === 'LABEL') return rootChildren[0];
@@ -50,6 +51,7 @@ export default (rootElement) => {
   const options = Object.freeze({
     on: on(emitOptions),
     when: when(emitOptions),
+    catch: snatch(emitOptions),
   });
 
   const emitCaptionElement = emit();

@@ -44,7 +44,7 @@ test('The API is in good shape.', (is) => {
 
   is.ok(
     Object.isFrozen(view),
-    'returning a frozen object'
+    'returning a frozen object, and inside:'
   );
 
   is.deepEqual(
@@ -55,7 +55,7 @@ test('The API is in good shape.', (is) => {
     [
       {property: 'emit', type: 'function'},
     ],
-    'with an input channel `selection`'
+    '• an input channel `selection`'
   );
 
   is.deepEqual(
@@ -66,7 +66,7 @@ test('The API is in good shape.', (is) => {
     [
       {property: 'emit', type: 'function'},
     ],
-    'with an input channel `captionContent`'
+    '• an input channel `captionContent`'
   );
 
   is.deepEqual(
@@ -77,8 +77,9 @@ test('The API is in good shape.', (is) => {
     [
       {property: 'on', type: 'function'},
       {property: 'when', type: 'function'},
+      {property: 'catch', type: 'function'},
     ],
-    'with a cacheable output channel `options`'
+    '• a cacheable output channel `options` with error handling'
   );
 
   is.deepEqual(
@@ -89,7 +90,7 @@ test('The API is in good shape.', (is) => {
     [
       {property: 'on', type: 'function'},
     ],
-    'with an output channel `captionElement`'
+    '• an output channel `captionElement`'
   );
 
   is.end();
