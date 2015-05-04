@@ -55,6 +55,64 @@ Usage
 
 
 
+This is quality code
+--------------------
+
+Here’s what we ship:
+
+- The behavior of the native &lt;select&gt; mimicked as closely as possible.
+
+- Keyboard navigation is a pleasure.
+
+- Super-extendable. Every feature is a plugin.
+
+- Works without JavaScript – here’s why:
+  - you can extend or replace this script without breaking anything
+  - it works before the page fully loads
+  - there’s no magical DOM manipulation
+
+
+
+
+Plugins
+-------
+
+We leverage the decoupled Model-Plugins-View architecture. Every feature is a plugin. You can also easily write your own.
+
+Models:
+  - Custom element
+
+Views:
+  - Pure CSS
+
+Plugins:
+  - `value` synchronization
+  - `unfolded` option
+  - Update the select caption
+  - Keyboard navigation
+  - Hide on exit
+  - Hide on selection
+
+
+**Extras:** We’ll build these in if we have the time. PRs are also very welcome.
+
+Alternative models:
+  + Pure JavaScript API
+
+Alternative views:
+  + Shadow DOM
+  + Hidden select variation
+
+Plugins:
+  + `disabled` option
+  + Quick mousedown-hover-release selection (as in Mac OS X or GNOME)
+  + Select on mousedown, hide on mouseup
+  + DOM events
+  + Fuzzy text search
+
+
+
+
 License
 -------
 
