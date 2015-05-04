@@ -4,14 +4,13 @@ import _createElement from 'virtual-dom/create-element';
 import h from 'virtual-dom/h';
 import {curryRight2} from '1-liners';
 
-import view from '../module/view';
+import _view from '../module/view';
 
 const test = _test('The view');
-const doc = (
+const createElement = curryRight2(_createElement)({document: (
   (typeof window !== 'undefined' && window.document) ||
   jsdom().defaultView.document
-);
-const createElement = curryRight2(_createElement)({document: doc});
+)});
 
 const goodMock = createElement(
   h('bare-select', [
@@ -36,9 +35,61 @@ const goodMock = createElement(
 
 test('The API is in good shape.', (is) => {
   is.equal(
-    typeof view,
+    typeof _view,
     'function',
     'is a constructor function'
+  );
+
+  const view = _view(goodMock);
+
+  is.ok(
+    Object.isFrozen(view),
+    'returning a frozen object'
+  );
+
+  is.deepEqual(
+    Object.keys(view.selection).map((key) => ({
+      property: key,
+      type: typeof view.selection[key],
+    })),
+    [
+      {property: 'emit', type: 'function'},
+    ],
+    'with an input channel `selection`'
+  );
+
+  is.deepEqual(
+    Object.keys(view.captionContent).map((key) => ({
+      property: key,
+      type: typeof view.captionContent[key],
+    })),
+    [
+      {property: 'emit', type: 'function'},
+    ],
+    'with an input channel `captionContent`'
+  );
+
+  is.deepEqual(
+    Object.keys(view.options).map((key) => ({
+      property: key,
+      type: typeof view.options[key],
+    })),
+    [
+      {property: 'on', type: 'function'},
+      {property: 'when', type: 'function'},
+    ],
+    'with a cacheable output channel `options`'
+  );
+
+  is.deepEqual(
+    Object.keys(view.captionElement).map((key) => ({
+      property: key,
+      type: typeof view.captionElement[key],
+    })),
+    [
+      {property: 'on', type: 'function'},
+    ],
+    'with an output channel `captionElement`'
   );
 
   is.end();
