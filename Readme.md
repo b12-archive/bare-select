@@ -20,7 +20,7 @@
 &lt;bare-select&gt;
 ===================
 
-**A stylable replacement for &lt;select&gt;.**  
+**A customizable replacement for &lt;select&gt;.**  
 **Scripts from us.**  
 **Styles by you.**
 
