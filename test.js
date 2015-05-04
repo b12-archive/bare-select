@@ -1,1 +1,1 @@
-import test from 'tape-catch';
+import './test/view';
