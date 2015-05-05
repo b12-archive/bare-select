@@ -95,3 +95,28 @@ test('The API is in good shape.', (is) => {
 
   is.end();
 });
+
+test('Output channels work alright.', (is) => {
+  let executed;
+
+  const view = _view(goodMock);
+
+  is.pass('the `options` channel')
+  executed = false;
+  view.options.when('update', (options) => {
+    is.pass('• issues the event `update`');
+
+    is.deepEqual(
+      Object.keys(options),
+      ['a', 'b', 'c'],
+      '• with 3 options categorized by value'
+    );
+
+    executed = true;
+  });
+  is.ok(executed,
+    '• executes a cached value synchronously'
+  );
+
+  is.end();
+});
