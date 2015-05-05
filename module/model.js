@@ -14,24 +14,36 @@ function attributeUpdater(args) {
   var executedInThisLoop = false;
   function resetLoop() {executedInThisLoop = false;}
 
+  // Keep a snapshot of attributes to detect change next time.
+  // TODO
+
   return function emitUpdate() {
     if (executedInThisLoop) return;
     executedInThisLoop = true;
     asap(resetLoop);
 
-    // Parse attributes and emit an object. See the specs for more info.
+    // Parse current attributes.
     var attributesArray = Array.prototype.slice.call(attributesObject);
+    var currentAttributes = Object.freeze(asObject(
+      attributesArray.map(function (attribute) {
+        return {
+          key: attribute.name,
+          value: attribute.value,
+        };
+      })
+    ));
+    var currentAttributeNames = attributesArray.map(
+      function(attribute) {return attribute.name;}
+    );
+
+    // Diff them against the snapshot.
+    // TODO
+
+    // Emit an update message. See the specs for more info.
     emitter(
-      attributesArray.map(function(attribute) {return attribute.name;}),
+      currentAttributeNames,
       Object.freeze({
-        attributes: Object.freeze(
-          asObject(attributesArray.map(function (attribute) {
-            return {
-              key: attribute.name,
-              value: attribute.value,
-            };
-          }))
-        ),
+        attributes: currentAttributes,
       })
     );
   };
