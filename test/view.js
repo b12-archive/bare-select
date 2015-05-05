@@ -107,7 +107,7 @@ test('The API is in good shape.', function(is) {
   is.end();
 });
 
-test('Output channels work alright.', function(is) {
+test('The channel `options` works alright.', function(is) {
   var viewInstance = view(goodMock);
   var executed;
 
@@ -116,20 +116,59 @@ test('Output channels work alright.', function(is) {
   executed = false;
   viewInstance.options.when('update', function(options) {
     is.pass(
-      'the event `update` comes on the `options` channel'
+      'issuing the event `update`'
     );
 
     is.deepEqual(
       Object.keys(options),
       ['a', 'b', 'c'],
-      '– with 3 options categorized by value'
+      'with 3 options categorized by value'
     );
 
     executed = true;
   });
 
   is.ok(executed,
-    '– executed synchronously with a cached message'
+    'executing synchronously with a cached message'
+  );
+
+  is.end();
+});
+
+test('The channel `options` fails gracefully.', function(is) {
+  is.throws(
+    function() {view(createElement(
+      h('bare-select')
+    ));},
+    'when the dropdown isn’t there'
+  );
+
+  is.throws(
+    function() {view(createElement(
+      h('bare-select', [
+        h(),
+        h(),
+        h('ul', [
+          h('wrong')
+        ])
+      ])
+    ));},
+    'when the dropdown is empty'
+  );
+
+  is.throws(
+    function() {view(createElement(
+      h('bare-select', [
+        h(),
+        h(),
+        h('ul', [
+          h('li', [
+            h('wrong')
+          ])
+        ])
+      ])
+    ));},
+    'when options are badly formed'
   );
 
   is.end();
