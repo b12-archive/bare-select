@@ -1,13 +1,6 @@
-var jsdom = require('jsdom').jsdom;
 var h = require('virtual-dom/h');
-var curryRight2 = require('1-liners/curryRight2');
+var createElement = require('./test-tools/createElement');
 var test = require('./test-tools/test')('The view');
-var createElement = curryRight2(require('virtual-dom/create-element'))(
-  {document: (
-    (typeof window !== 'undefined' && window.document) ||
-    jsdom().defaultView.document
-  )}
-);
 
 var view = require('../module/view');
 
