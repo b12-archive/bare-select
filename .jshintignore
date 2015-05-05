@@ -3,11 +3,5 @@
 # =======================
 #
 
-# - Built files
-/*.js
-!/module.js
-!/test.js
-/.es5/
-
 # - Automatically installed dependencies
 /node_modules/
