@@ -82,7 +82,7 @@ module.exports = function bareSelect(options) {
   executed = true;
 
   // Register the element.
-  document.registerElement('bare-select',
+  return document.registerElement('bare-select',
     {prototype: proto(options)}
   );
 };
