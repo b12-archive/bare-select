@@ -1,1 +1,1 @@
-import './test/view';
+require('./test/view');

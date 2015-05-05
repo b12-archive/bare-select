@@ -1,10 +1,10 @@
-import emit from 'stereo/emit';
-import on from 'stereo/on';
-import when from 'stereo/when';
-import snatch from 'stereo/catch';
-import asObject from 'as/object';
+var emit = require('stereo/emit');
+var on = require('stereo/on');
+var when = require('stereo/when');
+var snatch = require('stereo/catch');
+var asObject = require('as/object');
 
-const getCaption = (rootChildren) => {
+function getCaption(rootChildren) {
   if (rootChildren[0] && rootChildren[0].tagName === 'LABEL') return {value:
     rootChildren[0]
   };
@@ -12,9 +12,9 @@ const getCaption = (rootChildren) => {
     'The first element in a `<bare-select>` should be the caption – a ' +
     '`<label>` element.'
   }};
-};
+}
 
-const getSwitch = (rootChildren) => {
+function getSwitch(rootChildren) {
   if (
     rootChildren[1] &&
     rootChildren[1].tagName === 'INPUT' &&
@@ -26,18 +26,18 @@ const getSwitch = (rootChildren) => {
     'The second element in a `<bare-select>` should be the switch – an ' +
     '`<input type="checkbox">` element.'
   }};
-};
+}
 
-const getOptions = (rootChildren) => {
-  const dropdown = rootChildren[2];
+function getOptions(rootChildren) {
+  var dropdown = rootChildren[2];
   if (!dropdown || dropdown.tagName !== 'UL') return {error: {message:
     'bare-select: ' +
     'The third element in a `<bare-select>` should be the dropdown – a ' +
     '`<ul>` element.'
   }};
 
-  let options = Array.prototype.slice.call(dropdown.children)
-    .filter((element) => element.tagName === 'LI')
+  var options = Array.prototype.slice.call(dropdown.children)
+    .filter(function(element) {return element.tagName === 'LI';})
   ;
 
   if (!options.length) return {error: {message: 'bare-select: ' +
@@ -45,7 +45,7 @@ const getOptions = (rootChildren) => {
     'element with a radio button.'
   }};
 
-  else if (options.some((item) => {
+  else if (options.some(function(item) {
     return (
       !item.children[0] ||
       item.children[0].tagName !== 'INPUT'
@@ -56,7 +56,7 @@ const getOptions = (rootChildren) => {
   }};
 
   return {value: asObject(
-    options.map((item) => {
+    options.map(function(item) {
       return {
         key: item.children[0].value,
         value: {
@@ -65,49 +65,47 @@ const getOptions = (rootChildren) => {
       };
     })
   )};
-};
+}
 
-export default (rootElement) => {
+module.exports = function view (rootElement) {
 
   // Initialize internal DOM queries.
-  const rootChildren = rootElement.children;
+  var rootChildren = rootElement.children;
 
   // Initialize the input channel `selection`.
-  const selection = Object.freeze({
+  var selection = Object.freeze({
     emit: emit(),
   });
 
   // Initialize the input channel `captionContent`.
-  const captionContent = Object.freeze({
+  var captionContent = Object.freeze({
     emit: emit(),
   });
 
   // Initialize the output channel `options`.
-  const emitOptions = emit();
-  const options = Object.freeze({
+  var emitOptions = emit();
+  var options = Object.freeze({
     on: on(emitOptions),
     when: when(emitOptions),
     catch: snatch(emitOptions),
   });
 
   // Emit an initial `update` or `error` to `options`.
-  {
-    const {error, value} = getOptions(rootChildren);
-    if (error) emitOptions('error', error);
-    else emitOptions('update', value);
-  }
+  var optionsMessage = getOptions(rootChildren);
+  if (optionsMessage.error) emitOptions('error', optionsMessage.error);
+  else emitOptions('update', optionsMessage.value);
 
   // Initialize the output channel `captionElement`.
-  const emitCaptionElement = emit();
-  const captionElement = Object.freeze({
+  var emitCaptionElement = emit();
+  var captionElement = Object.freeze({
     on: on(emitCaptionElement),
   });
 
   // Return the channels.
   return Object.freeze({
-    selection,
-    captionContent,
-    options,
-    captionElement,
+    selection: selection,
+    captionContent: captionContent,
+    options: options,
+    captionElement: captionElement,
   });
 };
