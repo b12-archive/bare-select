@@ -5,7 +5,7 @@ var test = require('./test-tools/test')('The view');
 
 var view = require('../module/view');
 
-var goodMock = createElement(
+var mock = createElement(
   h('bare-select', [
     h('label', {for: 'switch'}),
     h('input', {type: 'checkbox', id: 'switch'}),
@@ -37,7 +37,7 @@ test('The API is in good shape.', function(is) {
     'is a constructor function'
   );
 
-  var viewInstance = view(goodMock);
+  var viewInstance = view(mock);
 
   is.ok(
     Object.isFrozen(viewInstance),
@@ -92,7 +92,7 @@ test('The API is in good shape.', function(is) {
 });
 
 test('The channel `options` works alright.', function(is) {
-  var viewInstance = view(goodMock);
+  var viewInstance = view(mock);
   var executed;
 
   is.plan(3);
