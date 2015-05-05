@@ -14,7 +14,6 @@ module.exports = function model(rootElement) {
   var updates = Object.freeze({
     on: øOn(emitOptions),
     when: øWhen(emitOptions),
-    catch: øCatch(emitOptions),
   });
 
   return Object.freeze({

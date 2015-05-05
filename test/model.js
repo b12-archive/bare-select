@@ -40,7 +40,6 @@ test('The API is in good shape.', function(is) {
     [
       {property: 'on', type: 'function'},
       {property: 'when', type: 'function'},
-      {property: 'catch', type: 'function'},
     ],
     '• a cacheable output channel `updates` with error handling'
   );
