@@ -1,10 +1,4 @@
 {
-  /*
-   * ES6 additions
-   * =================
-   */
-
-  "esnext": true,
 
   /*
    * ENVIRONMENTS

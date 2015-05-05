@@ -1,7 +1,14 @@
-import tape from 'tape-catch';
+var tape = require('tape-catch');
 
-export default (partName) => {
-  const test = (title, ...rest) => tape(`${partName}:  ${title}`, ...rest);
-  Object.keys(tape).forEach((key) => test[key] = tape[key]);
+module.exports = function(partName) {
+  function test(title) {
+    var rest = Array.prototype.slice.apply(arguments, [1]);
+    return tape.apply(this, [partName + ':  ' + title].concat(rest));
+  }
+
+  Object.keys(tape).forEach(function(key) {
+    test[key] = tape[key];
+  });
+
   return test;
 };
