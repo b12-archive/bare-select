@@ -43,7 +43,7 @@ function getOptions(rootChildren) {
   )};
 }
 
-module.exports = function view (rootElement) {
+module.exports = function view(rootElement) {
 
   // Initialize internal DOM queries.
   var rootChildren = rootElement.children;
