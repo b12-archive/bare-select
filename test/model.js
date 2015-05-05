@@ -16,6 +16,7 @@ var virtualMock =
 var virtualUpdate =
   h('bare-select', {attributes: {
     value: 'b',
+    disabled: '',
   }})
 ;
 var mock = createElement(virtualMock);
@@ -58,7 +59,7 @@ test('The API is in good shape.', function(is) {
   is.end();
 });
 
-test('The channel `updates` works alright.', function(is) {
+test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
   var modelInstance = model(mock);
   var firstRun = true;
   var valueState;
@@ -161,7 +162,7 @@ test('The channel `updates` works alright.', function(is) {
       );
 
       is.equal(
-        state.disabled,
+        state.attributes.disabled,
         '',
         '– passing its value'
       );
@@ -170,7 +171,12 @@ test('The channel `updates` works alright.', function(is) {
 
   // Trigger the second run.
   firstRun = false;
-  patch(mock, diff(virtualMock, virtualUpdate));
+  setTimeout(function () {
+    patch(mock, diff(virtualMock, virtualUpdate));
+    modelInstance.attributeChangedCallback('value');
+    modelInstance.attributeChangedCallback('disabled');
+    modelInstance.attributeChangedCallback('unfolded');
 
-  is.end();
+    is.end();
+  }, 100);
 });
