@@ -58,8 +58,10 @@ module.exports = function model(rootElement) {
   // Emit initial messages to `updates`.
   emitCurrentAttributes();
 
+  // Export channels and `attributeChangedCallback`.
   return Object.freeze({
     patches: patches,
     updates: updates,
+    attributeChangedCallback: emitCurrentAttributes,
   });
 };
