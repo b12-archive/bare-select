@@ -8,8 +8,8 @@ function getOptions(rootChildren) {
   var dropdown = rootChildren[2];
   if (!dropdown || dropdown.tagName !== 'UL') return {error: {message:
     'bare-select: ' +
-    'The third element in a `<bare-select>` should be the dropdown – a ' +
-    '`<ul>` element.'
+    'Dropdown element not found. The third element in a `<bare-select>` ' +
+    'should be the dropdown – a `<ul>` element.'
   }};
 
   var options = Array.prototype.slice.call(dropdown.children)
@@ -27,8 +27,8 @@ function getOptions(rootChildren) {
       item.children[0].tagName !== 'INPUT'
     );
   })) return {error: {message: 'bare-select: ' +
-    'The first element in every dropdown option (`<li>`) should be an ' +
-    '`<input>` element – a radio button or checkbox.'
+    'Wrong option markup. The first element in every dropdown option ' +
+    '(`<li>`) should be an `<input>` element – a radio button or checkbox.'
   }};
 
   return {value: asObject(
