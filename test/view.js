@@ -77,6 +77,19 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
+    Object.keys(viewInstance.unfolded).map(function(key) {
+      return {
+        property: key,
+        type: typeof viewInstance.unfolded[key],
+      };
+    }),
+    [
+      {property: 'emit', type: 'function'},
+    ],
+    '• an input channel `unfolded`'
+  );
+
+  is.deepEqual(
     Object.keys(viewInstance.options).map(function(key) {
       return {
         property: key,

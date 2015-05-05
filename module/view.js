@@ -58,6 +58,11 @@ module.exports = function view (rootElement) {
     emit: emit(),
   });
 
+  // Initialize the input channel `unfolded`.
+  var unfolded = Object.freeze({
+    emit: emit(),
+  });
+
   // Initialize the output channel `options`.
   var emitOptions = emit();
   var options = Object.freeze({
@@ -81,6 +86,7 @@ module.exports = function view (rootElement) {
   return Object.freeze({
     selection: selection,
     captionContent: captionContent,
+    unfolded: unfolded,
     options: options,
     captionElement: captionElement,
   });
