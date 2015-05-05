@@ -12,7 +12,7 @@ const getOptions = (rootChildren) => {
     '`<ul>` element.'
   }};
 
-  let options = Array.from(dropdown.children)
+  let options = Array.prototype.slice.call(dropdown.children)
     .filter((element) => element.tagName === 'LI')
   ;
 
