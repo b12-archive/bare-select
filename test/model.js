@@ -1,5 +1,6 @@
 var h = require('virtual-dom/h');
 var createElement = require('./test-tools/createElement');
+var propertyType = require('./test-tools/propertyType');
 var test = require('./test-tools/test')('The model');
 
 var model = require('../module/model');
@@ -23,12 +24,9 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    Object.keys(modelInstance.patches).map(function(key) {
-      return {
-        property: key,
-        type: typeof modelInstance.patches[key],
-      };
-    }),
+    modelInstance.patches && Object.keys(modelInstance.patches)
+      .map(propertyType(modelInstance.patches))
+    ,
     [
       {property: 'emit', type: 'function'},
     ],
@@ -36,12 +34,9 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    Object.keys(modelInstance.updates).map(function(key) {
-      return {
-        property: key,
-        type: typeof modelInstance.updates[key],
-      };
-    }),
+    modelInstance.updates && Object.keys(modelInstance.updates)
+      .map(propertyType(modelInstance.updates))
+    ,
     [
       {property: 'on', type: 'function'},
       {property: 'when', type: 'function'},
