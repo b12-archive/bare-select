@@ -108,7 +108,9 @@ test('Output channels work alright.', (is) => {
 
   executed = false;
   view.options.when('update', (options) => {
-    is.pass('the event `update` comes on the `options` channel');
+    is.pass(
+      'the event `update` comes on the `options` channel'
+    );
 
     is.deepEqual(
       Object.keys(options),
@@ -120,7 +122,7 @@ test('Output channels work alright.', (is) => {
   });
 
   is.ok(executed,
-    '– executed synchronously with a cached value'
+    '– executed synchronously with a cached message'
   );
 
   is.end();
