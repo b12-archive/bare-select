@@ -4,30 +4,6 @@ var when = require('stereo/when');
 var snatch = require('stereo/catch');
 var asObject = require('as/object');
 
-function getCaption(rootChildren) {
-  if (rootChildren[0] && rootChildren[0].tagName === 'LABEL') return {value:
-    rootChildren[0]
-  };
-  else return {error: {message: 'bare-select: ' +
-    'The first element in a `<bare-select>` should be the caption – a ' +
-    '`<label>` element.'
-  }};
-}
-
-function getSwitch(rootChildren) {
-  if (
-    rootChildren[1] &&
-    rootChildren[1].tagName === 'INPUT' &&
-    rootChildren[1].type.toLowerCase() === 'checkbox'
-  ) return {value:
-    rootChildren[1]
-  };
-  else return {error: {message: 'bare-select: ' +
-    'The second element in a `<bare-select>` should be the switch – an ' +
-    '`<input type="checkbox">` element.'
-  }};
-}
-
 function getOptions(rootChildren) {
   var dropdown = rootChildren[2];
   if (!dropdown || dropdown.tagName !== 'UL') return {error: {message:
