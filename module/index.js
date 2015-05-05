@@ -1,8 +1,88 @@
-var view = require('./view');
+var viewConstructor = require('./view');
 
-var proto = Object.create(HTMLElement.prototype);
-proto.createdCallback = function() {
-  this.view = view(this);
+var executed = false;
+
+ /**
+  * Create the element’s prototype
+  *
+  * @param  {Object}  [options={}]
+  *   Options passed from `bareSelect`.
+  *
+  * @function  proto
+  * @api       private
+  */
+function proto(options) {
+
+  // Read options.
+  if (!options) options = {};
+  var plugins = (
+    Array.isArray(options.plugins) && options.plugins ||
+    []
+  );
+  var logger = options.logger || console;
+
+  // Create the prototype.
+  var result = Object.create(HTMLElement.prototype);
+
+  // Enclose all properties within the constructor function
+  result.createdCallback = function createdCallback() {
+
+    // Initialize the `view`.
+    var view = this.view = viewConstructor(this);
+
+    // Add the method `registerPlugin` and register default plugins.
+    var registeredPlugins = [];
+    var registerPlugin = this.registerPlugin = function(plugin) {
+      if (typeof plugin !== 'function') return logger.warn('bare-select: ' +
+        'Can’t register plugin – it’s not a function.',
+        '\nPlugin:',
+        plugin
+      );
+      registeredPlugins.push(plugin({
+        view: view,
+        logger: logger,
+      }));
+    };
+    plugins.forEach(registerPlugin);
+
+    // Define a read-only property `plugins`.
+    Object.defineProperty(this, 'plugins', {
+      get: function() {return registeredPlugins.slice();}
+    });
+  };
+
+  // Return the prototype.
+  return result;
+}
+
+ /**
+  * Create the element’s prototype
+  *
+  * @param  {Object}      [options={}]
+  * @param  {Function[]}  [options.plugins=[]]
+  *   Default plugins. They’ll be registered on any newly created <bare-select>
+  *   element.
+  * @param  {Object}      [options.logger=console]
+  *   A custom logger, implementing the interface of `console`.
+  * @param  {Function}    [options.logger.warn]
+  * @param  {Function}    [options.logger.info]
+  *
+  * @module    bare-select
+  * @function  default
+  * @alias     bareSelect
+  */
+module.exports = function bareSelect(options) {
+  if (!options) options = {};
+  var logger = options.logger || console;
+
+  // Only allow to register the element once.
+  if (executed) return logger.warn('bare-select: ' +
+    'The initialization function can only be called once.'
+  );
+  executed = true;
+
+  // Register the element.
+  document.registerElement('bare-select',
+    {prototype: proto(options)}
+  );
 };
-
-document.registerElement('bare-select', {prototype: proto});
