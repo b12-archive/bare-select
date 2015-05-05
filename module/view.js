@@ -1,7 +1,7 @@
-var emit = require('stereo/emit');
-var on = require('stereo/on');
-var when = require('stereo/when');
-var snatch = require('stereo/catch');
+var øEmit = require('stereo/emit');
+var øOn = require('stereo/on');
+var øWhen = require('stereo/when');
+var øCatch = require('stereo/catch');
 var asObject = require('as/object');
 
 function getOptions(rootChildren) {
@@ -50,25 +50,25 @@ module.exports = function view(rootElement) {
 
   // Initialize the input channel `selection`.
   var selection = Object.freeze({
-    emit: emit(),
+    emit: øEmit(),
   });
 
   // Initialize the input channel `captionContent`.
   var captionContent = Object.freeze({
-    emit: emit(),
+    emit: øEmit(),
   });
 
   // Initialize the input channel `unfolded`.
   var unfolded = Object.freeze({
-    emit: emit(),
+    emit: øEmit(),
   });
 
   // Initialize the output channel `options`.
-  var emitOptions = emit();
+  var emitOptions = øEmit();
   var options = Object.freeze({
-    on: on(emitOptions),
-    when: when(emitOptions),
-    catch: snatch(emitOptions),
+    on: øOn(emitOptions),
+    when: øWhen(emitOptions),
+    catch: øCatch(emitOptions),
   });
 
   // Emit an initial `update` or `error` to `options`.
@@ -77,9 +77,9 @@ module.exports = function view(rootElement) {
   else emitOptions('update', optionsMessage.value);
 
   // Initialize the output channel `captionElement`.
-  var emitCaptionElement = emit();
+  var emitCaptionElement = øEmit();
   var captionElement = Object.freeze({
-    on: on(emitCaptionElement),
+    on: øOn(emitCaptionElement),
   });
 
   // Return the channels.
