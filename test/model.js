@@ -63,7 +63,7 @@ test('The channel `updates` works alright.', function(is) {
   var firstRun = true;
   var valueState;
 
-  is.plan(14);
+  is.plan(16);
 
   var justCalled = true;
   modelInstance.updates.when('value', function(state) {
@@ -72,14 +72,30 @@ test('The channel `updates` works alright.', function(is) {
         'issues the event `value` for the attribute `value`'
       );
 
+      is.ok(
+        Object.isFrozen(state),
+        '– passing an immutable state snapshot'
+      );
+
       is.deepEqual(
         Object.keys(state),
+        ['attributes'],
+        '– with the key `attributes`'
+      );
+
+      is.ok(
+        Object.isFrozen(state.attributes),
+        '– with a frozen object inside'
+      );
+
+      is.deepEqual(
+        Object.keys(state.attributes),
         ['value', 'unfolded'],
-        '– passing the state of all attributes'
+        '– containing all attributes'
       );
 
       is.equal(
-        state.value,
+        state.attributes.value,
         'a',
         '– passing the current value of the attribute'
       );
@@ -97,13 +113,13 @@ test('The channel `updates` works alright.', function(is) {
       );
 
       is.deepEqual(
-        Object.keys(state),
+        Object.keys(state.attributes),
         ['value', 'disabled'],
         '– passing an updated state'
       );
 
       is.equal(
-        state.value,
+        state.attributes.value,
         'b',
         '– with the updated value'
       );
@@ -117,16 +133,10 @@ test('The channel `updates` works alright.', function(is) {
         'issues the event `unfolded` for the attribute `unfolded`'
       );
 
-      is.deepEqual(
+      is.equal(
         state,
         valueState,
         '– passing the same state as `value` did'
-      );
-
-      is.notEqual(
-        state,
-        valueState,
-        '– a copy of it'
       );
     }
 
@@ -137,7 +147,7 @@ test('The channel `updates` works alright.', function(is) {
       );
 
       is.equal(
-        state.unfolded,
+        state.attributes.unfolded,
         undefined,
         '– passing `undefined`'
       );
