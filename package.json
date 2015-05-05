@@ -10,6 +10,7 @@
 , "scripts":
   { "coveralls": "npm run coverage && cat coverage/lcov.info | coveralls"
   , "coverage": "istanbul cover test.js"
+  , "view-coverage": "echo 'Generating coverage reports...'; npm run coverage >/dev/null && echo '...done.' && xdg-open ./coverage/lcov-report/index.html >/dev/null"
   , "develop": "nodangel --ignore node_modules --exec 'npm run --silent test:lite'"
   , "test": "jshint . && npm run test:lite"
   , "test:lite": "node test.js | tap-spec"
