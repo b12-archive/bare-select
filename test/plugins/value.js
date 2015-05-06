@@ -4,6 +4,7 @@ var createElement = require('../test-tools/createElement');
 var updateElement = require('../test-tools/updateElement');
 var h = require('virtual-dom/h');
 var isSubset = require('is-subset');
+var repeat = require('repeat-element');
 
 var value = require('../../module/plugins/value');
 
@@ -18,7 +19,7 @@ function optionElement(args) {
     ])
   );
 }
-var mockOptions = [null, null, null].map(function(_, index) {
+var mockOptions = repeat(null, 5).map(function(_, index) {
   return createElement(optionElement({
     value: String(index),
     checked: (index === 0),
