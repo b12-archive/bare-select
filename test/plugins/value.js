@@ -103,9 +103,9 @@ test(
       model: mockModelInstance,
     });
 
-    mockModelInstance.updates.emit('value', {
+    mockModelInstance.updates.emit('value', {attributes: {
       value: '3'
-    });
+    }});
     is.notOk(
       mockOptionsInstance[3].radioNode.checked,
       'fails silently if no options have been registered'
@@ -113,17 +113,17 @@ test(
 
     mockViewInstance.options.emit('update', mockOptionsInstance);
 
-    mockModelInstance.updates.emit('value', {
+    mockModelInstance.updates.emit('value', {attributes: {
       value: '4'
-    });
+    }});
     is.ok(
       mockOptionsInstance[4].radioNode.checked,
       'does it synchronously when everything goes smooth'
     );
 
-    mockModelInstance.updates.emit('value', {
+    mockModelInstance.updates.emit('value', {attributes: {
       value: 'something invalid'
-    });
+    }});
     is.ok(
       mockOptionsInstance[4].radioNode.checked,
       'fails silently when the option’s value can’t be found'
