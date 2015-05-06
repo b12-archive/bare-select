@@ -56,7 +56,9 @@ function proto(options) {
 }
 
  /**
-  * Create the element’s prototype
+  * Register the <bare-select> element.
+  *
+  * This function should only be called once.
   *
   * @param  {Object}      [options={}]
   * @param  {Function[]}  [options.plugins=[]]
