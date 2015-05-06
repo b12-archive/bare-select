@@ -1,7 +1,6 @@
 var h = require('virtual-dom/h');
-var patch = require('virtual-dom/patch');
-var diff = require('virtual-dom/diff');
 var createElement = require('./test-tools/createElement');
+var updateElement = require('./test-tools/updateElement');
 var propertyType = require('./test-tools/propertyType');
 var test = require('./test-tools/test')('The model');
 
@@ -182,7 +181,7 @@ test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
       is.fail('an unchanged attribute shouldn’t receive an update');
     });
 
-    patch(mock, diff(virtualMock, virtualUpdate));
+    updateElement(mock, virtualUpdate);
     modelInstance.attributeChangedCallback('value');
     modelInstance.attributeChangedCallback('disabled');
     modelInstance.attributeChangedCallback('unfolded');
