@@ -24,13 +24,32 @@ module.exports = function (args) {
     return updateCheckedOption(getSelectedValue(options));
   }
 
+  // Rescan options and emit a patch if necessary:
+  // * when options are added, removed or changed,
   var optionsSnapshot = {};
   view.options.when('update', function(options) {
     updateFromOptions(options);
     optionsSnapshot = options;
   });
 
+  // * upon a `change` event on the container – when something has been
+  // selected.
   view.containerElement.on('change', function() {
     updateFromOptions(optionsSnapshot);
+  });
+
+  // Update the selected option when the `value` attribute has been updated.
+  model.updates.when('value', function(data) {
+
+    // Fail silently:
+    // * if there are no options loaded,
+    if (!optionsSnapshot) return;
+
+    // * if there is no option provided for the value.
+    var option = optionsSnapshot[data.attributes.value];
+    if (!option) return;
+
+    // Else check the respective option.
+    option.radioNode.checked = true;
   });
 };

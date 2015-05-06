@@ -16,36 +16,43 @@ function optionRadio(args) {
     })
   );
 }
-var mockOptions = repeat(null, 5).map(function(_, index) {
-  return {radioNode: createElement(optionRadio({
-    value: String(index),
-    checked: (index === 0),
-  }))};
-});
+function mockOptions() { return repeat(null, 5)
+  .map(function(_, index) {
+    return {radioNode: createElement(optionRadio({
+      value: String(index),
+      checked: (index === 0),
+    }))}
+  ;
+}); }
 
-var mockView = {
+function mockView() { return {
   options: ø(),
   containerElement: ø(),
-};
-mockView.options.emit('update', mockOptions);
+}; }
 
-var mockModel = {
+function mockModel() { return {
   patches: ø(),
-};
-
-// Initialize the plugin.
-value({
-  view: mockView,
-  model: mockModel,
-});
+  updates: ø(),
+}; }
 
 test(
   'Patches the attribute `value` when an option is selected.',
   function(is) {
     is.plan(2);
 
+    // Initialize the plugin.
+    var mockViewInstance = mockView();
+    var mockModelInstance = mockModel();
+    var mockOptionsInstance = mockOptions();
+    value({
+      view: mockViewInstance,
+      model: mockModelInstance,
+    });
+    mockViewInstance.options.emit('update', mockOptionsInstance);
+
+    // Set up tests.
     var patchRun = 1;
-    mockModel.patches.when('apply', function(patch) {
+    mockModelInstance.patches.when('apply', function(patch) {
       if (patchRun === 1) is.equal(
         patch.value,
         '0',
@@ -65,19 +72,63 @@ test(
       patchRun++;
     });
 
-    // Update the second option and emit a `change` to `containerElement`.
-    updateElement(mockOptions[0].radioNode, optionRadio({
+    // Update the second option and emit a mock `change` to `containerElement`.
+    updateElement(mockOptionsInstance[0].radioNode, optionRadio({
       value: '0',
       checked: false,
     }));
-    updateElement(mockOptions[2].radioNode, optionRadio({
+    updateElement(mockOptionsInstance[2].radioNode, optionRadio({
       value: '2',
       checked: true,
     }));
-    mockView.containerElement.emit('change');
+    mockViewInstance.containerElement.emit('change');
 
-    // Issue an update without changing anything.
-    mockView.containerElement.emit('change');
+    // Emit a `change` without updating anything.
+    mockViewInstance.containerElement.emit('change');
+
+    is.end();
+  }
+);
+
+test(
+  'Updates the selected option when the attribute `value` has changed.',
+  function(is) {
+
+    // Initialize the plugin.
+    var mockViewInstance = mockView();
+    var mockModelInstance = mockModel();
+    var mockOptionsInstance = mockOptions();
+    value({
+      view: mockViewInstance,
+      model: mockModelInstance,
+    });
+
+    mockModelInstance.updates.emit('value', {
+      value: '3'
+    });
+    is.notOk(
+      mockOptionsInstance[3].radioNode.checked,
+      'fails silently if no options have been registered'
+    );
+
+    mockViewInstance.options.emit('update', mockOptionsInstance);
+
+    mockModelInstance.updates.emit('value', {
+      value: '4'
+    });
+    is.ok(
+      mockOptionsInstance[4].radioNode.checked,
+      'does it synchronously when everything goes smooth'
+    );
+
+    mockModelInstance.updates.emit('value', {
+      value: 'something invalid'
+    });
+    is.ok(
+      mockOptionsInstance[4].radioNode.checked,
+      'fails silently when the option’s value can’t be found'
+    );
+    // TODO: Should this issue an `error` event? To which channel?
 
     is.end();
   }
