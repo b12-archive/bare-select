@@ -6,7 +6,11 @@ function getSelectedValue(options) {
   });
 }
 
-module.exports = function (view, model) {
+module.exports = function (args) {
+  var view = args.view;
+  var model = args.model;
+  // TODO: Support `args.logger`.
+
   var checkedOptionSnapshot;
   function updateCheckedOption(newValue) {
     if (newValue !== checkedOptionSnapshot) {

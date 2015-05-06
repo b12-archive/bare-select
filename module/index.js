@@ -1,4 +1,5 @@
 var viewConstructor = require('./view');
+var modelConstructor = require('./model');
 
 var executed = false;
 
@@ -27,8 +28,9 @@ function proto(options) {
   // Enclose all properties within the constructor function
   result.createdCallback = function createdCallback() {
 
-    // Initialize the `view`.
+    // Initialize the `view` and `model`.
     var view = this.view = viewConstructor(this);
+    var model = this.model = modelConstructor(this);
 
     // Add the method `registerPlugin` and register default plugins.
     var registeredPlugins = [];
@@ -40,6 +42,7 @@ function proto(options) {
       );
       registeredPlugins.push(plugin({
         view: view,
+        model: model,
         logger: logger,
       }));
     };

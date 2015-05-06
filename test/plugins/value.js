@@ -36,7 +36,10 @@ var mockModel = {
 };
 
 // Initialize the plugin.
-value(mockView, mockModel);
+value({
+  view: mockView,
+  model: mockModel,
+});
 
 test(
   'Patches the attribute `value` when an option is selected.',
