@@ -88,6 +88,14 @@ test('The API is in good shape.', function(is) {
     '• an output channel `captionElement`'
   );
 
+  is.deepEqual(
+    viewInstance.containerElement && Object.keys(viewInstance.containerElement)
+      .map(propertyType(viewInstance.containerElement))
+    ,
+    [{property: 'on', type: 'function'}],
+    '• an output channel `containerElement`'
+  );
+
   is.end();
 });
 
