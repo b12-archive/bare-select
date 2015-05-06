@@ -2,6 +2,7 @@ var h = require('virtual-dom/h');
 var createElement = require('../test-tools/createElement');
 var propertyType = require('../test-tools/propertyType');
 var test = require('../test-tools/test')('The view');
+var repeat = require('repeat-element');
 
 var view = require('../../module/view');
 
@@ -103,7 +104,7 @@ test('The channel `options` works alright.', function(is) {
   var viewInstance = view(mock);
   var executed;
 
-  is.plan(3);
+  is.plan(5);
 
   executed = false;
   viewInstance.options.when('update', function(options) {
@@ -115,10 +116,27 @@ test('The channel `options` works alright.', function(is) {
       'issuing the event `update`'
     );
 
+    var optionValues = options && Object.keys(options);
     is.deepEqual(
-      Object.keys(options),
+      optionValues,
       ['a', 'b', 'c'],
       'with 3 options categorized by value'
+    );
+
+    is.deepEqual(
+      optionValues.map(function(value) {
+        return options[value].node && options[value].node.tagName;
+      }),
+      repeat('LI', optionValues.length),
+      'with every option containing the `<li>` element in `.node`'
+    );
+
+    is.deepEqual(
+      optionValues.map(function(value) {
+        return options[value].radioNode && options[value].radioNode.tagName;
+      }),
+      repeat('INPUT', optionValues.length),
+      '– and the `<input>` element in `.radioNode`'
     );
 
     executed = true;
