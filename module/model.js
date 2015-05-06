@@ -17,6 +17,7 @@ module.exports = function model(rootElement) {
     on: øOn(emitUpdates),
     when: øWhen(emitUpdates),
   });
+  // TODO: Add `off`.
   var emitCurrentAttributes = attributeUpdater({
     emitter: emitUpdates,
     attributesObject: rootElement.attributes,
