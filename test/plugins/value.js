@@ -36,13 +36,12 @@ var mockModel = {
   patches: ø(),
 };
 
+// Initialize the plugin.
+value(mockView, mockModel);
+
 test(
   'Patches the attribute `value` when an option is selected.',
   function(is) {
-    // Initialize the plugin.
-    value(mockView, mockModel);
-
-    // Hook up the tests.
     var patchRun = 1;
     mockModel.patches.when('apply', function(patch) {
       if (patchRun === 1) is.ok(
@@ -75,6 +74,9 @@ test(
       value: '2',
       checked: true,
     }));
+    mockView.createElement.emit('change');
+
+    // Issue an update without changing anything.
     mockView.createElement.emit('change');
   }
 );
