@@ -4,6 +4,8 @@
 
 , "dependencies":
   { "as": "0.4.1"
+  , "set-immediate-shim": "1.0.1"
+  , "shallow-diff": "tomekwi/shallow-diff#f5f0146"
   , "stereo": "0.4.0"
   }
 

@@ -56,5 +56,8 @@
    */
 
   // Suppress warnings about == null comparisons.
-  "eqnull": true
+  "eqnull": true,
+
+  // Allow breaking before a comma (we get false negatives otherwise).
+  "laxcomma": true
 }

@@ -1,17 +1,11 @@
-var jsdom = require('jsdom').jsdom;
 var h = require('virtual-dom/h');
-var curryRight2 = require('1-liners/curryRight2');
+var createElement = require('./test-tools/createElement');
+var propertyType = require('./test-tools/propertyType');
 var test = require('./test-tools/test')('The view');
-var createElement = curryRight2(require('virtual-dom/create-element'))(
-  {document: (
-    (typeof window !== 'undefined' && window.document) ||
-    jsdom().defaultView.document
-  )}
-);
 
 var view = require('../module/view');
 
-var goodMock = createElement(
+var mock = createElement(
   h('bare-select', [
     h('label', {for: 'switch'}),
     h('input', {type: 'checkbox', id: 'switch'}),
@@ -43,7 +37,7 @@ test('The API is in good shape.', function(is) {
     'is a constructor function'
   );
 
-  var viewInstance = view(goodMock);
+  var viewInstance = view(mock);
 
   is.ok(
     Object.isFrozen(viewInstance),
@@ -51,51 +45,33 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    Object.keys(viewInstance.selection).map(function(key) {
-      return {
-        property: key,
-        type: typeof viewInstance.selection[key],
-      };
-    }),
-    [
-      {property: 'emit', type: 'function'},
-    ],
+    viewInstance.selection && Object.keys(viewInstance.selection)
+      .map(propertyType(viewInstance.selection))
+    ,
+    [{property: 'emit', type: 'function'}],
     '• an input channel `selection`'
   );
 
   is.deepEqual(
-    Object.keys(viewInstance.captionContent).map(function(key) {
-      return {
-        property: key,
-        type: typeof viewInstance.captionContent[key],
-      };
-    }),
-    [
-      {property: 'emit', type: 'function'},
-    ],
+    viewInstance.captionContent && Object.keys(viewInstance.captionContent)
+      .map(propertyType(viewInstance.captionContent))
+    ,
+    [{property: 'emit', type: 'function'}],
     '• an input channel `captionContent`'
   );
 
   is.deepEqual(
-    Object.keys(viewInstance.unfolded).map(function(key) {
-      return {
-        property: key,
-        type: typeof viewInstance.unfolded[key],
-      };
-    }),
-    [
-      {property: 'emit', type: 'function'},
-    ],
+    viewInstance.unfolded && Object.keys(viewInstance.unfolded)
+      .map(propertyType(viewInstance.unfolded))
+    ,
+    [{property: 'emit', type: 'function'}],
     '• an input channel `unfolded`'
   );
 
   is.deepEqual(
-    Object.keys(viewInstance.options).map(function(key) {
-      return {
-        property: key,
-        type: typeof viewInstance.options[key],
-      };
-    }),
+    viewInstance.options && Object.keys(viewInstance.options)
+      .map(propertyType(viewInstance.options))
+    ,
     [
       {property: 'on', type: 'function'},
       {property: 'when', type: 'function'},
@@ -105,15 +81,10 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    Object.keys(viewInstance.captionElement).map(function(key) {
-      return {
-        property: key,
-        type: typeof viewInstance.captionElement[key],
-      };
-    }),
-    [
-      {property: 'on', type: 'function'},
-    ],
+    viewInstance.captionElement && Object.keys(viewInstance.captionElement)
+      .map(propertyType(viewInstance.captionElement))
+    ,
+    [{property: 'on', type: 'function'}],
     '• an output channel `captionElement`'
   );
 
@@ -121,7 +92,7 @@ test('The API is in good shape.', function(is) {
 });
 
 test('The channel `options` works alright.', function(is) {
-  var viewInstance = view(goodMock);
+  var viewInstance = view(mock);
   var executed;
 
   is.plan(3);
