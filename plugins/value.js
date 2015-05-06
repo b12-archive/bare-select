@@ -39,13 +39,14 @@ module.exports = function (args) {
   });
 
   // Update the selected option when the `value` attribute has been updated.
-  model.updates.on('value', function(attributes) {
+  model.updates.when('value', function(data) {
+
     // Fail silently:
     // * if there are no options loaded,
     if (!optionsSnapshot) return;
 
     // * if there is no option provided for the value.
-    var option = optionsSnapshot[attributes.value];
+    var option = optionsSnapshot[data.attributes.value];
     if (!option) return;
 
     // Else check the respective option.
