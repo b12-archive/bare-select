@@ -7,19 +7,17 @@ var repeat = require('repeat-element');
 
 var value = require('../../plugins/value');
 
-function optionElement(args) {
+function optionRadio(args) {
   return (
-    h('li', [
-      h('input', {
-        type: 'radio',
-        value: args.value,
-        checked: args.checked,
-      })
-    ])
+    h('input', {
+      type: 'radio',
+      value: args.value,
+      checked: args.checked,
+    })
   );
 }
 var mockOptions = repeat(null, 5).map(function(_, index) {
-  return {node: createElement(optionElement({
+  return {radioNode: createElement(optionRadio({
     value: String(index),
     checked: (index === 0),
   }))};
@@ -68,11 +66,11 @@ test(
     });
 
     // Update the second option and emit a `change` to `containerElement`.
-    updateElement(mockOptions[0].node, optionElement({
+    updateElement(mockOptions[0].radioNode, optionRadio({
       value: '0',
       checked: false,
     }));
-    updateElement(mockOptions[2].node, optionElement({
+    updateElement(mockOptions[2].radioNode, optionRadio({
       value: '2',
       checked: true,
     }));
