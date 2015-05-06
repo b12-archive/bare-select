@@ -78,3 +78,5 @@ test(
     mockView.createElement.emit('change');
   }
 );
+
+// TODO: Test plugin unregistering
