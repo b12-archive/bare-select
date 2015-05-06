@@ -3,6 +3,7 @@ var øOn = require('stereo/on');
 var øWhen = require('stereo/when');
 var asObject = require('as/object');
 var asap = require('set-immediate-shim');
+var shallowDiff = require('shallow-diff');
 
 function attributeUpdater(args) {
 
@@ -15,7 +16,7 @@ function attributeUpdater(args) {
   function resetLoop() {executedInThisLoop = false;}
 
   // Keep a snapshot of attributes to detect change next time.
-  // TODO
+  var attributesSnapshot = {};
 
   return function emitUpdate() {
     if (executedInThisLoop) return;
@@ -23,6 +24,7 @@ function attributeUpdater(args) {
     asap(resetLoop);
 
     // Parse current attributes.
+    // TODO: Split it out into another module.
     var attributesArray = Array.prototype.slice.call(attributesObject);
     var currentAttributes = Object.freeze(asObject(
       attributesArray.map(function (attribute) {
@@ -32,20 +34,24 @@ function attributeUpdater(args) {
         };
       })
     ));
-    var currentAttributeNames = attributesArray.map(
-      function(attribute) {return attribute.name;}
-    );
 
     // Diff them against the snapshot.
-    // TODO
+    var diff = shallowDiff(attributesSnapshot, currentAttributes);
 
     // Emit an update message. See the specs for more info.
     emitter(
-      currentAttributeNames,
+      []
+        .concat(diff.updated)
+        .concat(diff.deleted)
+        .concat(diff.added)
+      ,
       Object.freeze({
         attributes: currentAttributes,
       })
     );
+
+    // Update the snapshot.
+    attributesSnapshot = currentAttributes;
   };
 }
 
