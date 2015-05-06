@@ -102,6 +102,15 @@ test(
       view: mockViewInstance,
       model: mockModelInstance,
     });
+
+    mockModelInstance.updates.emit('value', {
+      value: '3'
+    });
+    is.notOk(
+      mockOptionsInstance[3].radioNode.checked,
+      'fails silently if no options have been registered'
+    );
+
     mockViewInstance.options.emit('update', mockOptionsInstance);
 
     mockModelInstance.updates.emit('value', {
