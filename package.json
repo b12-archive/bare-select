@@ -3,7 +3,8 @@
 , "description": "A customizable replacement for <select>."
 
 , "dependencies":
-  { "as": "^0.4.1"
+  { "array-find": "^0.1.1"
+  , "as": "^0.4.1"
   , "set-immediate-shim": "^1.0.1"
   , "shallow-diff": "tomekwi/shallow-diff#f5f0146"
   , "stereo": "^0.4.0"
@@ -27,8 +28,10 @@
 
   , "1-liners": "0.1.4"
   , "es6-weak-map": "1.0.1"
+  , "is-subset": "0.1.1"
   , "jsdom": "3.1.2"
   , "object-assign": "2.0.0"
+  , "repeat-element": "1.1.0"
   , "tape-catch": "1.0.4"
   , "virtual-dom": "2.0.1"
   }

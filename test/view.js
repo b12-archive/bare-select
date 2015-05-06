@@ -88,6 +88,14 @@ test('The API is in good shape.', function(is) {
     '• an output channel `captionElement`'
   );
 
+  is.deepEqual(
+    viewInstance.containerElement && Object.keys(viewInstance.containerElement)
+      .map(propertyType(viewInstance.containerElement))
+    ,
+    [{property: 'on', type: 'function'}],
+    '• an output channel `containerElement`'
+  );
+
   is.end();
 });
 
@@ -99,6 +107,10 @@ test('The channel `options` works alright.', function(is) {
 
   executed = false;
   viewInstance.options.when('update', function(options) {
+    if (executed) is.fail(
+      'the event `update` should only come once'
+    );
+
     is.pass(
       'issuing the event `update`'
     );

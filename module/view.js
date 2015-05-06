@@ -82,6 +82,11 @@ module.exports = function view(rootElement) {
     on: øOn(emitCaptionElement),
   });
 
+  // Initialize the output channel `containerElement`.
+  var containerElement = Object.freeze({
+    on: rootElement.addEventListener.bind(rootElement),
+  });
+
   // Return the channels.
   return Object.freeze({
     selection: selection,
@@ -89,5 +94,6 @@ module.exports = function view(rootElement) {
     unfolded: unfolded,
     options: options,
     captionElement: captionElement,
+    containerElement: containerElement,
   });
 };
