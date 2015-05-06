@@ -110,6 +110,7 @@ test(
       mockOptionsInstance[3].radioNode.checked,
       'fails silently if no options have been registered'
     );
+    // TODO: We still don’t have the expected 100% coverage.
 
     mockViewInstance.options.emit('update', mockOptionsInstance);
 

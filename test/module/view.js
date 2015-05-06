@@ -52,6 +52,7 @@ test('The API is in good shape.', function(is) {
     [{property: 'emit', type: 'function'}],
     '• an input channel `selection`'
   );
+  // TODO: Is the `selection` channel needed?
 
   is.deepEqual(
     viewInstance.captionContent && Object.keys(viewInstance.captionContent)
