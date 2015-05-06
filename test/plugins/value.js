@@ -1,9 +1,8 @@
-var test = require('../test-tools/test')('The plugin *value*');
+var test = require('../test-tools/test')('“value” plugin');
 var ø = require('stereo');
 var createElement = require('../test-tools/createElement');
 var updateElement = require('../test-tools/updateElement');
 var h = require('virtual-dom/h');
-var isSubset = require('is-subset');
 var repeat = require('repeat-element');
 
 var value = require('../../module/plugins/value');
@@ -42,19 +41,19 @@ value(mockView, mockModel);
 test(
   'Patches the attribute `value` when an option is selected.',
   function(is) {
+    is.plan(2);
+
     var patchRun = 1;
     mockModel.patches.when('apply', function(patch) {
-      if (patchRun === 1) is.ok(
-        isSubset(patch,
-          {value: '0'}
-        ),
+      if (patchRun === 1) is.equal(
+        patch.value,
+        '0',
         'issues an `apply` event with the initial value to `model.patch`'
       );
 
-      if (patchRun === 2) is.ok(
-        isSubset(patch,
-          {value: '2'}
-        ),
+      if (patchRun === 2) is.equal(
+        patch.value,
+        '2',
         'issues an `apply` event to `model.patch` when the value changes'
       );
 
@@ -74,10 +73,12 @@ test(
       value: '2',
       checked: true,
     }));
-    mockView.createElement.emit('change');
+    mockView.containerElement.emit('change');
 
     // Issue an update without changing anything.
-    mockView.createElement.emit('change');
+    mockView.containerElement.emit('change');
+
+    is.end();
   }
 );
 
