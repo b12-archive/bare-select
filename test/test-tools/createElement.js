@@ -1,9 +1,13 @@
-var jsdom = require('jsdom').jsdom;
-var curryRight = require('1-liners/curryRight2');
+var createElement = require('virtual-dom/create-element');
+var elementStates = require('./elementStates');
 
-module.exports = curryRight(require('virtual-dom/create-element'))(
-  {document: (
-    (typeof window !== 'undefined' && window.document) ||
-    jsdom().defaultView.document
-  )}
+var doc = (
+  (typeof window !== 'undefined' && window.document) ||
+  require('jsdom').jsdom().defaultView.document
 );
+
+module.exports = function (vTree) {
+  var element = createElement(vTree, {document: doc});
+  elementStates.set(element, vTree);
+  return element;
+};
