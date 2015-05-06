@@ -7,8 +7,18 @@ var attributeUpdater = require('./model/attributeUpdater');
 module.exports = function model(rootElement) {
 
   // Initialize the input channel `patches`.
+  var emitPatches = øEmit();
   var patches = Object.freeze({
-    emit: øEmit(),
+    emit: emitPatches,
+  });
+  var onPatches = øOn(emitPatches);
+
+  onPatches('apply', function (patch) {
+    Object.keys(patch).forEach(function(attribute) {
+      var value = patch[attribute];
+      if (value === undefined) rootElement.removeAttribute(attribute);
+      else rootElement.setAttribute(attribute, value);
+    });
   });
 
   // Initialize the output channel `updates`.
