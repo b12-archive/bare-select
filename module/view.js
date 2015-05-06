@@ -37,6 +37,7 @@ function getOptions(rootChildren) {
         key: item.children[0].value,
         value: {
           node: item,
+          radioNode: item.children[0],
         },
       };
     })
