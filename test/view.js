@@ -107,6 +107,10 @@ test('The channel `options` works alright.', function(is) {
 
   executed = false;
   viewInstance.options.when('update', function(options) {
+    if (executed) is.fail(
+      'the event `update` should only come once'
+    );
+
     is.pass(
       'issuing the event `update`'
     );
