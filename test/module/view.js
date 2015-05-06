@@ -1,9 +1,9 @@
 var h = require('virtual-dom/h');
-var createElement = require('./test-tools/createElement');
-var propertyType = require('./test-tools/propertyType');
-var test = require('./test-tools/test')('The view');
+var createElement = require('../test-tools/createElement');
+var propertyType = require('../test-tools/propertyType');
+var test = require('../test-tools/test')('The view');
 
-var view = require('../module/view');
+var view = require('../../module/view');
 
 var mock = createElement(
   h('bare-select', [

@@ -5,7 +5,7 @@ var updateElement = require('../test-tools/updateElement');
 var h = require('virtual-dom/h');
 var repeat = require('repeat-element');
 
-var value = require('../../module/plugins/value');
+var value = require('../../plugins/value');
 
 function optionElement(args) {
   return (
