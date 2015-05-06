@@ -11,12 +11,14 @@ var virtualMock =
   h('bare-select', {attributes: {
     value: 'a',
     unfolded: '',
+    unchanged: 'unchanged',
   }})
 ;
 var virtualUpdate =
   h('bare-select', {attributes: {
     value: 'b',
     disabled: '',
+    unchanged: 'unchanged',
   }})
 ;
 var mock = createElement(virtualMock);
@@ -91,7 +93,7 @@ test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
 
       is.deepEqual(
         Object.keys(state.attributes),
-        ['value', 'unfolded'],
+        ['value', 'unfolded', 'unchanged'],
         '– containing all attributes'
       );
 
@@ -115,7 +117,7 @@ test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
 
       is.deepEqual(
         Object.keys(state.attributes),
-        ['value', 'disabled'],
+        ['value', 'unchanged', 'disabled'],
         '– passing an updated state'
       );
 
@@ -169,9 +171,17 @@ test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
     }
   });
 
+  modelInstance.updates.when('absent', function() {
+    is.fail('an absent attribute shouldn’t receive an update');
+  });
+
   // Trigger the second run.
   firstRun = false;
   setTimeout(function () {
+    modelInstance.updates.on('unchanged', function() {
+      is.fail('an unchanged attribute shouldn’t receive an update');
+    });
+
     patch(mock, diff(virtualMock, virtualUpdate));
     modelInstance.attributeChangedCallback('value');
     modelInstance.attributeChangedCallback('disabled');
