@@ -19,10 +19,10 @@ function optionElement(args) {
   );
 }
 var mockOptions = repeat(null, 5).map(function(_, index) {
-  return createElement(optionElement({
+  return {node: createElement(optionElement({
     value: String(index),
     checked: (index === 0),
-  }));
+  }))};
 });
 
 var mockView = {
@@ -68,11 +68,11 @@ test(
     });
 
     // Update the second option and emit a `change` to `containerElement`.
-    updateElement(mockOptions[0], optionElement({
+    updateElement(mockOptions[0].node, optionElement({
       value: '0',
       checked: false,
     }));
-    updateElement(mockOptions[2], optionElement({
+    updateElement(mockOptions[2].node, optionElement({
       value: '2',
       checked: true,
     }));

@@ -2,7 +2,7 @@ var find = require('array-find');
 
 function getSelectedValue(options) {
   return find(Object.keys(options), function(value) {
-    return options[value].children[0].checked;
+    return options[value].node.children[0].checked;
   });
 }
 
