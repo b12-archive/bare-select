@@ -3,8 +3,12 @@ var createElement = require('./test-tools/createElement');
 var updateElement = require('./test-tools/updateElement');
 var propertyType = require('./test-tools/propertyType');
 var test = require('./test-tools/test')('The model');
+var equal = require('1-liners/equal');
+var implode = require('1-liners/implode');
 
 var model = require('../module/model');
+
+var equalλ = implode(equal);
 
 var virtualMock =
   h('bare-select', {attributes: {
@@ -20,7 +24,9 @@ var virtualUpdate =
     unchanged: 'unchanged',
   }})
 ;
-var mock = createElement(virtualMock);
+function mockRoot() {
+  return createElement(virtualMock);
+}
 
 test('The API is in good shape.', function(is) {
   is.equal(
@@ -29,6 +35,7 @@ test('The API is in good shape.', function(is) {
     'is a constructor function'
   );
 
+  var mock = mockRoot();
   var modelInstance = model(mock);
 
   is.ok(
@@ -61,6 +68,7 @@ test('The API is in good shape.', function(is) {
 });
 
 test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
+  var mock = mockRoot();
   var modelInstance = model(mock);
   var firstRun = true;
   var valueState;
@@ -188,4 +196,63 @@ test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
 
     is.end();
   }, 100);
+});
+
+//  h('bare-select', {attributes: {
+//    value: 'a',
+//    unfolded: '',
+//    unchanged: 'unchanged',
+//  }})
+test('The channel `patches` works alright.', {timeout: 2000}, function(is) {
+  var mock = mockRoot();
+  var modelInstance = model(mock);
+
+  modelInstance.patches.emit('apply', {
+    value: 'b'
+  });
+  is.equal(
+    mock.getAttribute('value'),
+    'b',
+    'updates an attribute'
+  );
+
+  modelInstance.patches.emit('apply', {
+    unfolded: undefined
+  });
+  is.notOk(
+    mock.hasAttribute('unfolded'),
+    'removes an attribute'
+  );
+
+  modelInstance.patches.emit('apply', {
+    added: 'all is well!'
+  });
+  is.equal(
+    mock.getAttribute('added'),
+    'all is well!',
+    'adds an attribute'
+  );
+
+  is.equal(
+    mock.getAttribute('unchanged'),
+    'unchanged',
+    'doesn’t modify an arbitrary attribute'
+  );
+
+  modelInstance.patches.emit('apply', {
+    added: 'changed',
+    'another-one': 'added',
+    value: undefined,
+  });
+  is.ok(
+    [
+      [  mock.getAttribute('added'),        'changed'    ],
+      [  mock.getAttribute('another-one'),  'added'      ],
+      [  mock.hasAttribute('value'),         false       ],
+      [  mock.getAttribute('unchanged'),    'unchanged'  ],
+    ].every(equalλ),
+    'does all these at once'
+  );
+
+  is.end();
 });
