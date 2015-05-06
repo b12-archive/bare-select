@@ -27,6 +27,7 @@
 
   , "1-liners": "0.1.4"
   , "jsdom": "3.1.2"
+  , "object-assign": "2.0.0"
   , "tape-catch": "1.0.4"
   , "virtual-dom": "2.0.1"
   }
