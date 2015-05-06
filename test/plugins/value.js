@@ -31,6 +31,7 @@ mockView.options.emit('update', mockOptions);
 
 var mockModel = {
   patches: ø(),
+  updates: ø(),
 };
 
 // Initialize the plugin.
@@ -78,6 +79,30 @@ test(
 
     // Issue an update without changing anything.
     mockView.containerElement.emit('change');
+
+    is.end();
+  }
+);
+
+test(
+  'Updates the selected option when the attribute `value` has changed.',
+  function(is) {
+    mockModel.updates.emit('value', {
+      value: '4'
+    });
+    is.ok(
+      mockOptions[4].radioNode.checked,
+      'does it synchronously when everything goes smooth'
+    );
+
+    mockModel.updates.emit('value', {
+      value: 'something invalid'
+    });
+    is.ok(
+      mockOptions[4].radioNode.checked,
+      'fails silently when the option’s value can’t be found'
+    );
+    // TODO: Should this issue an `error` event? To which channel?
 
     is.end();
   }
