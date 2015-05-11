@@ -4,7 +4,6 @@ var øEmit = require('stereo/emit');
 var øOn = require('stereo/on');
 var øWhen = require('stereo/when');
 var øCatch = require('stereo/catch');
-var asObject = require('as/object');
 
 function getOptions(rootChildren) {
   var dropdown = rootChildren[2];
@@ -33,17 +32,17 @@ function getOptions(rootChildren) {
     '(`<li>`) should be an `<input>` element – a radio button or checkbox.'
   }};
 
-  return {value: asObject(
-    options.map(function(item) {
-      return {
-        key: item.children[0].value,
-        value: {
-          node: item,
-          radioNode: item.children[0],
-        },
-      };
-    })
-  )};
+  return {value: {
+    values: options.map(
+      function(item) {return item.children[0].value;}
+    ),
+    radioNodes: options.map(
+      function(item) {return item.children[0];}
+    ),
+    labelNodes: options.map(
+      function(item) {return item.children[1];}
+    ),
+  }};
 }
 
 function getSwitch(rootChildren) {

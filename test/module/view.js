@@ -117,27 +117,33 @@ test('The channel `options` works alright.', function(is) {
       'issuing the event `update`'
     );
 
-    var optionValues = options && Object.keys(options);
     is.deepEqual(
-      optionValues,
+      options.values,
       ['a', 'b', 'c'],
-      'with 3 options categorized by value'
+      'with well-formed `values`'
     );
 
+    var length = 3;
     is.deepEqual(
-      optionValues.map(function(value) {
-        return options[value].node && options[value].node.tagName;
-      }),
-      repeat('LI', optionValues.length),
-      'with every option containing the `<li>` element in `.node`'
+      options.radioNodes.map(function(node) {return {
+        tagName: node.tagName,
+        type: node.type,
+      };}),
+      repeat({
+        tagName: 'INPUT',
+        type: 'radio',
+      }, length),
+      'with well-formed `radioNodes`'
     );
 
-    is.deepEqual(
-      optionValues.map(function(value) {
-        return options[value].radioNode && options[value].radioNode.tagName;
-      }),
-      repeat('INPUT', optionValues.length),
-      '– and the `<input>` element in `.radioNode`'
+    is.ok(
+      options.radioNodes.map(function(node) {return {
+        tagName: node.tagName,
+      };}),
+      repeat({
+        tagName: 'LABEL',
+      }, length),
+      'with well-formed `labelNodes`'
     );
 
     executed = true;
