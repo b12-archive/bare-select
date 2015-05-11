@@ -5,7 +5,7 @@ var øOn = require('stereo/on');
 var øWhen = require('stereo/when');
 var attributeUpdater = require('./model/attributeUpdater');
 var patchAttributes = require('./model/patchAttributes');
-var curry = require('1-liners/curry2');
+var curry = require('1-liners/curry');
 
 // TODO: Document the function.
 module.exports = function model(rootElement) {
