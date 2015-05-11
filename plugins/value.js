@@ -1,3 +1,5 @@
+require('es6-set/implement');
+
 var find = require('array-find');
 
 function getSelectedValue(options) {

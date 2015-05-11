@@ -1,3 +1,5 @@
+require('es6-set/implement');
+
 var øEmit = require('stereo/emit');
 var øOn = require('stereo/on');
 var øWhen = require('stereo/when');
