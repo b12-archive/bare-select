@@ -83,11 +83,11 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    viewInstance.captionElement && Object.keys(viewInstance.captionElement)
-      .map(propertyType(viewInstance.captionElement))
+    viewInstance.switchElement && Object.keys(viewInstance.switchElement)
+      .map(propertyType(viewInstance.switchElement))
     ,
     [{property: 'on', type: 'function'}],
-    '• an output channel `captionElement`'
+    '• an output channel `switchElement`'
   );
 
   is.deepEqual(

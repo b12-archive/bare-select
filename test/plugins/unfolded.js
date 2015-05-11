@@ -14,7 +14,7 @@ function createSwitch(args) { return createElement(
 
 function mockView() { return {
   unfolded: ø(),
-  containerElement: ø(),
+  switchElement: ø(),
 }; }
 
 function mockModel() { return {
@@ -81,20 +81,20 @@ test(
     });
 
     // Set fire!
-    anotherView.containerElement.emit('change', {
-      eventTarget: createSwitch({on: false})
+    anotherView.switchElement.emit('change', {
+      target: createSwitch({on: false})
     });
-    view.containerElement.emit('change', {
-      eventTarget: createSwitch({on: true})
+    view.switchElement.emit('change', {
+      target: createSwitch({on: true})
     });
-    view.containerElement.emit('change', {
-      eventTarget: createSwitch({on: false})
+    view.switchElement.emit('change', {
+      target: createSwitch({on: false})
     });
-    view.containerElement.emit('change', {
-      eventTarget: createSwitch({on: false})
+    view.switchElement.emit('change', {
+      target: createSwitch({on: false})
     });
-    view.containerElement.emit('change', {
-      eventTarget: createSwitch({on: true})
+    view.switchElement.emit('change', {
+      target: createSwitch({on: true})
     });
 
     is.end();
