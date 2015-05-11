@@ -42,14 +42,13 @@ module.exports = function (args) {
 
   // Update the selected option when the `value` attribute has been updated.
   model.updates.when('value', function(data) {
+    // TODO: Can we assume that event messages are safe?
+    var option = optionsSnapshot[data.attributes.value];
 
     // Fail silently:
-    // * if there are no options loaded,
-    if (!optionsSnapshot) return;
-
     // * if there is no option provided for the value.
-    var option = optionsSnapshot[data.attributes.value];
     if (!option) return;
+      // TODO: Should we really fail silently?
 
     // Else check the respective option.
     option.radioNode.checked = true;
