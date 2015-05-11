@@ -46,57 +46,77 @@ function getOptions(rootChildren) {
   )};
 }
 
-module.exports = function view(rootElement) {
+function getSwitch(rootChildren) {
+  if (
+    rootChildren[1] &&
+    rootChildren[1].tagName === 'INPUT' &&
+    rootChildren[1].type.toLowerCase() === 'checkbox'
+  ) return {value:
+    rootChildren[1]
+  };
+  else return {error: {message: 'bare-select: ' +
+    'The second element in a `<bare-select>` should be the switch – an ' +
+    '`<input type="checkbox">` element.'
+  }};
+}
 
-  // Initialize internal DOM queries.
+module.exports = function view(rootElement) {
+  var channels = {};
+
+  // Fond and validate internal DOM.
   var rootChildren = rootElement.children;
 
+  var switchResult = getSwitch(rootChildren);
+  if (switchResult.error) throw switchResult.error;
+    // TODO: How should we fail? Perhaps a new channel `errors`?
+  var switchElement = switchResult.value;
+
+  var optionsResult = getOptions(rootChildren);
+
   // Initialize the input channel `selection`.
-  var selection = Object.freeze({
+  channels.selection = Object.freeze({
     emit: øEmit(),
   });
 
   // Initialize the input channel `captionContent`.
-  var captionContent = Object.freeze({
+  channels.captionContent = Object.freeze({
     emit: øEmit(),
   });
 
   // Initialize the input channel `unfolded`.
-  var unfolded = Object.freeze({
-    emit: øEmit(),
+  var unfoldedEmit = øEmit();
+  channels.unfolded = Object.freeze({
+    emit: unfoldedEmit,
+  });
+
+  // Wire up the channel `unfolded`.
+  var onUnfolded = øOn(unfoldedEmit);
+  onUnfolded('update', function(message) {
+    switchElement.checked = !!message.value;
   });
 
   // Initialize the output channel `options`.
   var emitOptions = øEmit();
-  var options = Object.freeze({
+  channels.options = Object.freeze({
     on: øOn(emitOptions),
     when: øWhen(emitOptions),
     catch: øCatch(emitOptions),
   });
 
   // Emit an initial `update` or `error` to `options`.
-  var optionsMessage = getOptions(rootChildren);
-  if (optionsMessage.error) emitOptions('error', optionsMessage.error);
-  else emitOptions('update', optionsMessage.value);
+  if (optionsResult.error) emitOptions('error', optionsResult.error);
+  else emitOptions('update', optionsResult.value);
 
-  // Initialize the output channel `captionElement`.
-  var emitCaptionElement = øEmit();
-  var captionElement = Object.freeze({
-    on: øOn(emitCaptionElement),
+  // Initialize the output channel `switchElement`.
+  channels.switchElement = Object.freeze({
+    on: switchElement.addEventListener.bind(switchElement),
   });
 
   // Initialize the output channel `containerElement`.
-  var containerElement = Object.freeze({
+  channels.containerElement = Object.freeze({
     on: rootElement.addEventListener.bind(rootElement),
   });
 
   // Return the channels.
-  return Object.freeze({
-    selection: selection,
-    captionContent: captionContent,
-    unfolded: unfolded,
-    options: options,
-    captionElement: captionElement,
-    containerElement: containerElement,
-  });
+  return Object.freeze(channels);
 };

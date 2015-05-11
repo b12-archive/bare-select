@@ -83,11 +83,11 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    viewInstance.captionElement && Object.keys(viewInstance.captionElement)
-      .map(propertyType(viewInstance.captionElement))
+    viewInstance.switchElement && Object.keys(viewInstance.switchElement)
+      .map(propertyType(viewInstance.switchElement))
     ,
     [{property: 'on', type: 'function'}],
-    '• an output channel `captionElement`'
+    '• an output channel `switchElement`'
   );
 
   is.deepEqual(
@@ -185,6 +185,30 @@ test('The channel `options` fails gracefully.', function(is) {
     ));},
     'when options are badly formed'
   );
+
+  is.end();
+});
+
+test('The channel `unfolded` works alright.', function(is) {
+  var tree = mock;
+  var switchElement = tree.children[1];
+  var viewInstance = view(tree);
+
+  viewInstance.unfolded.emit('update', {value: true});
+  is.equal(
+    switchElement.checked,
+    true,
+    'checks the switch when it gets the value `true`'
+  );
+
+  viewInstance.unfolded.emit('update', {value: false});
+  is.equal(
+    switchElement.checked,
+    false,
+    'unchecks the switch when it gets the value `false`'
+  );
+
+  // TODO: Test failure.
 
   is.end();
 });
