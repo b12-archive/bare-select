@@ -13,4 +13,19 @@ module.exports = function (args) {
       {value: false}
     ));
   });
+
+  // Update the model when the view changes.
+  var valueSnapshot = null;
+  view.switchElement.on('change', function(event) {
+    var newValue = !!event.target.checked;
+
+    if (newValue !== valueSnapshot) {
+      model.patches.emit('apply', {unfolded: (
+        newValue ?
+        '' :
+        undefined
+      )});
+      valueSnapshot = newValue;
+    }
+  });
 };
