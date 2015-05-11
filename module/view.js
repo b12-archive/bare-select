@@ -76,8 +76,18 @@ module.exports = function view(rootElement) {
   });
 
   // Initialize the input channel `unfolded`.
+  var unfoldedEmit = øEmit();
   var unfolded = Object.freeze({
-    emit: øEmit(),
+    emit: unfoldedEmit,
+  });
+
+  // Wire up the channel `unfolded`.
+  var onUnfolded = øOn(unfoldedEmit);
+  var switchElement = getSwitch(rootChildren);
+  if (switchElement.error) throw switchElement.error;
+    // TODO: How should we fail? Perhaps a new channel `errors`?
+  onUnfolded('update', function(message) {
+    switchElement.value.checked = !!message.value;
   });
 
   // Initialize the output channel `options`.
