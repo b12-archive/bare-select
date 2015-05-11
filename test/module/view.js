@@ -188,3 +188,27 @@ test('The channel `options` fails gracefully.', function(is) {
 
   is.end();
 });
+
+test('The channel `unfolded` works alright.', function(is) {
+  var tree = mock;
+  var switchElement = tree.children[1];
+  var viewInstance = view(tree);
+
+  viewInstance.unfolded.emit('update', {value: true});
+  is.equal(
+    switchElement.checked,
+    true,
+    'checks the switch when it gets the value `true`'
+  );
+
+  viewInstance.unfolded.emit('update', {value: false});
+  is.equal(
+    switchElement.checked,
+    false,
+    'unchecks the switch when it gets the value `false`'
+  );
+
+  // TODO: Test failure.
+
+  is.end();
+});
