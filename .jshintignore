@@ -5,3 +5,6 @@
 
 # - Automatically installed dependencies
 /node_modules/
+
+# - Coverage reports
+/coverage/
