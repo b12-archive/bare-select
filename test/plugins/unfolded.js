@@ -43,32 +43,28 @@ test(
     });
 
     // Set up tests.
-    model.patches.on('apply', function (patch) {
-      is.notOk(
-        patch.hasOwnProperty('unfolded'),
-        'removes it if the switch is off initially'
-      );
-    });
-
     var run = 1;
-    anotherModel.patches.on('apply', function (patch) {
+    model.patches.on('apply', function (patch) {
       if (run === 1) {
-        is.ok(
-          patch.hasOwnProperty('unfolded'),
+        is.equal(
+          patch.unfolded,
+          '',
           'adds it if the switch is on initially'
         );
       }
 
       else if (run === 2) {
-        is.notOk(
-          patch.hasOwnProperty('unfolded'),
+        is.equal(
+          patch.unfolded,
+          undefined,
           'removes it when the switch goes off'
         );
       }
 
       else if (run === 3) {
-        is.ok(
-          patch.hasOwnProperty('unfolded'),
+        is.equal(
+          patch.unfolded,
+          '',
           'adds it when the switch goes back on'
         );
       }
@@ -78,6 +74,14 @@ test(
       );
 
       run++;
+    });
+
+    anotherModel.patches.on('apply', function (patch) {
+      is.equal(
+        patch.unfolded,
+        undefined,
+        'removes it if the switch is off initially'
+      );
     });
 
     // Set fire!
