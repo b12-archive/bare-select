@@ -6,9 +6,9 @@ module.exports = function (args) {
   // TODO: Support `args.logger`.
 
   // Update the view when the model changes.
-  model.updates.when('unfolded', function(attributes) {
+  model.updates.when('unfolded', function(state) {
     view.unfolded.emit('update', (
-      attributes.hasOwnProperty('unfolded') ?
+      state.attributes.hasOwnProperty('unfolded') ?
       {value: true} :
       {value: false}
     ));

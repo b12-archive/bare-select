@@ -141,8 +141,8 @@ test(
     });
 
     // Fire!
-    model.updates.emit('unfolded', {});
-    model.updates.emit('unfolded', {unfolded: ''});
+    model.updates.emit('unfolded', {attributes: {}});
+    model.updates.emit('unfolded', {attributes: {unfolded: ''}});
 
     is.end();
   }
