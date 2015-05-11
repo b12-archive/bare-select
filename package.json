@@ -3,7 +3,7 @@
 , "description": "A customizable replacement for <select>."
 
 , "dependencies":
-  { "array-find": "^0.1.1"
+  { "find-index": "^0.1.1"
   , "as": "^0.4.1"
   , "es6-set": "^0.1.1"
   , "set-immediate-shim": "^1.0.1"

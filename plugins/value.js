@@ -1,11 +1,13 @@
 require('es6-set/implement');
 
-var find = require('array-find');
+var findIndex = require('find-index');
 
 function getSelectedValue(options) {
-  return find(Object.keys(options), function(value) {
-    return options[value].radioNode.checked;
-  });
+  return options.values[
+    findIndex(options.radioNodes, function(node) {
+      return node.checked;
+    })
+  ];
 }
 
 module.exports = function (args) {
@@ -43,14 +45,19 @@ module.exports = function (args) {
   // Update the selected option when the `value` attribute has been updated.
   model.updates.when('value', function(data) {
     // TODO: Can we assume that event messages are safe?
-    var option = optionsSnapshot[data.attributes.value];
 
     // Fail silently:
+    // * if there are no options loaded yet.
+    if (!optionsSnapshot.radioNodes || !optionsSnapshot.values) return;
+
     // * if there is no option provided for the value.
+    var option = optionsSnapshot.radioNodes[
+      optionsSnapshot.values.indexOf(data.attributes.value)
+    ];
     if (!option) return;
       // TODO: Should we really fail silently?
 
     // Else check the respective option.
-    option.radioNode.checked = true;
+    option.checked = true;
   });
 };

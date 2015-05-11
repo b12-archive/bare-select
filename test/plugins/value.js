@@ -16,14 +16,18 @@ function optionRadio(args) {
     })
   );
 }
-function mockOptions() { return repeat(null, 5)
-  .map(function(_, index) {
-    return {radioNode: createElement(optionRadio({
-      value: String(index),
-      checked: (index === 0),
-    }))}
-  ;
-}); }
+function mockOptions() {
+  var stamp = repeat(null, 5);
+  return {
+    values: stamp.map(function (_, index) {return String(index);}),
+    radioNodes: stamp.map(function (_, index) {
+      return createElement(optionRadio({
+        value: String(index),
+        checked: (index === 0),
+      }));
+    }),
+  };
+}
 
 function mockView() { return {
   options: ø(),
@@ -73,11 +77,11 @@ test(
     });
 
     // Update the second option and emit a mock `change` to `containerElement`.
-    updateElement(mockOptionsInstance[0].radioNode, optionRadio({
+    updateElement(mockOptionsInstance.radioNodes[0], optionRadio({
       value: '0',
       checked: false,
     }));
-    updateElement(mockOptionsInstance[2].radioNode, optionRadio({
+    updateElement(mockOptionsInstance.radioNodes[2], optionRadio({
       value: '2',
       checked: true,
     }));
@@ -107,7 +111,7 @@ test(
       value: '3'
     }});
     is.notOk(
-      mockOptionsInstance[3].radioNode.checked,
+      mockOptionsInstance.radioNodes[3].checked,
       'fails silently if no options have been registered'
     );
     // TODO: We still don’t have the expected 100% coverage.
@@ -118,7 +122,7 @@ test(
       value: '4'
     }});
     is.ok(
-      mockOptionsInstance[4].radioNode.checked,
+      mockOptionsInstance.radioNodes[4].checked,
       'does it synchronously when everything goes smooth'
     );
 
@@ -126,7 +130,7 @@ test(
       value: 'something invalid'
     }});
     is.ok(
-      mockOptionsInstance[4].radioNode.checked,
+      mockOptionsInstance.radioNodes[4].checked,
       'fails silently when the option’s value can’t be found'
     );
     // TODO: Should this issue an `error` event? To which channel?
