@@ -6,7 +6,7 @@ var repeat = require('repeat-element');
 
 var view = require('../../module/view');
 
-var mock = createElement(
+function mock() {return createElement(
   h('bare-select', [
     h('label', {for: 'switch'}),
     h('input', {type: 'checkbox', id: 'switch'}),
@@ -29,7 +29,7 @@ var mock = createElement(
       ]),
     ]),
   ])
-);
+);}
 
 test('The API is in good shape.', function(is) {
   is.equal(
@@ -38,7 +38,7 @@ test('The API is in good shape.', function(is) {
     'is a constructor function'
   );
 
-  var viewInstance = view(mock);
+  var viewInstance = view(mock());
 
   is.ok(
     Object.isFrozen(viewInstance),
@@ -102,7 +102,7 @@ test('The API is in good shape.', function(is) {
 });
 
 test('The channel `options` works alright.', function(is) {
-  var viewInstance = view(mock);
+  var viewInstance = view(mock());
   var executed;
 
   is.plan(5);
@@ -208,7 +208,7 @@ test('The channel `options` fails gracefully.', function(is) {
 });
 
 test('The channel `unfolded` works alright.', function(is) {
-  var tree = mock;
+  var tree = mock();
   var switchElement = tree.children[1];
   var viewInstance = view(tree);
 
