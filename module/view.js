@@ -68,6 +68,7 @@ module.exports = function view(rootElement) {
   var switchResult = getSwitch(rootChildren);
   if (switchResult.error) throw switchResult.error;
     // TODO: How should we fail? Perhaps a new channel `errors`?
+    // TODO: Test these.
   var switchElement = switchResult.value;
 
   var optionsResult = getOptions(rootChildren);
