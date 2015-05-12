@@ -3,6 +3,7 @@ var createElement = require('../test-tools/createElement');
 var propertyType = require('../test-tools/propertyType');
 var test = require('../test-tools/test')('The view');
 var repeat = require('repeat-element');
+var arrayFrom = require('array-from');
 
 var view = require('../../module/view');
 
@@ -227,6 +228,68 @@ test('The channel `unfolded` works alright.', function(is) {
   );
 
   // TODO: Test failure.
+
+  is.end();
+});
+
+test('The channel `selection` works alright.', function(is) {
+  var tree = mock();
+  var radioElements = arrayFrom(tree.children[2].children)
+    .map(function(item) {return item.children[0];})
+  ;
+  var viewInstance = view(tree);
+
+  viewInstance.selection.emit('update', {newValue: 'a'});
+  is.equal(
+    radioElements[0].checked,
+    true,
+    'checks the right option when it gets a new value'
+  );
+
+  viewInstance.selection.emit('update', {newValue: null});
+  is.notOk(
+    radioElements.some(function(radio) {return radio.checked;}),
+    'unchecks all options when it gets the value `null`'
+  );
+
+  is.end();
+});
+
+test('The channel `selection` fails gracefully.', function(is) {
+  is.plan(4);
+
+  var tree = mock();
+  var radioElements = arrayFrom(tree.children[2].children)
+    .map(function(item) {return item.children[0];})
+  ;
+  var viewInstance = view(tree, {logger: {
+    warn: function(error) {is.equal(
+      error.message,
+      'a message',
+      '- printing the error’s message to the console'
+    );},
+  }});
+
+  try {
+    viewInstance.selection.emit('update', {newValue: 'invalid'});
+  } catch (error) {
+    is.ok(
+      error.message.match(/value not found/i),
+      'throws when it gets an invalid value'
+    );
+  }
+
+  is.notOk(
+    radioElements.some(function(radio) {return radio.checked;}),
+    '– having unchecked all options'
+  );
+
+  radioElements[1].checked = true;
+  viewInstance.selection.emit('error', {message: 'a message'});
+  is.notOk(
+    radioElements.some(function(radio) {return radio.checked;}),
+    'unchecks all options when it receives an `error` event'
+  );
 
   is.end();
 });
