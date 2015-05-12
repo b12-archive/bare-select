@@ -19,7 +19,7 @@ function mock() {return createElement(
       h('li', [
         h('input', {type: 'radio', name: 'radio-group',
           value: 'b',
-          checked: '',
+          checked: true,
         }),
       ]),
       h('li', [
