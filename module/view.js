@@ -7,6 +7,7 @@ var øCatch = require('stereo/catch');
 
 var getOptions = require('./view/getOptions');
 var getSwitch = require('./view/getSwitch');
+var uncheckAll = require('./view/uncheckAll');
 
 module.exports = function view(rootElement) {
   var channels = {};
@@ -21,11 +22,6 @@ module.exports = function view(rootElement) {
   var switchElement = switchResult.value;
 
   var optionsResult = getOptions(rootChildren);
-
-  // Initialize the input channel `selection`.
-  channels.selection = Object.freeze({
-    emit: øEmit(),
-  });
 
   // Initialize the input channel `captionContent`.
   channels.captionContent = Object.freeze({
@@ -53,8 +49,53 @@ module.exports = function view(rootElement) {
   });
 
   // Emit an initial `update` or `error` to `options`.
+  var optionsSnapshot;
   if (optionsResult.error) emitOptions('error', optionsResult.error);
-  else emitOptions('update', optionsResult.value);
+  else {
+    optionsSnapshot = optionsResult.value;
+    emitOptions('update', optionsSnapshot);
+  }
+
+  // Initialize the input channel `selection`.
+  var emitSelection = øEmit();
+  channels.selection = Object.freeze({
+    emit: emitSelection,
+  });
+
+  // Wire up the channel `selection`.
+  var onSelection = øOn(emitSelection);
+  onSelection('update', function(update) {
+    // Throw an error if no options have been loaded.
+    if (!optionsSnapshot) throw {message:
+      'No options have been loaded. Check your markup.'
+    };
+    var radioNodes = optionsSnapshot.radioNodes;
+
+    // TODO: Can we trust the `update`? If not, throw an error if no value has
+    //       been passed.
+
+    // Uncheck all options if `null` is passed.
+    var newValue = update.newValue;
+    if (newValue === null) {
+      return uncheckAll(radioNodes);
+    }
+
+    // Uncheck all options and throw an error if the value can’t be found.
+    var valueIndex = optionsSnapshot.values.indexOf(newValue);
+    if (valueIndex === -1) {
+      uncheckAll(radioNodes);
+      throw {message:
+        'Value not found. Pass one of these values: [' + (
+          optionsSnapshot.values
+            .map(function(value) {return ('"' + value + '"');})
+            .join(', ')
+        ) + '].'
+      };
+    }
+
+    // Otherwise check the right value.
+    radioNodes[valueIndex].checked = true;
+  });
 
   // Initialize the output channel `switchElement`.
   channels.switchElement = Object.freeze({
