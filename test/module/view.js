@@ -157,40 +157,52 @@ test('The channel `options` works alright.', function(is) {
 });
 
 test('The channel `options` fails gracefully.', function(is) {
-  is.throws(
-    function() {view(createElement(
-      h('bare-select')
-    ));},
-    'when the dropdown isn’t there'
-  );
+  is.plan(3);
 
-  is.throws(
-    function() {view(createElement(
-      h('bare-select', [
-        h(),
-        h(),
-        h('ul', [
+  try {view(createElement(
+    h('bare-select', [
+      h('label'),
+      h('input', {type: 'checkbox'}),
+      h(),
+    ])
+  ));} catch (error) {
+    is.ok(
+      error.message.match(/dropdown element not found/i),
+      'when the dropdown isn’t there'
+    );
+  }
+
+  try {view(createElement(
+    h('bare-select', [
+      h('label'),
+      h('input', {type: 'checkbox'}),
+      h('ul', [
+        h('wrong')
+      ])
+    ])
+  ));} catch (error) {
+    is.ok(
+      error.message.match(/no options found in the dropdown/i),
+      'when the dropdown is empty'
+    );
+  }
+
+  try {view(createElement(
+    h('bare-select', [
+      h('label'),
+      h('input', {type: 'checkbox'}),
+      h('ul', [
+        h('li', [
           h('wrong')
         ])
       ])
-    ));},
-    'when the dropdown is empty'
-  );
-
-  is.throws(
-    function() {view(createElement(
-      h('bare-select', [
-        h(),
-        h(),
-        h('ul', [
-          h('li', [
-            h('wrong')
-          ])
-        ])
-      ])
-    ));},
-    'when options are badly formed'
-  );
+    ])
+  ));} catch (error) {
+    is.ok(
+      error.message.match(/wrong option markup/i),
+      'when options are badly formed'
+    );
+  }
 
   is.end();
 });
