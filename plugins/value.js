@@ -43,21 +43,10 @@ module.exports = function (args) {
   });
 
   // Update the selected option when the `value` attribute has been updated.
-  model.updates.when('value', function(data) {
+  model.updates.when('value', function(state) {
     // TODO: Can we assume that event messages are safe?
-
-    // Fail silently:
-    // * if there are no options loaded yet.
-    if (!optionsSnapshot.radioNodes || !optionsSnapshot.values) return;
-
-    // * if there is no option provided for the value.
-    var option = optionsSnapshot.radioNodes[
-      optionsSnapshot.values.indexOf(data.attributes.value)
-    ];
-    if (!option) return;
-      // TODO: Should we really fail silently?
-
-    // Else check the respective option.
-    option.checked = true;
+    view.selection.emit('update', {
+      newValue: (state.attributes.value || null)
+    });
   });
 };
