@@ -3,10 +3,11 @@ var createElement = require('../test-tools/createElement');
 var propertyType = require('../test-tools/propertyType');
 var test = require('../test-tools/test')('The view');
 var repeat = require('repeat-element');
+var arrayFrom = require('array-from');
 
 var view = require('../../module/view');
 
-var mock = createElement(
+function mock() {return createElement(
   h('bare-select', [
     h('label', {for: 'switch'}),
     h('input', {type: 'checkbox', id: 'switch'}),
@@ -19,7 +20,7 @@ var mock = createElement(
       h('li', [
         h('input', {type: 'radio', name: 'radio-group',
           value: 'b',
-          checked: '',
+          checked: true,
         }),
       ]),
       h('li', [
@@ -29,7 +30,7 @@ var mock = createElement(
       ]),
     ]),
   ])
-);
+);}
 
 test('The API is in good shape.', function(is) {
   is.equal(
@@ -38,7 +39,7 @@ test('The API is in good shape.', function(is) {
     'is a constructor function'
   );
 
-  var viewInstance = view(mock);
+  var viewInstance = view(mock());
 
   is.ok(
     Object.isFrozen(viewInstance),
@@ -102,7 +103,7 @@ test('The API is in good shape.', function(is) {
 });
 
 test('The channel `options` works alright.', function(is) {
-  var viewInstance = view(mock);
+  var viewInstance = view(mock());
   var executed;
 
   is.plan(5);
@@ -208,7 +209,7 @@ test('The channel `options` fails gracefully.', function(is) {
 });
 
 test('The channel `unfolded` works alright.', function(is) {
-  var tree = mock;
+  var tree = mock();
   var switchElement = tree.children[1];
   var viewInstance = view(tree);
 
@@ -227,6 +228,68 @@ test('The channel `unfolded` works alright.', function(is) {
   );
 
   // TODO: Test failure.
+
+  is.end();
+});
+
+test('The channel `selection` works alright.', function(is) {
+  var tree = mock();
+  var radioElements = arrayFrom(tree.children[2].children)
+    .map(function(item) {return item.children[0];})
+  ;
+  var viewInstance = view(tree);
+
+  viewInstance.selection.emit('update', {newValue: 'a'});
+  is.equal(
+    radioElements[0].checked,
+    true,
+    'checks the right option when it gets a new value'
+  );
+
+  viewInstance.selection.emit('update', {newValue: null});
+  is.notOk(
+    radioElements.some(function(radio) {return radio.checked;}),
+    'unchecks all options when it gets the value `null`'
+  );
+
+  is.end();
+});
+
+test('The channel `selection` fails gracefully.', function(is) {
+  is.plan(4);
+
+  var tree = mock();
+  var radioElements = arrayFrom(tree.children[2].children)
+    .map(function(item) {return item.children[0];})
+  ;
+  var viewInstance = view(tree, {logger: {
+    warn: function(message) {is.equal(
+      message,
+      'a message',
+      'prints the message to the console when it receives an `error` event'
+    );},
+  }});
+
+  try {
+    viewInstance.selection.emit('update', {newValue: 'invalid'});
+  } catch (error) {
+    is.ok(
+      error.message.match(/value not found/i),
+      'throws when it gets an invalid value'
+    );
+  }
+
+  is.notOk(
+    radioElements.some(function(radio) {return radio.checked;}),
+    '– having unchecked all options'
+  );
+
+  radioElements[1].checked = true;
+  viewInstance.selection.emit('error', {message: 'a message'});
+  is.notOk(
+    radioElements.some(function(radio) {return radio.checked;}),
+    'unchecks all options when it receives an `error` event'
+  );
 
   is.end();
 });
