@@ -263,10 +263,10 @@ test('The channel `selection` fails gracefully.', function(is) {
     .map(function(item) {return item.children[0];})
   ;
   var viewInstance = view(tree, {logger: {
-    warn: function(error) {is.equal(
-      error.message,
+    warn: function(message) {is.equal(
+      message,
       'a message',
-      '- printing the error’s message to the console'
+      'prints the message to the console when it receives an `error` event'
     );},
   }});
 

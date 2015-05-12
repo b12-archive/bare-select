@@ -9,7 +9,10 @@ var getOptions = require('./view/getOptions');
 var getSwitch = require('./view/getSwitch');
 var uncheckAll = require('./view/uncheckAll');
 
-module.exports = function view(rootElement) {
+module.exports = function view(rootElement, options) {
+  if (!options) options = {};
+  var logger = options.logger || console;
+
   var channels = {};
 
   // Find and validate internal DOM.
@@ -95,6 +98,16 @@ module.exports = function view(rootElement) {
 
     // Otherwise check the right value.
     radioNodes[valueIndex].checked = true;
+  });
+
+  onSelection('error', function(error) {
+    // Uncheck any loaded options.
+    if (optionsSnapshot) {
+      uncheckAll(optionsSnapshot.radioNodes);
+    }
+
+    // Print the error’s message as a warning to the console.
+    logger.warn(error.message);
   });
 
   // Initialize the output channel `switchElement`.
