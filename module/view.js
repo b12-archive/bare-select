@@ -62,7 +62,7 @@ function getSwitch(rootChildren) {
 module.exports = function view(rootElement) {
   var channels = {};
 
-  // Fond and validate internal DOM.
+  // Find and validate internal DOM.
   var rootChildren = rootElement.children;
 
   var switchResult = getSwitch(rootChildren);
