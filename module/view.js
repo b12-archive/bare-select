@@ -33,13 +33,13 @@ module.exports = function view(rootElement) {
   });
 
   // Initialize the input channel `unfolded`.
-  var unfoldedEmit = øEmit();
+  var emitUnfolded = øEmit();
   channels.unfolded = Object.freeze({
-    emit: unfoldedEmit,
+    emit: emitUnfolded,
   });
 
   // Wire up the channel `unfolded`.
-  var onUnfolded = øOn(unfoldedEmit);
+  var onUnfolded = øOn(emitUnfolded);
   onUnfolded('update', function(message) {
     switchElement.checked = !!message.value;
   });
