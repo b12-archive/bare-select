@@ -45,18 +45,18 @@ test(
     is.plan(2);
 
     // Initialize the plugin.
-    var mockViewInstance = mockView();
-    var mockModelInstance = mockModel();
-    var mockOptionsInstance = mockOptions();
+    var view = mockView();
+    var model = mockModel();
+    var options = mockOptions();
     value({
-      view: mockViewInstance,
-      model: mockModelInstance,
+      view: view,
+      model: model,
     });
-    mockViewInstance.options.emit('update', mockOptionsInstance);
+    view.options.emit('update', options);
 
     // Set up tests.
     var patchRun = 1;
-    mockModelInstance.patches.when('apply', function(patch) {
+    model.patches.when('apply', function(patch) {
       if (patchRun === 1) is.equal(
         patch.value,
         '0',
@@ -77,18 +77,18 @@ test(
     });
 
     // Update the second option and emit a mock `change` to `containerElement`.
-    updateElement(mockOptionsInstance.radioNodes[0], optionRadio({
+    updateElement(options.radioNodes[0], optionRadio({
       value: '0',
       checked: false,
     }));
-    updateElement(mockOptionsInstance.radioNodes[2], optionRadio({
+    updateElement(options.radioNodes[2], optionRadio({
       value: '2',
       checked: true,
     }));
-    mockViewInstance.containerElement.emit('change');
+    view.containerElement.emit('change');
 
     // Emit a `change` without updating anything.
-    mockViewInstance.containerElement.emit('change');
+    view.containerElement.emit('change');
 
     is.end();
   }
@@ -99,37 +99,37 @@ test(
   function(is) {
 
     // Initialize the plugin.
-    var mockViewInstance = mockView();
-    var mockModelInstance = mockModel();
-    var mockOptionsInstance = mockOptions();
+    var view = mockView();
+    var model = mockModel();
+    var options = mockOptions();
     value({
-      view: mockViewInstance,
-      model: mockModelInstance,
+      view: view,
+      model: model,
     });
 
-    mockModelInstance.updates.emit('value', {attributes: {
+    model.updates.emit('value', {attributes: {
       value: '3'
     }});
     is.notOk(
-      mockOptionsInstance.radioNodes[3].checked,
+      options.radioNodes[3].checked,
       'fails silently if no options have been registered'
     );
 
-    mockViewInstance.options.emit('update', mockOptionsInstance);
+    view.options.emit('update', options);
 
-    mockModelInstance.updates.emit('value', {attributes: {
+    model.updates.emit('value', {attributes: {
       value: '4'
     }});
     is.ok(
-      mockOptionsInstance.radioNodes[4].checked,
+      options.radioNodes[4].checked,
       'does it synchronously when everything goes smooth'
     );
 
-    mockModelInstance.updates.emit('value', {attributes: {
+    model.updates.emit('value', {attributes: {
       value: 'something invalid'
     }});
     is.ok(
-      mockOptionsInstance.radioNodes[4].checked,
+      options.radioNodes[4].checked,
       'fails silently when the option’s value can’t be found'
     );
     // TODO: Should this issue an `error` event? To which channel?
