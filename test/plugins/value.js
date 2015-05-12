@@ -31,6 +31,7 @@ function mockOptions() {
 
 function mockView() { return {
   options: ø(),
+  selection: ø(),
   containerElement: ø(),
 }; }
 
@@ -95,44 +96,28 @@ test(
 );
 
 test(
-  'Updates the selected option when the attribute `value` has changed.',
+  'Updates `view.selection` when the attribute `value` has changed.',
   function(is) {
+    is.plan(1);
 
     // Initialize the plugin.
     var view = mockView();
     var model = mockModel();
-    var options = mockOptions();
     value({
       view: view,
       model: model,
     });
 
+    function check1(update) {is.equal(
+      update.newValue,
+      'a new value',
+      'always emits an `update` synchronously'
+    );}
+    view.selection.on('update', check1);
     model.updates.emit('value', {attributes: {
-      value: '3'
+      value: 'a new value'
     }});
-    is.notOk(
-      options.radioNodes[3].checked,
-      'fails silently if no options have been registered'
-    );
-
-    view.options.emit('update', options);
-
-    model.updates.emit('value', {attributes: {
-      value: '4'
-    }});
-    is.ok(
-      options.radioNodes[4].checked,
-      'does it synchronously when everything goes smooth'
-    );
-
-    model.updates.emit('value', {attributes: {
-      value: 'something invalid'
-    }});
-    is.ok(
-      options.radioNodes[4].checked,
-      'fails silently when the option’s value can’t be found'
-    );
-    // TODO: Should this issue an `error` event? To which channel?
+    view.selection.off('update', check1);
 
     is.end();
   }
