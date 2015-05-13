@@ -10,6 +10,7 @@ var error = require('./view/error');
 var getOptions = require('./view/getOptions');
 var getSwitch = require('./view/getSwitch');
 var uncheckAll = require('./view/uncheckAll');
+var inputChannel = require('./view/inputChannel');
 
 module.exports = function view(rootElement, options) {
   if (!options) options = {};
@@ -37,17 +38,11 @@ module.exports = function view(rootElement, options) {
 
   // Initialize the input channel `captionContent`.
   var emitCaptionContent = emit();
-  channels.captionContent = Object.freeze({
-    emit: emitCaptionContent,
-    catch: snatch(emitCaptionContent),
-  });
+  channels.captionContent = inputChannel(emitCaptionContent);
 
   // Initialize the input channel `unfolded`.
   var emitUnfolded = emit();
-  channels.unfolded = Object.freeze({
-    emit: emitUnfolded,
-    catch: snatch(emitUnfolded),
-  });
+  channels.unfolded = inputChannel(emitUnfolded);
 
   // Wire up the channel `unfolded`.
   var onUnfolded = on(emitUnfolded);
@@ -73,10 +68,7 @@ module.exports = function view(rootElement, options) {
 
   // Initialize the input channel `selection`.
   var emitSelection = emit();
-  channels.selection = Object.freeze({
-    emit: emitSelection,
-    catch: snatch(emitSelection),
-  });
+  channels.selection = inputChannel(emitSelection);
 
   // Wire up the channel `selection`.
   var onSelection = on(emitSelection);
