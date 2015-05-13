@@ -7,15 +7,16 @@ var error = require('1-liners/curry')(require('../utils/error'))({
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;
-  var logger = args.logger || console;
 
   // Update the view when the model changes.
   model.state.when('unfolded', function(update) {
-    if (!update.attributes) return logger.warn(error(
+    var emitUnfolded = view.unfolded.emit;
+
+    if (!update.attributes) return emitUnfolded('error', error(
       'Can’t find `.attributes` in the message from the model.'
     ).message);
 
-    view.unfolded.emit('update', (
+    emitUnfolded('update', (
       update.attributes.hasOwnProperty('unfolded') ?
       {value: true} :
       {value: false}
@@ -25,15 +26,16 @@ module.exports = function (args) {
   // Update the model when the view changes.
   var valueSnapshot = null;
   view.switchElement.on('change', function(event) {
-    if (!event.target) return logger.warn(error(
+    var emitPatch = model.patch.emit;
+
+    if (!event.target) emitPatch('error', error(
       'Expecting a DOM event as a `change` message from `view.switchElement`.'
     ).message);
 
     var newValue = !!event.target.checked;
 
     if (newValue !== valueSnapshot) {
-      model.patch.emit('patch', {unfolded: (
-        newValue ?
+      emitPatch('patch', {unfolded: (newValue ?
         '' :
         undefined
       )});

@@ -48,8 +48,9 @@ test('The API is in good shape.', function(is) {
     ,
     [
       {property: 'emit', type: 'function'},
+      {property: 'catch', type: 'function'},
     ],
-    '• an input channel `patch`'
+    '• an input channel `patch` with error handling'
   );
 
   is.deepEqual(
@@ -197,11 +198,6 @@ test('The channel `state` works alright.', {timeout: 2000}, function(is) {
   }, 100);
 });
 
-//  h('bare-select', {attributes: {
-//    value: 'a',
-//    unfolded: '',
-//    unchanged: 'unchanged',
-//  }})
 test('The channel `patch` works alright.', {timeout: 2000}, function(is) {
   var mock = mockRoot();
   var modelInstance = model(mock);

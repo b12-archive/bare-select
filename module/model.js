@@ -2,6 +2,7 @@ require('es6-set/implement');
 
 var emit = require('stereo/emit');
 var on = require('stereo/on');
+var snatch = require('stereo/catch');
 var when = require('stereo/when');
 var attributeUpdater = require('./model/attributeUpdater');
 var patchAttributes = require('./model/patchAttributes');
@@ -14,6 +15,7 @@ module.exports = function model(rootElement) {
   var emitPatches = emit();
   var patch = Object.freeze({
     emit: emitPatches,
+    catch: snatch(emitPatches),
   });
   on(emitPatches)('patch',
     curry(patchAttributes)(rootElement)
