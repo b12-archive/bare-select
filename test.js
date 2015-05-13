@@ -1,7 +1,7 @@
-require('./test/module/model');
-require('./test/module/view');
+require('./test/module/model.test');
+require('./test/module/view.test');
 
-require('./test/plugins/unfolded');
-require('./test/plugins/value');
+require('./test/plugins/unfolded.test');
+require('./test/plugins/value.test');
 
-require('./test/utils/error');
+require('./test/utils/error.test');
