@@ -4,6 +4,7 @@ var emit = require('stereo/emit');
 var on = require('stereo/on');
 var when = require('stereo/when');
 var snatch = require('stereo/catch');
+var curry = require('1-liners/curry');
 
 var error = require('./view/error');
 var getOptions = require('./view/getOptions');
@@ -16,26 +17,36 @@ module.exports = function view(rootElement, options) {
 
   var channels = {};
 
+  // Initialize the `error` channel.
+  var emitError = emit();
+  channels.error = Object.freeze({
+    catch: snatch(emitError),
+  });
+
+  var throwError = curry(emitError)('error');
+
   // Find and validate internal DOM.
   var rootChildren = rootElement.children;
 
   var switchResult = getSwitch(rootChildren);
-  if (switchResult.error) throw switchResult.error;
-    // TODO: How should we fail? Perhaps a new channel `errors`?
-    // TODO: Test these.
+  if (switchResult.error) return throwError(switchResult.error);
+    // TODO: Test this.
   var switchElement = switchResult.value;
 
   var optionsResult = getOptions(rootChildren);
 
   // Initialize the input channel `captionContent`.
+  var emitCaptionContent = emit();
   channels.captionContent = Object.freeze({
-    emit: emit(),
+    emit: emitCaptionContent,
+    catch: snatch(emitCaptionContent),
   });
 
   // Initialize the input channel `unfolded`.
   var emitUnfolded = emit();
   channels.unfolded = Object.freeze({
     emit: emitUnfolded,
+    catch: snatch(emitUnfolded),
   });
 
   // Wire up the channel `unfolded`.
@@ -64,15 +75,16 @@ module.exports = function view(rootElement, options) {
   var emitSelection = emit();
   channels.selection = Object.freeze({
     emit: emitSelection,
+    catch: snatch(emitSelection),
   });
 
   // Wire up the channel `selection`.
   var onSelection = on(emitSelection);
   onSelection('update', function(update) {
     // Throw an error if no options have been loaded.
-    if (!optionsSnapshot) throw error(
+    if (!optionsSnapshot) return throwError(error(
       'No options have been loaded. Check your markup.'
-    );
+    ));
     var radioNodes = optionsSnapshot.radioNodes;
 
     // TODO: Can we trust the `update`? If not, throw an error if no value has
@@ -88,13 +100,13 @@ module.exports = function view(rootElement, options) {
     var valueIndex = optionsSnapshot.values.indexOf(newValue);
     if (valueIndex === -1) {
       uncheckAll(radioNodes);
-      throw error(
+      return throwError(error(
         'Value not found. Pass one of these values: [' + (
           optionsSnapshot.values
             .map(function(value) {return ('"' + value + '"');})
             .join(', ')
         ) + '].'
-      );
+      ));
     }
 
     // Otherwise check the right value.
@@ -119,12 +131,6 @@ module.exports = function view(rootElement, options) {
   // Initialize the output channel `containerElement`.
   channels.containerElement = Object.freeze({
     on: rootElement.addEventListener.bind(rootElement),
-  });
-
-  // Initialize the error channel `error`.
-  var emitError = emit();
-  channels.error = Object.freeze({
-    catch: snatch(emitError),
   });
 
   // Return the channels.
