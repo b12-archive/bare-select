@@ -99,6 +99,14 @@ test('The API is in good shape.', function(is) {
     '• an output channel `containerElement`'
   );
 
+  is.deepEqual(
+    viewInstance.error && Object.keys(viewInstance.error)
+      .map(propertyType(viewInstance.error))
+    ,
+    [{property: 'catch', type: 'function'}],
+    '• an error channel `error`'
+  );
+
   is.end();
 });
 

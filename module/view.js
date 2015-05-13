@@ -120,6 +120,12 @@ module.exports = function view(rootElement, options) {
     on: rootElement.addEventListener.bind(rootElement),
   });
 
+  // Initialize the error channel `error`.
+  var emitError = øEmit();
+  channels.error = Object.freeze({
+    catch: øCatch(emitError),
+  });
+
   // Return the channels.
   return Object.freeze(channels);
 };
