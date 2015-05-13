@@ -106,13 +106,13 @@ test(
     value({
       view: view,
       model: model,
-      logger: {warn: function(message) {is.ok(
-        message.match(/can’t update the value/i),
-        'logs a warning if no options have been registered.'
-      );}},
     });
 
     // Emit an update before registering options.
+    view.selection.once('error', function(error) {is.ok(
+      error.message.match(/can’t update the value/i),
+      'logs a warning if no options have been registered.'
+    );});
     model.state.emit('value', {attributes: {
       value: 'the value'
     }});
@@ -124,27 +124,23 @@ test(
     });
 
     // Emit a valid option.
-    function check1(update) {is.equal(
+    view.selection.once('update', function(update) {is.equal(
       update.newValue,
       'the value',
       'emits an `update` synchronously when the passed value is valid'
-    );}
-    view.selection.once('update', check1);
+    );});
     model.state.emit('value', {attributes: {
       value: 'the value'
     }});
-    view.selection.off('update', check1);
 
     // Emit an invalid option.
-    function check2(error) {is.ok(
+    view.selection.once('error', function(error) {is.ok(
       error.message.match(/value not found/i),
       'emits an `error` synchronously when the passed value is invalid'
-    );}
-    view.selection.once('error', check2);
+    );});
     model.state.emit('value', {attributes: {
       value: 'something invalid'
     }});
-    view.selection.off('error', check2);
 
     is.end();
   }

@@ -35,13 +35,12 @@ module.exports = function (args) {
     if (newValue !== checkedOptionSnapshot) {
       model.patch.emit('patch', {value: newValue});
     }
-
     checkedOptionSnapshot = newValue;
   }
 
   function updateFromOptions(options) {
     var result = getSelectedValue(options);
-    if (result.error) return logger.warn(result.error.message);
+    if (result.error) return model.patch.emit('error', result.error);
     updateCheckedOption(result.value);
   }
 
@@ -64,13 +63,13 @@ module.exports = function (args) {
     var emitSelection = view.selection.emit;
     var values = optionsSnapshot.values;
 
-    if (!Array.isArray(values)) return logger.warn(error(
+    if (!Array.isArray(values)) return emitSelection('error', error(
       'Can’t update the value. The view hasn’t registered any options.'
-    ).message);
+    ));
 
-    if (!update.attributes) return logger.warn(error(
+    if (!update.attributes) return emitSelection('error', error(
       'Can’t find `.attributes` in the `value` message from `model.state`.'
-    ).message);
+    ));
 
     var newValue = update.attributes.value || null;
     if (
