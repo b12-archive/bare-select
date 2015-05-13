@@ -4,6 +4,7 @@ var emit = require('stereo/emit');
 var on = require('stereo/on');
 var when = require('stereo/when');
 var snatch = require('stereo/catch');
+var error = require('../utils/error');
 
 var getOptions = require('./view/getOptions');
 var getSwitch = require('./view/getSwitch');
@@ -69,9 +70,9 @@ module.exports = function view(rootElement, options) {
   var onSelection = on(emitSelection);
   onSelection('update', function(update) {
     // Throw an error if no options have been loaded.
-    if (!optionsSnapshot) throw {message:
+    if (!optionsSnapshot) throw error(
       'No options have been loaded. Check your markup.'
-    };
+    );
     var radioNodes = optionsSnapshot.radioNodes;
 
     // TODO: Can we trust the `update`? If not, throw an error if no value has
@@ -87,13 +88,13 @@ module.exports = function view(rootElement, options) {
     var valueIndex = optionsSnapshot.values.indexOf(newValue);
     if (valueIndex === -1) {
       uncheckAll(radioNodes);
-      throw {message:
+      throw error(
         'Value not found. Pass one of these values: [' + (
           optionsSnapshot.values
             .map(function(value) {return ('"' + value + '"');})
             .join(', ')
         ) + '].'
-      };
+      );
     }
 
     // Otherwise check the right value.
