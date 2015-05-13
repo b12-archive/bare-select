@@ -36,8 +36,8 @@ function mockView() { return {
 }; }
 
 function mockModel() { return {
-  patches: ø(),
-  updates: ø(),
+  patch: ø(),
+  state: ø(),
 }; }
 
 test(
@@ -57,21 +57,21 @@ test(
 
     // Set up tests.
     var patchRun = 1;
-    model.patches.when('apply', function(patch) {
+    model.patch.when('patch', function(patch) {
       if (patchRun === 1) is.equal(
         patch.value,
         '0',
-        'issues an `apply` event with the initial value to `model.patch`'
+        'issues a `patch` event with the initial value to `model.patch`'
       );
 
       if (patchRun === 2) is.equal(
         patch.value,
         '2',
-        'issues an `apply` event to `model.patch` when the value changes'
+        'issues a `patch` event to `model.patch` when the value changes'
       );
 
       if (patchRun > 2) is.fail(
-        'too many `apply` events issued'
+        'too many `patch` events issued'
       );
 
       patchRun++;
@@ -113,7 +113,7 @@ test(
     });
 
     // Emit an update before registering options.
-    model.updates.emit('value', {attributes: {
+    model.state.emit('value', {attributes: {
       value: 'the value'
     }});
 
@@ -130,7 +130,7 @@ test(
       'emits an `update` synchronously when the passed value is valid'
     );}
     view.selection.once('update', check1);
-    model.updates.emit('value', {attributes: {
+    model.state.emit('value', {attributes: {
       value: 'the value'
     }});
     view.selection.off('update', check1);
@@ -141,7 +141,7 @@ test(
       'emits an `error` synchronously when the passed value is invalid'
     );}
     view.selection.once('error', check2);
-    model.updates.emit('value', {attributes: {
+    model.state.emit('value', {attributes: {
       value: 'something invalid'
     }});
     view.selection.off('error', check2);

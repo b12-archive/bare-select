@@ -43,30 +43,30 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    modelInstance.patches && Object.keys(modelInstance.patches)
-      .map(propertyType(modelInstance.patches))
+    modelInstance.patch && Object.keys(modelInstance.patch)
+      .map(propertyType(modelInstance.patch))
     ,
     [
       {property: 'emit', type: 'function'},
     ],
-    '• an input channel `patches`'
+    '• an input channel `patch`'
   );
 
   is.deepEqual(
-    modelInstance.updates && Object.keys(modelInstance.updates)
-      .map(propertyType(modelInstance.updates))
+    modelInstance.state && Object.keys(modelInstance.state)
+      .map(propertyType(modelInstance.state))
     ,
     [
       {property: 'on', type: 'function'},
       {property: 'when', type: 'function'},
     ],
-    '• a cacheable output channel `updates`'
+    '• a cacheable output channel `state`'
   );
 
   is.end();
 });
 
-test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
+test('The channel `state` works alright.', {timeout: 2000}, function(is) {
   var mock = mockRoot();
   var modelInstance = model(mock);
   var firstRun = true;
@@ -75,7 +75,7 @@ test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
   is.plan(16);
 
   var justCalled = true;
-  modelInstance.updates.when('value', function(state) {
+  modelInstance.state.when('value', function(state) {
     if (firstRun) {
       is.pass(
         'issues the event `value` for the attribute `value`'
@@ -136,7 +136,7 @@ test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
   });
   justCalled = false;
 
-  modelInstance.updates.when('unfolded', function(state) {
+  modelInstance.state.when('unfolded', function(state) {
     if (firstRun) {
       is.pass(
         'issues the event `unfolded` for the attribute `unfolded`'
@@ -163,7 +163,7 @@ test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
     }
   });
 
-  modelInstance.updates.when('disabled', function(state) {
+  modelInstance.state.when('disabled', function(state) {
     if (!firstRun) {
       is.pass(
         'issues the event `disabled` when the attribute `disabled` is added'
@@ -177,14 +177,14 @@ test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
     }
   });
 
-  modelInstance.updates.when('absent', function() {
+  modelInstance.state.when('absent', function() {
     is.fail('an absent attribute shouldn’t receive an update');
   });
 
   // Trigger the second run.
   firstRun = false;
   setTimeout(function () {
-    modelInstance.updates.on('unchanged', function() {
+    modelInstance.state.on('unchanged', function() {
       is.fail('an unchanged attribute shouldn’t receive an update');
     });
 
@@ -202,11 +202,11 @@ test('The channel `updates` works alright.', {timeout: 2000}, function(is) {
 //    unfolded: '',
 //    unchanged: 'unchanged',
 //  }})
-test('The channel `patches` works alright.', {timeout: 2000}, function(is) {
+test('The channel `patch` works alright.', {timeout: 2000}, function(is) {
   var mock = mockRoot();
   var modelInstance = model(mock);
 
-  modelInstance.patches.emit('apply', {
+  modelInstance.patch.emit('patch', {
     value: 'b'
   });
   is.equal(
@@ -215,7 +215,7 @@ test('The channel `patches` works alright.', {timeout: 2000}, function(is) {
     'updates an attribute'
   );
 
-  modelInstance.patches.emit('apply', {
+  modelInstance.patch.emit('patch', {
     unfolded: undefined
   });
   is.notOk(
@@ -223,7 +223,7 @@ test('The channel `patches` works alright.', {timeout: 2000}, function(is) {
     'removes an attribute'
   );
 
-  modelInstance.patches.emit('apply', {
+  modelInstance.patch.emit('patch', {
     added: 'all is well!'
   });
   is.equal(
@@ -238,7 +238,7 @@ test('The channel `patches` works alright.', {timeout: 2000}, function(is) {
     'doesn’t modify an arbitrary attribute'
   );
 
-  modelInstance.patches.emit('apply', {
+  modelInstance.patch.emit('patch', {
     added: 'changed',
     'another-one': 'added',
     value: undefined,

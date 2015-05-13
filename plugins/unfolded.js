@@ -10,7 +10,7 @@ module.exports = function (args) {
   var logger = args.logger || console;
 
   // Update the view when the model changes.
-  model.updates.when('unfolded', function(update) {
+  model.state.when('unfolded', function(update) {
     if (!update.attributes) return logger.warn(error(
       'Can’t find `.attributes` in the message from the model.'
     ).message);
@@ -32,7 +32,7 @@ module.exports = function (args) {
     var newValue = !!event.target.checked;
 
     if (newValue !== valueSnapshot) {
-      model.patches.emit('apply', {unfolded: (
+      model.patch.emit('patch', {unfolded: (
         newValue ?
         '' :
         undefined

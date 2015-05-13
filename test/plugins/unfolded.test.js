@@ -18,8 +18,8 @@ function mockView() { return {
 }; }
 
 function mockModel() { return {
-  patches: ø(),
-  updates: ø(),
+  patch: ø(),
+  state: ø(),
 }; }
 
 test(
@@ -44,7 +44,7 @@ test(
 
     // Set up tests.
     var run = 1;
-    model.patches.on('apply', function (patch) {
+    model.patch.on('patch', function (patch) {
       if (run === 1) {
         is.equal(
           patch.unfolded,
@@ -70,13 +70,13 @@ test(
       }
 
       else is.fail(
-        'only applies patches when the switch changes value'
+        'only applies patch when the switch changes value'
       );
 
       run++;
     });
 
-    anotherModel.patches.on('apply', function (patch) {
+    anotherModel.patch.on('patch', function (patch) {
       is.equal(
         patch.unfolded,
         undefined,
@@ -141,8 +141,8 @@ test(
     });
 
     // Fire!
-    model.updates.emit('unfolded', {attributes: {}});
-    model.updates.emit('unfolded', {attributes: {unfolded: ''}});
+    model.state.emit('unfolded', {attributes: {}});
+    model.state.emit('unfolded', {attributes: {unfolded: ''}});
 
     is.end();
   }

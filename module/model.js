@@ -10,18 +10,18 @@ var curry = require('1-liners/curry');
 // TODO: Document the function.
 module.exports = function model(rootElement) {
 
-  // Initialize the input channel `patches`.
+  // Initialize the input channel `patch`.
   var emitPatches = emit();
-  var patches = Object.freeze({
+  var patch = Object.freeze({
     emit: emitPatches,
   });
-  on(emitPatches)('apply',
+  on(emitPatches)('patch',
     curry(patchAttributes)(rootElement)
   );
 
-  // Initialize the output channel `updates`.
+  // Initialize the output channel `state`.
   var emitUpdates = emit();
-  var updates = Object.freeze({
+  var state = Object.freeze({
     on: on(emitUpdates),
     when: when(emitUpdates),
   });
@@ -31,13 +31,13 @@ module.exports = function model(rootElement) {
     attributesObject: rootElement.attributes,
   });
 
-  // Emit initial messages to `updates`.
+  // Emit initial messages to `state`.
   emitCurrentAttributes();
 
   // Export channels and `attributeChangedCallback`.
   return Object.freeze({
-    patches: patches,
-    updates: updates,
+    patch: patch,
+    state: state,
     attributeChangedCallback: emitCurrentAttributes,
   });
 };

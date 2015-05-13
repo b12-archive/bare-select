@@ -33,7 +33,7 @@ module.exports = function (args) {
   var checkedOptionSnapshot;
   function updateCheckedOption(newValue) {
     if (newValue !== checkedOptionSnapshot) {
-      model.patches.emit('apply', {value: newValue});
+      model.patch.emit('patch', {value: newValue});
     }
 
     checkedOptionSnapshot = newValue;
@@ -60,7 +60,7 @@ module.exports = function (args) {
   });
 
   // Update the selected option when the `value` attribute has been updated.
-  model.updates.when('value', function(update) {
+  model.state.when('value', function(update) {
     var emitSelection = view.selection.emit;
     var values = optionsSnapshot.values;
 
@@ -69,7 +69,7 @@ module.exports = function (args) {
     ).message);
 
     if (!update.attributes) return logger.warn(error(
-      'Can’t find `.attributes` in the `value` message from `model.updates`.'
+      'Can’t find `.attributes` in the `value` message from `model.state`.'
     ).message);
 
     var newValue = update.attributes.value || null;
