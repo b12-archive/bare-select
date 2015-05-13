@@ -1,8 +1,8 @@
 require('es6-set/implement');
 
-var øEmit = require('stereo/emit');
-var øOn = require('stereo/on');
-var øWhen = require('stereo/when');
+var emit = require('stereo/emit');
+var on = require('stereo/on');
+var when = require('stereo/when');
 var attributeUpdater = require('./model/attributeUpdater');
 var patchAttributes = require('./model/patchAttributes');
 var curry = require('1-liners/curry');
@@ -11,19 +11,19 @@ var curry = require('1-liners/curry');
 module.exports = function model(rootElement) {
 
   // Initialize the input channel `patches`.
-  var emitPatches = øEmit();
+  var emitPatches = emit();
   var patches = Object.freeze({
     emit: emitPatches,
   });
-  øOn(emitPatches)('apply',
+  on(emitPatches)('apply',
     curry(patchAttributes)(rootElement)
   );
 
   // Initialize the output channel `updates`.
-  var emitUpdates = øEmit();
+  var emitUpdates = emit();
   var updates = Object.freeze({
-    on: øOn(emitUpdates),
-    when: øWhen(emitUpdates),
+    on: on(emitUpdates),
+    when: when(emitUpdates),
   });
   // TODO: Add `off`.
   var emitCurrentAttributes = attributeUpdater({

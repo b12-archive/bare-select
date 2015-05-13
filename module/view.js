@@ -1,9 +1,9 @@
 require('es6-set/implement');
 
-var øEmit = require('stereo/emit');
-var øOn = require('stereo/on');
-var øWhen = require('stereo/when');
-var øCatch = require('stereo/catch');
+var emit = require('stereo/emit');
+var on = require('stereo/on');
+var when = require('stereo/when');
+var snatch = require('stereo/catch');
 
 var getOptions = require('./view/getOptions');
 var getSwitch = require('./view/getSwitch');
@@ -28,27 +28,27 @@ module.exports = function view(rootElement, options) {
 
   // Initialize the input channel `captionContent`.
   channels.captionContent = Object.freeze({
-    emit: øEmit(),
+    emit: emit(),
   });
 
   // Initialize the input channel `unfolded`.
-  var emitUnfolded = øEmit();
+  var emitUnfolded = emit();
   channels.unfolded = Object.freeze({
     emit: emitUnfolded,
   });
 
   // Wire up the channel `unfolded`.
-  var onUnfolded = øOn(emitUnfolded);
+  var onUnfolded = on(emitUnfolded);
   onUnfolded('update', function(message) {
     switchElement.checked = !!message.value;
   });
 
   // Initialize the output channel `options`.
-  var emitOptions = øEmit();
+  var emitOptions = emit();
   channels.options = Object.freeze({
-    on: øOn(emitOptions),
-    when: øWhen(emitOptions),
-    catch: øCatch(emitOptions),
+    on: on(emitOptions),
+    when: when(emitOptions),
+    catch: snatch(emitOptions),
   });
 
   // Emit an initial `update` or `error` to `options`.
@@ -60,13 +60,13 @@ module.exports = function view(rootElement, options) {
   }
 
   // Initialize the input channel `selection`.
-  var emitSelection = øEmit();
+  var emitSelection = emit();
   channels.selection = Object.freeze({
     emit: emitSelection,
   });
 
   // Wire up the channel `selection`.
-  var onSelection = øOn(emitSelection);
+  var onSelection = on(emitSelection);
   onSelection('update', function(update) {
     // Throw an error if no options have been loaded.
     if (!optionsSnapshot) throw {message:
@@ -121,9 +121,9 @@ module.exports = function view(rootElement, options) {
   });
 
   // Initialize the error channel `error`.
-  var emitError = øEmit();
+  var emitError = emit();
   channels.error = Object.freeze({
-    catch: øCatch(emitError),
+    catch: snatch(emitError),
   });
 
   // Return the channels.
