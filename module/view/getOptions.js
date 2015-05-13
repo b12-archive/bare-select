@@ -1,4 +1,4 @@
-var error = require('../../utils/error');
+var error = require('./error');
 
 module.exports = function(rootChildren) {
   var dropdown = rootChildren[2];

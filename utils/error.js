@@ -1,8 +1,17 @@
-module.exports = function(message) {
-  var labeled = '<bare-select>: ' + message;
+module.exports = function(settings, message) {
+  var source = settings.source || null;
+
+  var labeled = (
+    'bare-select' + (source ?
+      ' (' + source + ')' :
+      ''
+    ) + ': ' +
+    message
+  );
 
   return {
     message: labeled,
-    toString: function() {return labeled;}
+    name: 'BareSelectError',
+    toString: function() {return labeled;},
   };
 };

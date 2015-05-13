@@ -4,8 +4,8 @@ var emit = require('stereo/emit');
 var on = require('stereo/on');
 var when = require('stereo/when');
 var snatch = require('stereo/catch');
-var error = require('../utils/error');
 
+var error = require('./view/error');
 var getOptions = require('./view/getOptions');
 var getSwitch = require('./view/getSwitch');
 var uncheckAll = require('./view/uncheckAll');
