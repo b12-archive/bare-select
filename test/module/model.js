@@ -3,12 +3,11 @@ var createElement = require('../test-tools/createElement');
 var updateElement = require('../test-tools/updateElement');
 var propertyType = require('../test-tools/propertyType');
 var test = require('../test-tools/test')('The model');
-var equal = require('1-liners/equal');
-var implode = require('1-liners/implode');
+var equal = require('1-liners/implode')(
+  require('1-liners/equal')
+);
 
 var model = require('../../module/model');
-
-var equalλ = implode(equal);
 
 var virtualMock =
   h('bare-select', {attributes: {
@@ -250,7 +249,7 @@ test('The channel `patches` works alright.', {timeout: 2000}, function(is) {
       [  mock.getAttribute('another-one'),  'added'      ],
       [  mock.hasAttribute('value'),         false       ],
       [  mock.getAttribute('unchanged'),    'unchanged'  ],
-    ].every(equalλ),
+    ].every(equal),
     'does all these at once'
   );
 

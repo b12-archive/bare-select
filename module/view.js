@@ -1,13 +1,16 @@
 require('es6-set/implement');
 
-var øEmit = require('stereo/emit');
-var øOn = require('stereo/on');
-var øWhen = require('stereo/when');
-var øCatch = require('stereo/catch');
+var emit = require('stereo/emit');
+var on = require('stereo/on');
+var when = require('stereo/when');
+var snatch = require('stereo/catch');
+var curry = require('1-liners/curry');
 
+var error = require('./view/error');
 var getOptions = require('./view/getOptions');
 var getSwitch = require('./view/getSwitch');
 var uncheckAll = require('./view/uncheckAll');
+var inputChannel = require('./view/inputChannel');
 
 module.exports = function view(rootElement, options) {
   if (!options) options = {};
@@ -15,40 +18,43 @@ module.exports = function view(rootElement, options) {
 
   var channels = {};
 
+  // Initialize the `error` channel.
+  var emitError = emit();
+  channels.error = Object.freeze({
+    catch: snatch(emitError),
+  });
+
+  var throwError = curry(emitError)('error');
+
   // Find and validate internal DOM.
   var rootChildren = rootElement.children;
 
   var switchResult = getSwitch(rootChildren);
-  if (switchResult.error) throw switchResult.error;
-    // TODO: How should we fail? Perhaps a new channel `errors`?
-    // TODO: Test these.
+  if (switchResult.error) return throwError(switchResult.error);
   var switchElement = switchResult.value;
 
   var optionsResult = getOptions(rootChildren);
 
   // Initialize the input channel `captionContent`.
-  channels.captionContent = Object.freeze({
-    emit: øEmit(),
-  });
+  var emitCaptionContent = emit();
+  channels.captionContent = inputChannel(emitCaptionContent);
 
   // Initialize the input channel `unfolded`.
-  var emitUnfolded = øEmit();
-  channels.unfolded = Object.freeze({
-    emit: emitUnfolded,
-  });
+  var emitUnfolded = emit();
+  channels.unfolded = inputChannel(emitUnfolded);
 
   // Wire up the channel `unfolded`.
-  var onUnfolded = øOn(emitUnfolded);
+  var onUnfolded = on(emitUnfolded);
   onUnfolded('update', function(message) {
     switchElement.checked = !!message.value;
   });
 
   // Initialize the output channel `options`.
-  var emitOptions = øEmit();
+  var emitOptions = emit();
   channels.options = Object.freeze({
-    on: øOn(emitOptions),
-    when: øWhen(emitOptions),
-    catch: øCatch(emitOptions),
+    on: on(emitOptions),
+    when: when(emitOptions),
+    catch: snatch(emitOptions),
   });
 
   // Emit an initial `update` or `error` to `options`.
@@ -60,22 +66,19 @@ module.exports = function view(rootElement, options) {
   }
 
   // Initialize the input channel `selection`.
-  var emitSelection = øEmit();
+  var emitSelection = emit();
   channels.selection = Object.freeze({
     emit: emitSelection,
   });
 
   // Wire up the channel `selection`.
-  var onSelection = øOn(emitSelection);
+  var onSelection = on(emitSelection);
   onSelection('update', function(update) {
     // Throw an error if no options have been loaded.
-    if (!optionsSnapshot) throw {message:
+    if (!optionsSnapshot) return throwError(error(
       'No options have been loaded. Check your markup.'
-    };
+    ));
     var radioNodes = optionsSnapshot.radioNodes;
-
-    // TODO: Can we trust the `update`? If not, throw an error if no value has
-    //       been passed.
 
     // Uncheck all options if `null` is passed.
     var newValue = update.newValue;
@@ -87,13 +90,7 @@ module.exports = function view(rootElement, options) {
     var valueIndex = optionsSnapshot.values.indexOf(newValue);
     if (valueIndex === -1) {
       uncheckAll(radioNodes);
-      throw {message:
-        'Value not found. Pass one of these values: [' + (
-          optionsSnapshot.values
-            .map(function(value) {return ('"' + value + '"');})
-            .join(', ')
-        ) + '].'
-      };
+      return throwError(error('Value not found.'));
     }
 
     // Otherwise check the right value.

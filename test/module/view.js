@@ -53,22 +53,27 @@ test('The API is in good shape.', function(is) {
     [{property: 'emit', type: 'function'}],
     '• an input channel `selection`'
   );
-  // TODO: Is the `selection` channel needed?
 
   is.deepEqual(
     viewInstance.captionContent && Object.keys(viewInstance.captionContent)
       .map(propertyType(viewInstance.captionContent))
     ,
-    [{property: 'emit', type: 'function'}],
-    '• an input channel `captionContent`'
+    [
+      {property: 'emit', type: 'function'},
+      {property: 'catch', type: 'function'},
+    ],
+    '• an input channel `captionContent` with error handling'
   );
 
   is.deepEqual(
     viewInstance.unfolded && Object.keys(viewInstance.unfolded)
       .map(propertyType(viewInstance.unfolded))
     ,
-    [{property: 'emit', type: 'function'}],
-    '• an input channel `unfolded`'
+    [
+      {property: 'emit', type: 'function'},
+      {property: 'catch', type: 'function'},
+    ],
+    '• an input channel `unfolded` with error handling'
   );
 
   is.deepEqual(
@@ -97,6 +102,14 @@ test('The API is in good shape.', function(is) {
     ,
     [{property: 'on', type: 'function'}],
     '• an output channel `containerElement`'
+  );
+
+  is.deepEqual(
+    viewInstance.error && Object.keys(viewInstance.error)
+      .map(propertyType(viewInstance.error))
+    ,
+    [{property: 'catch', type: 'function'}],
+    '• an error channel `error`'
   );
 
   is.end();

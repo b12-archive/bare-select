@@ -1,3 +1,5 @@
+var error = require('./error');
+
 module.exports = function(rootChildren) {
   if (
     rootChildren[1] &&
@@ -6,8 +8,8 @@ module.exports = function(rootChildren) {
   ) return {value:
     rootChildren[1]
   };
-  else return {error: {message: 'bare-select: ' +
+  else return {error: error(
     'The second element in a `<bare-select>` should be the switch – an ' +
     '`<input type="checkbox">` element.'
-  }};
+  )};
 };

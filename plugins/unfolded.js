@@ -1,14 +1,22 @@
 require('es6-set/implement');
 
+var error = require('1-liners/curry')(require('../utils/error'))({
+  source: 'unfolded'
+});
+
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;
-  // TODO: Support `args.logger`.
+  var logger = args.logger || console;
 
   // Update the view when the model changes.
-  model.updates.when('unfolded', function(state) {
+  model.updates.when('unfolded', function(update) {
+    if (!update.attributes) return logger.warn(error(
+      'Can’t find `.attributes` in the message from the model.'
+    ).message);
+
     view.unfolded.emit('update', (
-      state.attributes.hasOwnProperty('unfolded') ?
+      update.attributes.hasOwnProperty('unfolded') ?
       {value: true} :
       {value: false}
     ));
@@ -17,6 +25,10 @@ module.exports = function (args) {
   // Update the model when the view changes.
   var valueSnapshot = null;
   view.switchElement.on('change', function(event) {
+    if (!event.target) return logger.warn(error(
+      'Expecting a DOM event as a `change` message from `view.switchElement`.'
+    ).message);
+
     var newValue = !!event.target.checked;
 
     if (newValue !== valueSnapshot) {

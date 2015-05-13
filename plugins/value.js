@@ -1,19 +1,34 @@
 require('es6-set/implement');
 
 var findIndex = require('find-index');
+var error = require('1-liners/curry')(require('../utils/error'))({
+  source: 'value'
+});
 
 function getSelectedValue(options) {
-  return options.values[
+  var values = options.values;
+  var radioNodes = options.radioNodes;
+
+  if (
+    !Array.isArray(values) ||
+    !Array.isArray(radioNodes)
+  ) return {error: error(
+    'Can’t get the selected value. The view hasn’t registered valid ' +
+    'options. I’m expecting `{String[]} options.values` and ' +
+    '`{HTMLInputElement[]} options.radioNodes`.'
+  )};
+
+  return {value: options.values[
     findIndex(options.radioNodes, function(node) {
       return node.checked;
     })
-  ];
+  ]};
 }
 
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;
-  // TODO: Support `args.logger`.
+  var logger = args.logger || console;
 
   var checkedOptionSnapshot;
   function updateCheckedOption(newValue) {
@@ -25,7 +40,9 @@ module.exports = function (args) {
   }
 
   function updateFromOptions(options) {
-    return updateCheckedOption(getSelectedValue(options));
+    var result = getSelectedValue(options);
+    if (result.error) return logger.warn(result.error.message);
+    updateCheckedOption(result.value);
   }
 
   // Rescan options and emit a patch if necessary:
@@ -43,10 +60,31 @@ module.exports = function (args) {
   });
 
   // Update the selected option when the `value` attribute has been updated.
-  model.updates.when('value', function(state) {
-    // TODO: Can we assume that event messages are safe?
-    view.selection.emit('update', {
-      newValue: (state.attributes.value || null)
-    });
+  model.updates.when('value', function(update) {
+    var emitSelection = view.selection.emit;
+    var values = optionsSnapshot.values;
+
+    if (!Array.isArray(values)) return logger.warn(error(
+      'Can’t update the value. The view hasn’t registered any options.'
+    ).message);
+
+    if (!update.attributes) return logger.warn(error(
+      'Can’t find `.attributes` in the `value` message from `model.updates`.'
+    ).message);
+
+    var newValue = update.attributes.value || null;
+    if (
+      values.indexOf(newValue) === -1 &&
+        // TODO: Write a lightweight shim of `array.includes` for this.
+      newValue !== null
+    ) return emitSelection('error', error(
+      'Value not found. Pass one of these values instead: [' +
+      values
+        .map(function(value) {return ('"' + value + '"');})
+        .join(', ') +
+      '].'
+    ));
+
+    emitSelection('update', {newValue: newValue});
   });
 };
