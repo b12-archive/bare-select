@@ -98,7 +98,7 @@ test(
 test(
   'Updates `view.selection` when the attribute `value` has changed.',
   function(is) {
-    is.plan(1);
+    is.plan(3);
 
     // Initialize the plugin.
     var view = mockView();
@@ -106,18 +106,45 @@ test(
     value({
       view: view,
       model: model,
+      logger: {warn: function(message) {is.ok(
+        message.match(/can’t update the value/i),
+        'logs a warning if no options have been registered.'
+      );}},
     });
 
+    // Emit an update before registering options.
+    model.updates.emit('value', {attributes: {
+      value: 'the value'
+    }});
+
+    // Register options.
+    view.options.emit('update', {
+      values: ['the value'],
+      radioNodes: [{}]
+    });
+
+    // Emit a valid option.
     function check1(update) {is.equal(
       update.newValue,
-      'a new value',
-      'always emits an `update` synchronously'
+      'the value',
+      'emits an `update` synchronously when the passed value is valid'
     );}
-    view.selection.on('update', check1);
+    view.selection.once('update', check1);
     model.updates.emit('value', {attributes: {
-      value: 'a new value'
+      value: 'the value'
     }});
     view.selection.off('update', check1);
+
+    // Emit an invalid option.
+    function check2(error) {is.ok(
+      error.message.match(/value not found/i),
+      'emits an `error` synchronously when the passed value is invalid'
+    );}
+    view.selection.once('error', check2);
+    model.updates.emit('value', {attributes: {
+      value: 'something invalid'
+    }});
+    view.selection.off('error', check2);
 
     is.end();
   }

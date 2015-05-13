@@ -92,13 +92,7 @@ module.exports = function view(rootElement, options) {
     var valueIndex = optionsSnapshot.values.indexOf(newValue);
     if (valueIndex === -1) {
       uncheckAll(radioNodes);
-      return throwError(error(
-        'Value not found. Pass one of these values: [' + (
-          optionsSnapshot.values
-            .map(function(value) {return ('"' + value + '"');})
-            .join(', ')
-        ) + '].'
-      ));
+      return throwError(error('Value not found.'));
     }
 
     // Otherwise check the right value.
