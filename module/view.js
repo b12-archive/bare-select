@@ -31,7 +31,6 @@ module.exports = function view(rootElement, options) {
 
   var switchResult = getSwitch(rootChildren);
   if (switchResult.error) return throwError(switchResult.error);
-    // TODO: Test this.
   var switchElement = switchResult.value;
 
   var optionsResult = getOptions(rootChildren);
@@ -68,7 +67,9 @@ module.exports = function view(rootElement, options) {
 
   // Initialize the input channel `selection`.
   var emitSelection = emit();
-  channels.selection = inputChannel(emitSelection);
+  channels.selection = Object.freeze({
+    emit: emitSelection,
+  });
 
   // Wire up the channel `selection`.
   var onSelection = on(emitSelection);
@@ -78,9 +79,6 @@ module.exports = function view(rootElement, options) {
       'No options have been loaded. Check your markup.'
     ));
     var radioNodes = optionsSnapshot.radioNodes;
-
-    // TODO: Can we trust the `update`? If not, throw an error if no value has
-    //       been passed.
 
     // Uncheck all options if `null` is passed.
     var newValue = update.newValue;

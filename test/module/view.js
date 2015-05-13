@@ -50,13 +50,9 @@ test('The API is in good shape.', function(is) {
     viewInstance.selection && Object.keys(viewInstance.selection)
       .map(propertyType(viewInstance.selection))
     ,
-    [
-      {property: 'emit', type: 'function'},
-      {property: 'catch', type: 'function'},
-    ],
-    '• an input channel `selection` with error handling'
+    [{property: 'emit', type: 'function'}],
+    '• an input channel `selection`'
   );
-  // TODO: Is the `selection` channel needed?
 
   is.deepEqual(
     viewInstance.captionContent && Object.keys(viewInstance.captionContent)
