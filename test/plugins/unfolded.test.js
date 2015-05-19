@@ -22,18 +22,24 @@ function mockModel() { return {
   state: ø(),
 }; }
 
+function mockInstance() {
+  var view = mockView();
+  var model = mockModel();
+  unfolded({
+    view: view,
+    model: model,
+  });
+
+  return {view: view, model: model};
+}
+
 test(
   'Patches the attribute `unfolded` when the switch is flicked.',
   function(is) {
     is.plan(4);
 
     // Initialize the plugin.
-    var view = mockView();
-    var model = mockModel();
-    unfolded({
-      view: view,
-      model: model,
-    });
+    var mock = mockInstance();
 
     var anotherView = mockView();
     var anotherModel = mockModel();
@@ -44,7 +50,7 @@ test(
 
     // Set up tests.
     var run = 1;
-    model.patch.on('patch', function (patch) {
+    mock.model.patch.on('patch', function (patch) {
       if (run === 1) {
         is.equal(
           patch.unfolded,
@@ -88,16 +94,16 @@ test(
     anotherView.switchElement.emit('change', {
       target: createSwitch({on: false})
     });
-    view.switchElement.emit('change', {
+    mock.view.switchElement.emit('change', {
       target: createSwitch({on: true})
     });
-    view.switchElement.emit('change', {
+    mock.view.switchElement.emit('change', {
       target: createSwitch({on: false})
     });
-    view.switchElement.emit('change', {
+    mock.view.switchElement.emit('change', {
       target: createSwitch({on: false})
     });
-    view.switchElement.emit('change', {
+    mock.view.switchElement.emit('change', {
       target: createSwitch({on: true})
     });
 
@@ -111,16 +117,11 @@ test(
     is.plan(2);
 
     // Initialize the plugin.
-    var view = mockView();
-    var model = mockModel();
-    unfolded({
-      view: view,
-      model: model,
-    });
+    var mock = mockInstance();
 
     // Set up tests.
     var run = 1;
-    view.unfolded.on('update', function (update) {
+    mock.view.unfolded.on('update', function (update) {
       if (run === 1) {
         is.equal(
           update.value,
@@ -141,8 +142,8 @@ test(
     });
 
     // Fire!
-    model.state.emit('unfolded', {attributes: {}});
-    model.state.emit('unfolded', {attributes: {unfolded: ''}});
+    mock.model.state.emit('unfolded', {attributes: {}});
+    mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
 
     is.end();
   }
@@ -154,12 +155,7 @@ test(
     is.plan(2);
 
     // Initialize the plugin.
-    var view = mockView();
-    var model = mockModel();
-    unfolded({
-      view: view,
-      model: model,
-    });
+    var mock = mockInstance();
 
     function test1 (error) {
       is.ok(
@@ -167,9 +163,9 @@ test(
         'emits an error when it receives a non-object as message'
       );
     }
-    view.unfolded.on('error', test1);
-    model.state.emit('unfolded', null);
-    view.unfolded.off('error', test1);
+    mock.view.unfolded.on('error', test1);
+    mock.model.state.emit('unfolded', null);
+    mock.view.unfolded.off('error', test1);
 
     function test2 (error) {
       is.ok(
@@ -177,9 +173,9 @@ test(
         'emits an error when it receives no attributes in the message'
       );
     }
-    view.unfolded.on('error', test2);
-    model.state.emit('unfolded', {});
-    view.unfolded.off('error', test2);
+    mock.view.unfolded.on('error', test2);
+    mock.model.state.emit('unfolded', {});
+    mock.view.unfolded.off('error', test2);
 
     is.end();
   }

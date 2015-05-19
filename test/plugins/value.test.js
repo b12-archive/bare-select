@@ -29,16 +29,25 @@ function mockOptions() {
   };
 }
 
-function mockView() { return {
-  options: ø(),
-  selection: ø(),
-  containerElement: ø(),
-}; }
+function mockInstance() {
+  var view = {
+    options: ø(),
+    selection: ø(),
+    containerElement: ø(),
+  };
 
-function mockModel() { return {
-  patch: ø(),
-  state: ø(),
-}; }
+  var model = {
+    patch: ø(),
+    state: ø(),
+  };
+
+  value({
+    view: view,
+    model: model,
+  });
+
+  return {view: view, model: model};
+}
 
 test(
   'Patches the attribute `value` when an option is selected.',
@@ -46,18 +55,13 @@ test(
     is.plan(2);
 
     // Initialize the plugin.
-    var view = mockView();
-    var model = mockModel();
+    var mock = mockInstance();
     var options = mockOptions();
-    value({
-      view: view,
-      model: model,
-    });
-    view.options.emit('update', options);
+    mock.view.options.emit('update', options);
 
     // Set up tests.
     var patchRun = 1;
-    model.patch.when('patch', function(patch) {
+    mock.model.patch.when('patch', function(patch) {
       if (patchRun === 1) is.equal(
         patch.value,
         '0',
@@ -86,10 +90,10 @@ test(
       value: '2',
       checked: true,
     }));
-    view.containerElement.emit('change');
+    mock.view.containerElement.emit('change');
 
     // Emit a `change` without updating anything.
-    view.containerElement.emit('change');
+    mock.view.containerElement.emit('change');
 
     is.end();
   }
@@ -101,44 +105,39 @@ test(
     is.plan(3);
 
     // Initialize the plugin.
-    var view = mockView();
-    var model = mockModel();
-    value({
-      view: view,
-      model: model,
-    });
+    var mock = mockInstance();
 
     // Emit an update before registering options.
-    view.selection.once('error', function(error) {is.ok(
+    mock.view.selection.once('error', function(error) {is.ok(
       error.message.match(/can’t update the value/i),
       'logs a warning if no options have been registered.'
     );});
-    model.state.emit('value', {attributes: {
+    mock.model.state.emit('value', {attributes: {
       value: 'the value'
     }});
 
     // Register options.
-    view.options.emit('update', {
+    mock.view.options.emit('update', {
       values: ['the value'],
       radioNodes: [{}]
     });
 
     // Emit a valid option.
-    view.selection.once('update', function(update) {is.equal(
+    mock.view.selection.once('update', function(update) {is.equal(
       update.newValue,
       'the value',
       'emits an `update` synchronously when the passed value is valid'
     );});
-    model.state.emit('value', {attributes: {
+    mock.model.state.emit('value', {attributes: {
       value: 'the value'
     }});
 
     // Emit an invalid option.
-    view.selection.once('error', function(error) {is.ok(
+    mock.view.selection.once('error', function(error) {is.ok(
       error.message.match(/value not found/i),
       'emits an `error` synchronously when the passed value is invalid'
     );});
-    model.state.emit('value', {attributes: {
+    mock.model.state.emit('value', {attributes: {
       value: 'something invalid'
     }});
 
