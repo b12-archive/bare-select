@@ -152,15 +152,15 @@ test(
 test(
   'Fails gracefully.',
   function(is) {
-    is.plan(2);
+    is.plan(4);
 
     // Initialize the plugin.
     var mock = mockInstance();
 
-    var testRun = 1;
+    var test1Run = 1;
     function test1(error) {
       is.ok(
-        testRun++ <= 2 &&
+        test1Run++ <= 2 &&
         error.message.match(/invalid `unfolded` message/i),
         'emits an error when it receives a non-object as message'
       );
@@ -169,6 +169,19 @@ test(
     mock.model.state.emit('unfolded', null);
     mock.model.state.emit('unfolded', {});
     mock.view.unfolded.off('error', test1);
+
+    var test2Run = 1;
+    function test2(error) {
+      is.ok(
+        test2Run++ <= 2 &&
+        error.message.match(/expecting a dom event/i),
+        'emits an error when it receives a non-event as message'
+      );
+    }
+    mock.model.patch.on('error', test2);
+    mock.view.switchElement.emit('change', null);
+    mock.view.switchElement.emit('change', {});
+    mock.model.patch.off('error', test2);
 
     is.end();
   }
