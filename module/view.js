@@ -74,10 +74,8 @@ module.exports = function view(rootElement, options) {
   // Wire up the channel `selection`.
   var onSelection = on(emitSelection);
   onSelection('update', function(update) {
-    // Throw an error if no options have been loaded.
-    if (!optionsSnapshot) return throwError(error(
-      'No options have been loaded. Check your markup.'
-    ));
+    // At this point we’re sure that `optionsSnapshot` is valid. Get
+    // `radioNodes` out of there.
     var radioNodes = optionsSnapshot.radioNodes;
 
     // Uncheck all options if `null` is passed.
