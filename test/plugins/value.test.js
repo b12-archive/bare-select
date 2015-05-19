@@ -145,4 +145,47 @@ test(
   }
 );
 
+test(
+  'Fails gracefully.',
+  function(is) {
+    is.plan(4);
+
+    var mock1 = mockInstance();
+
+    var testRun = 1;
+    function test1(error) {
+      is.ok(
+        testRun++ <= 2 &&
+        error.message.match(/can’t get the selected value/i),
+        'emits an error if the passed `view.options` are invalid'
+      );
+    }
+
+    mock1.model.patch.on('error', test1);
+    mock1.view.options.emit('update', null);
+    mock1.view.options.emit('update', {});
+    mock1.model.patch.off('error', test1);
+
+    var mock2 = mockInstance();
+    var options = mockOptions();
+    mock2.view.options.emit('update', options);
+
+    testRun = 1;
+    function test2(error) {
+      is.ok(
+        testRun++ <= 2 &&
+        error.message.match(/invalid `value` message/i),
+        'emits an error when it receives an invalid message'
+      );
+    }
+
+    mock2.view.selection.on('error', test2);
+    mock2.model.state.emit('value', null);
+    mock2.model.state.emit('value', {});
+    mock2.view.selection.off('error', test2);
+
+    is.end();
+  }
+);
+
 // TODO: Test plugin unregistering
