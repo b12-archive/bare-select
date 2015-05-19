@@ -9,48 +9,68 @@ var value = require('../../plugins/value');
 test(
   'Patches the attribute `value` when an option is selected.',
   function(is) {
-    is.plan(2);
+    is.plan(4);
 
     // Initialize the plugin.
     var mock = mockPlugin(value);
     var options = mockOptions();
+
+    mock.model.patch.on('patch', function(patch) {is.deepEqual(patch,
+      {value: '0'},
+      'issues a `patch` event with the initial value to `model.patch`'
+    );});
     mock.view.options.emit('update', options);
-
-    // Set up tests.
-    var patchRun = 1;
-    mock.model.patch.when('patch', function(patch) {
-      if (patchRun === 1) is.equal(
-        patch.value,
-        '0',
-        'issues a `patch` event with the initial value to `model.patch`'
-      );
-
-      if (patchRun === 2) is.equal(
-        patch.value,
-        '2',
-        'issues a `patch` event to `model.patch` when the value changes'
-      );
-
-      if (patchRun > 2) is.fail(
-        'too many `patch` events issued'
-      );
-
-      patchRun++;
-    });
+    mock.model.patch.off('patch');
 
     // Update the second option and emit a mock `change` to `containerElement`.
     updateElement(options.radioNodes[0], mockOptionRadio({
       value: '0',
       checked: false,
     }));
+
     updateElement(options.radioNodes[2], mockOptionRadio({
       value: '2',
       checked: true,
     }));
+
+    mock.model.patch.on('patch', function(patch) {is.deepEqual(patch,
+      {value: '2'},
+      'issues a `patch` event to `model.patch` when the value changes'
+    );});
     mock.view.containerElement.emit('change');
+    mock.model.patch.off('patch');
 
     // Emit a `change` without updating anything.
+    mock.model.patch.on('patch', function() {is.fail(
+      'doesn’t emit a `patch` event when nothing changes'
+    );});
     mock.view.containerElement.emit('change');
+    mock.model.patch.off('patch');
+
+    // Deselect the option
+    updateElement(options.radioNodes[2], mockOptionRadio({
+      value: '2',
+      checked: false,
+    }));
+
+    mock.model.patch.on('patch', function(patch) {is.deepEqual(patch,
+      {value: ''},
+      'removes the `value` attribute when all options are deselected'
+    );});
+    mock.view.containerElement.emit('change');
+    mock.model.patch.off('patch');
+
+    // Initialize a plugin with no selected options.
+    var anotherMock = mockPlugin(value);
+    anotherMock.model.patch.on('patch', function(patch) {is.deepEqual(patch,
+      {value: ''},
+      'removes the `value` attribute when a dropdown is initialized ' +
+      'without any selected options'
+    );});
+    anotherMock.view.options.emit('update', mockOptions({
+      selectedIndex: null,
+    }));
+    anotherMock.model.patch.off('patch');
 
     is.end();
   }
