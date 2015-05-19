@@ -15,11 +15,11 @@ module.exports = function (args) {
     if (!state) return emitUnfolded('error', error(
       'Invalid `unfolded` message from `model.state`. Make sure you pass an ' +
       'object with `{Object} unfolded.attributes`.'
-    ).message);
+    ));
 
     if (!state.attributes) return emitUnfolded('error', error(
       'Can’t find `.attributes` in the message `unfolded` from `model.state`.'
-    ).message);
+    ));
 
     emitUnfolded('update', (
       state.attributes.hasOwnProperty('unfolded') ?
@@ -35,7 +35,7 @@ module.exports = function (args) {
 
     if (!event.target) emitPatch('error', error(
       'Expecting a DOM event as a `change` message from `view.switchElement`.'
-    ).message);
+    ));
 
     var newValue = !!event.target.checked;
 
