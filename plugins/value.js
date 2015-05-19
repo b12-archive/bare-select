@@ -6,12 +6,13 @@ var error = require('1-liners/curry')(require('../utils/error'))({
 });
 
 function getSelectedValue(options) {
-  var values = options.values;
-  var radioNodes = options.radioNodes;
+  var values;
+  var radioNodes;
 
   if (
-    !Array.isArray(values) ||
-    !Array.isArray(radioNodes)
+    !options ||
+    !Array.isArray(values = options.values) ||
+    !Array.isArray(radioNodes = options.radioNodes)
   ) return {error: error(
     'Can’t get the selected value. The view hasn’t registered valid ' +
     'options. I’m expecting `{String[]} options.values` and ' +
@@ -67,8 +68,9 @@ module.exports = function (args) {
       'Can’t update the value. The view hasn’t registered any options.'
     ));
 
-    if (!update.attributes) return emitSelection('error', error(
-      'Can’t find `.attributes` in the `value` message from `model.state`.'
+    if (!update || !update.attributes) return emitSelection('error', error(
+      'Invalid `value` message from `model.state`. Make sure you pass an ' +
+      'object with `{Object} value.attributes`.'
     ));
 
     var newValue = update.attributes.value || null;
