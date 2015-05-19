@@ -12,13 +12,9 @@ module.exports = function (args) {
   model.state.when('unfolded', function(state) {
     var emitUnfolded = view.unfolded.emit;
 
-    if (!state) return emitUnfolded('error', error(
+    if (!state || !state.attributes) return emitUnfolded('error', error(
       'Invalid `unfolded` message from `model.state`. Make sure you pass an ' +
       'object with `{Object} unfolded.attributes`.'
-    ));
-
-    if (!state.attributes) return emitUnfolded('error', error(
-      'Can’t find `.attributes` in the message `unfolded` from `model.state`.'
     ));
 
     emitUnfolded('update', (
