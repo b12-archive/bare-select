@@ -148,4 +148,41 @@ test(
   }
 );
 
+test(
+  'Fails gracefully.',
+  function(is) {
+    is.plan(2);
+
+    // Initialize the plugin.
+    var view = mockView();
+    var model = mockModel();
+    unfolded({
+      view: view,
+      model: model,
+    });
+
+    function test1 (error) {
+      is.ok(
+        error.match(/invalid `unfolded` message/i),
+        'emits an error when it receives a non-object as message'
+      );
+    }
+    view.unfolded.on('error', test1);
+    model.state.emit('unfolded', null);
+    view.unfolded.off('error', test1);
+
+    function test2 (error) {
+      is.ok(
+        error.match(/can’t find `.attributes`/i),
+        'emits an error when it receives no attributes in the message'
+      );
+    }
+    view.unfolded.on('error', test2);
+    model.state.emit('unfolded', {});
+    view.unfolded.off('error', test2);
+
+    is.end();
+  }
+);
+
 // TODO: Test plugin unregistering
