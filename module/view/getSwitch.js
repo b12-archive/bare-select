@@ -9,7 +9,8 @@ module.exports = function(rootChildren) {
     rootChildren[1]
   };
   else return {error: error(
-    'The second element in a `<bare-select>` should be the switch – an ' +
-    '`<input type="checkbox">` element.'
+    'Visibility switch element not found. The second element in a ' +
+    '`<bare-select>` should be the switch – an `<input type="checkbox">` ' +
+    'element.'
   )};
 };

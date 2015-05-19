@@ -171,7 +171,19 @@ test('The channel `options` works alright.', function(is) {
 });
 
 test('The channel `options` fails gracefully.', function(is) {
-  is.plan(3);
+  is.plan(4);
+
+  try {view(createElement(
+    h('bare-select', [
+      h('label'),
+      h(),
+    ])
+  ));} catch (error) {
+    is.ok(
+      error.message.match(/switch element not found/i),
+      'when the switch isn’t there'
+    );
+  }
 
   try {view(createElement(
     h('bare-select', [
