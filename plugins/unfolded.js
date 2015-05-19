@@ -29,7 +29,7 @@ module.exports = function (args) {
   view.switchElement.on('change', function(event) {
     var emitPatch = model.patch.emit;
 
-    if (!event.target) emitPatch('error', error(
+    if (!event || !event.target) return emitPatch('error', error(
       'Expecting a DOM event as a `change` message from `view.switchElement`.'
     ));
 
