@@ -1,37 +1,10 @@
 var test = require('../test-tools/test')('“unfolded” plugin');
-var ø = require('stereo');
-var createElement = require('../test-tools/createElement');
-var h = require('virtual-dom/h');
+var mockView = require('../test-tools/mockView');
+var mockModel = require('../test-tools/mockModel');
+var mockPlugin = require('../test-tools/mockPlugin');
+var mockSwitch = require('../test-tools/mockSwitch');
 
 var unfolded = require('../../plugins/unfolded');
-
-function createSwitch(args) { return createElement(
-  h('input', {
-    type: 'checkbox',
-    checked: !!args.on,
-  })
-);}
-
-function mockView() { return {
-  unfolded: ø(),
-  switchElement: ø(),
-}; }
-
-function mockModel() { return {
-  patch: ø(),
-  state: ø(),
-}; }
-
-function mockInstance() {
-  var view = mockView();
-  var model = mockModel();
-  unfolded({
-    view: view,
-    model: model,
-  });
-
-  return {view: view, model: model};
-}
 
 test(
   'Patches the attribute `unfolded` when the switch is flicked.',
@@ -39,7 +12,7 @@ test(
     is.plan(4);
 
     // Initialize the plugin.
-    var mock = mockInstance();
+    var mock = mockPlugin(unfolded);
 
     var anotherView = mockView();
     var anotherModel = mockModel();
@@ -92,19 +65,19 @@ test(
 
     // Set fire!
     anotherView.switchElement.emit('change', {
-      target: createSwitch({on: false})
+      target: mockSwitch({on: false})
     });
     mock.view.switchElement.emit('change', {
-      target: createSwitch({on: true})
+      target: mockSwitch({on: true})
     });
     mock.view.switchElement.emit('change', {
-      target: createSwitch({on: false})
+      target: mockSwitch({on: false})
     });
     mock.view.switchElement.emit('change', {
-      target: createSwitch({on: false})
+      target: mockSwitch({on: false})
     });
     mock.view.switchElement.emit('change', {
-      target: createSwitch({on: true})
+      target: mockSwitch({on: true})
     });
 
     is.end();
@@ -117,7 +90,7 @@ test(
     is.plan(2);
 
     // Initialize the plugin.
-    var mock = mockInstance();
+    var mock = mockPlugin(unfolded);
 
     // Set up tests.
     var run = 1;
@@ -155,7 +128,7 @@ test(
     is.plan(4);
 
     // Initialize the plugin.
-    var mock = mockInstance();
+    var mock = mockPlugin(unfolded);
 
     var test1Run = 1;
     function test1(error) {

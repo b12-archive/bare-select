@@ -1,53 +1,10 @@
 var test = require('../test-tools/test')('“value” plugin');
-var ø = require('stereo');
-var createElement = require('../test-tools/createElement');
 var updateElement = require('../test-tools/updateElement');
-var h = require('virtual-dom/h');
-var repeat = require('repeat-element');
+var mockPlugin = require('../test-tools/mockPlugin');
+var mockOptionRadio = require('../test-tools/mockOptionRadio');
+var mockOptions = require('../test-tools/mockOptions');
 
 var value = require('../../plugins/value');
-
-function optionRadio(args) {
-  return (
-    h('input', {
-      type: 'radio',
-      value: args.value,
-      checked: args.checked,
-    })
-  );
-}
-function mockOptions() {
-  var stamp = repeat(null, 5);
-  return {
-    values: stamp.map(function (_, index) {return String(index);}),
-    radioNodes: stamp.map(function (_, index) {
-      return createElement(optionRadio({
-        value: String(index),
-        checked: (index === 0),
-      }));
-    }),
-  };
-}
-
-function mockInstance() {
-  var view = {
-    options: ø(),
-    selection: ø(),
-    containerElement: ø(),
-  };
-
-  var model = {
-    patch: ø(),
-    state: ø(),
-  };
-
-  value({
-    view: view,
-    model: model,
-  });
-
-  return {view: view, model: model};
-}
 
 test(
   'Patches the attribute `value` when an option is selected.',
@@ -55,7 +12,7 @@ test(
     is.plan(2);
 
     // Initialize the plugin.
-    var mock = mockInstance();
+    var mock = mockPlugin(value);
     var options = mockOptions();
     mock.view.options.emit('update', options);
 
@@ -82,11 +39,11 @@ test(
     });
 
     // Update the second option and emit a mock `change` to `containerElement`.
-    updateElement(options.radioNodes[0], optionRadio({
+    updateElement(options.radioNodes[0], mockOptionRadio({
       value: '0',
       checked: false,
     }));
-    updateElement(options.radioNodes[2], optionRadio({
+    updateElement(options.radioNodes[2], mockOptionRadio({
       value: '2',
       checked: true,
     }));
@@ -105,7 +62,7 @@ test(
     is.plan(3);
 
     // Initialize the plugin.
-    var mock = mockInstance();
+    var mock = mockPlugin(value);
 
     // Emit an update before registering options.
     mock.view.selection.once('error', function(error) {is.ok(
@@ -150,7 +107,7 @@ test(
   function(is) {
     is.plan(4);
 
-    var mock1 = mockInstance();
+    var mock1 = mockPlugin(value);
 
     var testRun = 1;
     function test1(error) {
@@ -166,7 +123,7 @@ test(
     mock1.view.options.emit('update', {});
     mock1.model.patch.off('error', test1);
 
-    var mock2 = mockInstance();
+    var mock2 = mockPlugin(value);
     var options = mockOptions();
     mock2.view.options.emit('update', options);
 
