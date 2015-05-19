@@ -72,9 +72,9 @@ module.exports = function (args) {
       'object with `{Object} value.attributes`.'
     ));
 
-    var newValue = update.attributes.value || null;
+    var newValue = update.attributes.value || '';
     if (
-      newValue !== null &&
+      newValue !== '' &&
       values.indexOf(newValue) === -1
         // TODO: Write a lightweight shim of `array.includes` for this.
     ) return emitSelection('error', error(
@@ -82,7 +82,7 @@ module.exports = function (args) {
       values
         .map(function(value) {return ('"' + value + '"');})
         .join(', ') +
-      '].'
+      '], or an empty string to reset all options.'
     ));
 
     emitSelection('update', {newValue: newValue});

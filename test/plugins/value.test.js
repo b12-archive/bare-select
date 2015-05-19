@@ -79,19 +79,20 @@ test(
 test(
   'Updates `view.selection` when the attribute `value` has changed.',
   function(is) {
-    is.plan(3);
+    is.plan(4);
 
     // Initialize the plugin.
     var mock = mockPlugin(value);
 
     // Emit an update before registering options.
-    mock.view.selection.once('error', function(error) {is.ok(
+    mock.view.selection.on('error', function(error) {is.ok(
       error.message.match(/can’t update the value/i),
       'logs a warning if no options have been registered.'
     );});
     mock.model.state.emit('value', {attributes: {
       value: 'the value'
     }});
+    mock.view.selection.off('error');
 
     // Register options.
     mock.view.options.emit('update', {
@@ -100,7 +101,7 @@ test(
     });
 
     // Emit a valid option.
-    mock.view.selection.once('update', function(update) {is.equal(
+    mock.view.selection.on('update', function(update) {is.equal(
       update.newValue,
       'the value',
       'emits an `update` synchronously when the passed value is valid'
@@ -108,15 +109,28 @@ test(
     mock.model.state.emit('value', {attributes: {
       value: 'the value'
     }});
+    mock.view.selection.off('update');
+
+    // Emit an empty option.
+    mock.view.selection.on('update', function(update) {is.equal(
+      update.newValue,
+      '',
+      'emits an `update` synchronously when the passed value is empty'
+    );});
+    mock.model.state.emit('value', {attributes: {
+      value: ''
+    }});
+    mock.view.selection.off('update');
 
     // Emit an invalid option.
-    mock.view.selection.once('error', function(error) {is.ok(
+    mock.view.selection.on('error', function(error) {is.ok(
       error.message.match(/value not found/i),
       'emits an `error` synchronously when the passed value is invalid'
     );});
     mock.model.state.emit('value', {attributes: {
       value: 'something invalid'
     }});
+    mock.view.selection.off('error');
 
     is.end();
   }
