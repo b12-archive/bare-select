@@ -157,9 +157,9 @@ test(
     // Initialize the plugin.
     var mock = mockInstance();
 
-    function test1 (error) {
+    function test1(error) {
       is.ok(
-        error.match(/invalid `unfolded` message/i),
+        error.message.match(/invalid `unfolded` message/i),
         'emits an error when it receives a non-object as message'
       );
     }
@@ -167,9 +167,9 @@ test(
     mock.model.state.emit('unfolded', null);
     mock.view.unfolded.off('error', test1);
 
-    function test2 (error) {
+    function test2(error) {
       is.ok(
-        error.match(/can’t find `.attributes`/i),
+        error.message.match(/can’t find `.attributes`/i),
         'emits an error when it receives no attributes in the message'
       );
     }
