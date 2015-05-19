@@ -29,7 +29,6 @@ function getSelectedValue(options) {
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;
-  var logger = args.logger || console;
 
   var checkedOptionSnapshot;
   function updateCheckedOption(newValue) {
@@ -42,7 +41,7 @@ module.exports = function (args) {
   function updateFromOptions(options) {
     var result = getSelectedValue(options);
     if (result.error) return model.patch.emit('error', result.error);
-    updateCheckedOption(result.value);
+    updateCheckedOption(result.value || '');
   }
 
   // Rescan options and emit a patch if necessary:
@@ -75,9 +74,9 @@ module.exports = function (args) {
 
     var newValue = update.attributes.value || null;
     if (
-      values.indexOf(newValue) === -1 &&
+      newValue !== null &&
+      values.indexOf(newValue) === -1
         // TODO: Write a lightweight shim of `array.includes` for this.
-      newValue !== null
     ) return emitSelection('error', error(
       'Value not found. Pass one of these values instead: [' +
       values
