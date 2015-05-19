@@ -9,15 +9,20 @@ module.exports = function (args) {
   var model = args.model;
 
   // Update the view when the model changes.
-  model.state.when('unfolded', function(update) {
+  model.state.when('unfolded', function(state) {
     var emitUnfolded = view.unfolded.emit;
 
-    if (!update.attributes) return emitUnfolded('error', error(
-      'Can’t find `.attributes` in the message from the model.'
+    if (!state) return emitUnfolded('error', error(
+      'Invalid `unfolded` message from `model.state`. Make sure you pass an ' +
+      'object with `{Object} unfolded.attributes`.'
+    ).message);
+
+    if (!state.attributes) return emitUnfolded('error', error(
+      'Can’t find `.attributes` in the message `unfolded` from `model.state`.'
     ).message);
 
     emitUnfolded('update', (
-      update.attributes.hasOwnProperty('unfolded') ?
+      state.attributes.hasOwnProperty('unfolded') ?
       {value: true} :
       {value: false}
     ));
