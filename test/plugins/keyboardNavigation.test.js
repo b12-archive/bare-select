@@ -20,86 +20,86 @@ test(
     mock.view.switchElement.emit('focus');
 
     // Press ↓.
+    mock.view.selection.on('update', function(update) {is.equal(
+      update.newValue,
+      '1',
+      'selects the first option upon pressing ↓ if nothing has been ' +
+      'selected before'
+    );});
+
+    mock.model.patch.on('patch', function(patch) {is.deepEqual(patch,
+      {value: '1'},
+      'updates the selection in the model'
+    );});
+
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(
       keyCodes.DOWN_ARROW,
       {preventDefault: function() {is.pass(
         'calls the `event.preventDefault` method'
       );}}
     ));
-
-    mock.view.selection.when('update', function(update) {is.equal(
-      update.newValue,
-      '1',
-      'selects the first option upon pressing ↓ if nothing has been ' +
-      'selected before'
-    );});
     mock.view.selection.off('update');
-
-    mock.model.patch.when('patch', function(patch) {is.deepEqual(patch,
-      {value: '1'},
-      'updates the selection in the model'
-    );});
     mock.model.patch.off('patch');
 
     // Press →.
-    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
-      keyCodes.RIGHT_ARROW
-    ));
-
-    mock.view.selection.when('update', function(update) {is.equal(
+    mock.view.selection.on('update', function(update) {is.equal(
       update.newValue,
       '2',
       'selects the next option upon pressing →'
     );});
+
+    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
+      keyCodes.RIGHT_ARROW
+    ));
     mock.view.selection.off('update');
 
     // Press ↑.
-    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
-      keyCodes.UP_ARROW
-    ));
-
-    mock.view.selection.when('update', function(update) {is.equal(
+    mock.view.selection.on('update', function(update) {is.equal(
       update.newValue,
       '1',
       'selects the previous option upon pressing ↑'
     );});
+
+    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
+      keyCodes.UP_ARROW
+    ));
     mock.view.selection.off('update');
 
     // Press ←.
-    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
-      keyCodes.LEFT_ARROW
-    ));
-
-    mock.view.selection.when('update', function(update) {is.equal(
+    mock.view.selection.on('update', function(update) {is.equal(
       update.newValue,
       '1',
       'doesn’t change anything upon pressing ← when the first option is ' +
       'already selected'
     );});
+
+    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
+      keyCodes.LEFT_ARROW
+    ));
     mock.view.selection.off('update');
 
     // Press [END].
-    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
-      keyCodes.END
-    ));
-
-    mock.view.selection.when('update', function(update) {is.equal(
+    mock.view.selection.on('update', function(update) {is.equal(
       update.newValue,
       '3',
       'selects the last option upon pressing [END].'
     );});
+
+    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
+      keyCodes.END
+    ));
     mock.view.selection.off('update');
 
     // Press [HOME].
-    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
-      keyCodes.HOME
-    ));
-
-    mock.view.selection.when('update', function(update) {is.equal(
+    mock.view.selection.on('update', function(update) {is.equal(
       update.newValue,
       '1',
       'selects the first option upon pressing [HOME].'
     );});
+
+    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
+      keyCodes.HOME
+    ));
     mock.view.selection.off('update');
 
     // Finnito.
