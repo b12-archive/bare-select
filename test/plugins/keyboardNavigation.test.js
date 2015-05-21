@@ -245,6 +245,70 @@ test(
   }
 );
 
+test(
+  'Reacts to changes from the external world',
+  function(is) {
+    is.plan(4);
+
+    // Prepare a mock select, without any attributes.
+    var mock = mockPlugin(keyboardNavigation);
+    mock.view.options.emit('update', {values: ['1', '2', '3', '4']});
+
+    // Press [↓].
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
+      '1',
+      'selects the first option upon pressing [↓] if we have no idea what’s ' +
+      'selected'
+    );});
+
+    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
+      keyCodes.DOWN_ARROW
+    ));
+
+    mock.model.patch.off('patch');
+
+    // Update externally and press [↓] again.
+    mock.model.state.emit('value', {attributes: {value: '3'}});
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
+      '4',
+      'selects the right option after the selection has been changed ' +
+      'externally'
+    );});
+
+    mock.view.switchElement.emit('keydown', mockKeyboardEvent(
+      keyCodes.DOWN_ARROW
+    ));
+
+    mock.model.patch.off('patch');
+
+    // Press [ENTER].
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.unfolded,
+      '',
+      'unfolds the dropdown with [ENTER] if we don’t know what state it’s in'
+    );});
+
+    mock.view.switchElement.emit('keydown', mockKeyboardEvent(keyCodes.ENTER));
+    mock.model.patch.off('patch');
+
+    // Update externally and press [ENTER] again.
+    mock.model.state.emit('unfolded', {attributes: {}});
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.unfolded,
+      '',
+      'unfolds the dropdown again with [ENTER] after it has been externally ' +
+      'folded back in'
+    );});
+
+    mock.view.switchElement.emit('keydown', mockKeyboardEvent(keyCodes.ENTER));
+    mock.model.patch.off('patch');
+
+    is.end();
+  }
+);
+
 test.skip(  // TODO
   'Fails gracefully'
 );

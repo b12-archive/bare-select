@@ -16,13 +16,13 @@ module.exports = function (args) {
   });
 
   // Cache the selected option and keep it up to date.
-  var selectionSnapshot = null;
+  var selectionSnapshot = '';
   model.state.when('value', function (state) {
     selectionSnapshot = state.attributes.value || '';
     // TODO: Check if state is OK.
   });
 
-  var unfoldedSnapshot = null;
+  var unfoldedSnapshot = false;
   model.state.when('unfolded', function (state) {
     unfoldedSnapshot = (state.attributes.unfolded === '');
     // TODO: Check if state is OK.
