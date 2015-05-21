@@ -18,7 +18,13 @@ module.exports = function (args) {
   // Cache the selected option and keep it up to date.
   var selectionSnapshot = null;
   model.state.when('value', function (state) {
-    selectionSnapshot = state.attributes.value || null;
+    selectionSnapshot = state.attributes.value || '';
+    // TODO: Check if state is OK.
+  });
+
+  var unfoldedSnapshot = null;
+  model.state.when('unfolded', function (state) {
+    unfoldedSnapshot = (state.attributes.unfolded === '');
     // TODO: Check if state is OK.
   });
 
@@ -82,6 +88,38 @@ module.exports = function (args) {
 
         0
       );
+    }
+
+    // Handle fold/unfold behavior.
+    if (
+      includes([
+        keyCodes.ENTER,
+        keyCodes.SPACE,
+        keyCodes.ESCAPE,
+      ], keyCode) ||
+      (
+        unfoldedSnapshot === true &&
+        keyCode === keyCodes.TAB
+      )
+    ) {
+      event.preventDefault();
+
+      if (unfoldedSnapshot === true && includes([
+        keyCodes.ENTER,
+        keyCodes.TAB,
+        keyCodes.ESCAPE,
+      ], keyCode)) {
+        unfoldedSnapshot = false;
+        model.patch.emit('patch', {unfolded: undefined});
+      }
+
+      else if (unfoldedSnapshot === false && includes([
+        keyCodes.ENTER,
+        keyCodes.SPACE,
+      ], keyCode)) {
+        unfoldedSnapshot = true;
+        model.patch.emit('patch', {unfolded: ''});
+      }
     }
   });
 };
