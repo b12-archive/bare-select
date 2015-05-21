@@ -4,6 +4,10 @@ var keyCodes = require('../utils/keyCodes');
 var includes = require('array-includes');
 var between = require('1-liners/between');
 
+var error = require('1-liners/curry')(require('../utils/error'))({
+  source: 'keyboardNavigation'
+});
+
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;
@@ -11,36 +15,57 @@ module.exports = function (args) {
   // Cache available values and keep them up to date.
   var valuesSnapshot = null;
   view.options.when('update', function (options) {
+    var values;
+    if (
+      !options ||
+      !Array.isArray(values = options.values)
+    ) return model.patch.emit('error', error(
+      'Invalid `update` message from `view.options`. Make sure you pass an ' +
+      '`options` object with `{String[]} options.values`.'
+    ));
+
     valuesSnapshot = options.values;
-    // TODO: Check if options are OK.
   });
 
   // Cache the selected option and keep it up to date.
   var selectionSnapshot = '';
   model.state.when('value', function (state) {
-    selectionSnapshot = state.attributes.value || '';
-    // TODO: Check if state is OK.
+    var value;
+    if (
+      !state ||
+      !state.attributes ||
+      typeof (value = state.attributes.value || '') !== 'string'
+    ) return model.patch.emit('error', error(
+      'Invalid `value` message from `model.state`. Make sure you pass a ' +
+      '`state` object with `{Object} state.attributes`.'
+    ));
+
+    selectionSnapshot = value;
   });
 
   var unfoldedSnapshot = false;
   model.state.when('unfolded', function (state) {
+    if (
+      !state ||
+      !state.attributes
+    ) return model.patch.emit('error', error(
+      'Invalid `unfolded` message from `model.state`. Make sure you pass a ' +
+      '`state` object with `{Object} state.attributes`.'
+    ));
+
     unfoldedSnapshot = (state.attributes.unfolded === '');
-    // TODO: Check if state is OK.
   });
 
   function selectByIndex(index) {
-    if (valuesSnapshot) {
+    if (!valuesSnapshot) return;
 
-      // Update the selection snapshot.
-      selectionSnapshot = (
-        valuesSnapshot[between(0, valuesSnapshot.length - 1, index)] ||
-        ''
-      );
-        // TODO: Should this fail silently?
+    // Update the selection snapshot.
+    selectionSnapshot = valuesSnapshot[
+      between(0, valuesSnapshot.length - 1, index)
+    ];
 
-      // Update the model.
-      model.patch.emit('patch', {value: selectionSnapshot});
-    }  // TODO: Else fail silently?
+    // Update the model.
+    model.patch.emit('patch', {value: selectionSnapshot});
   }
 
   // Handle the `keydown` event.
