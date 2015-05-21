@@ -32,9 +32,6 @@ module.exports = function (args) {
       );
         // TODO: Should this fail silently?
 
-      // Update the view.
-      view.selection.emit('update', {newValue: selectionSnapshot});
-
       // Update the model.
       model.patch.emit('patch', {value: selectionSnapshot});
     }  // TODO: Else fail silently?

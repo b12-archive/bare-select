@@ -8,7 +8,7 @@ var keyboardNavigation = require('../../plugins/keyboardNavigation');
 test(
   'Changes the selected option',
   function(is) {
-    is.plan(8);
+    is.plan(7);
 
     var mock = mockPlugin(keyboardNavigation);
 
@@ -20,16 +20,11 @@ test(
     mock.view.switchElement.emit('focus');
 
     // Press ↓.
-    mock.view.selection.on('update', function(update) {is.equal(
-      update.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '1',
       'selects the first option upon pressing ↓ if nothing has been ' +
       'selected before'
-    );});
-
-    mock.model.patch.on('patch', function(patch) {is.deepEqual(patch,
-      {value: '1'},
-      'updates the selection in the model'
     );});
 
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(
@@ -38,12 +33,11 @@ test(
         'calls the `event.preventDefault` method'
       );}}
     ));
-    mock.view.selection.off('update');
     mock.model.patch.off('patch');
 
     // Press →.
-    mock.view.selection.on('update', function(update) {is.equal(
-      update.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '2',
       'selects the next option upon pressing →'
     );});
@@ -51,11 +45,11 @@ test(
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(
       keyCodes.RIGHT_ARROW
     ));
-    mock.view.selection.off('update');
+    mock.model.patch.off('patch');
 
     // Press ↑.
-    mock.view.selection.on('update', function(update) {is.equal(
-      update.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '1',
       'selects the previous option upon pressing ↑'
     );});
@@ -63,11 +57,11 @@ test(
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(
       keyCodes.UP_ARROW
     ));
-    mock.view.selection.off('update');
+    mock.model.patch.off('patch');
 
     // Press ←.
-    mock.view.selection.on('update', function(update) {is.equal(
-      update.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '1',
       'doesn’t change anything upon pressing ← when the first option is ' +
       'already selected'
@@ -76,11 +70,11 @@ test(
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(
       keyCodes.LEFT_ARROW
     ));
-    mock.view.selection.off('update');
+    mock.model.patch.off('patch');
 
     // Press [END].
-    mock.view.selection.on('update', function(update) {is.equal(
-      update.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '3',
       'selects the last option upon pressing [END].'
     );});
@@ -88,11 +82,11 @@ test(
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(
       keyCodes.END
     ));
-    mock.view.selection.off('update');
+    mock.model.patch.off('patch');
 
     // Press [HOME].
-    mock.view.selection.on('update', function(update) {is.equal(
-      update.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '1',
       'selects the first option upon pressing [HOME].'
     );});
@@ -100,7 +94,7 @@ test(
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(
       keyCodes.HOME
     ));
-    mock.view.selection.off('update');
+    mock.model.patch.off('patch');
 
     // Finnito.
     is.end();
