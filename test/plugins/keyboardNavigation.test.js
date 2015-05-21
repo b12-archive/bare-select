@@ -8,22 +8,20 @@ var keyboardNavigation = require('../../plugins/keyboardNavigation');
 test(
   'Changes the selected option',
   function(is) {
-    is.plan(7);
-
-    var mock = mockPlugin(keyboardNavigation);
+    is.plan(8);
 
     // Prepare select state.
+    var mock = mockPlugin(keyboardNavigation);
     mock.view.options.emit('update', {
       values: ['1', '2', '3'],
     });
     mock.model.state.emit('value', {attributes: {}});
-    mock.view.switchElement.emit('focus');
 
-    // Press ↓.
+    // Press [↓].
     mock.model.patch.on('patch', function(patch) {is.equal(
       patch.value,
       '1',
-      'selects the first option upon pressing ↓ if nothing has been ' +
+      'selects the first option upon pressing [↓] if nothing has been ' +
       'selected before'
     );});
 
@@ -35,11 +33,11 @@ test(
     ));
     mock.model.patch.off('patch');
 
-    // Press →.
+    // Press [→].
     mock.model.patch.on('patch', function(patch) {is.equal(
       patch.value,
       '2',
-      'selects the next option upon pressing →'
+      'selects the next option upon pressing [→]'
     );});
 
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(
@@ -47,11 +45,11 @@ test(
     ));
     mock.model.patch.off('patch');
 
-    // Press ↑.
+    // Press [↑].
     mock.model.patch.on('patch', function(patch) {is.equal(
       patch.value,
       '1',
-      'selects the previous option upon pressing ↑'
+      'selects the previous option upon pressing [↑]'
     );});
 
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(
@@ -59,11 +57,11 @@ test(
     ));
     mock.model.patch.off('patch');
 
-    // Press ←.
+    // Press [←].
     mock.model.patch.on('patch', function(patch) {is.equal(
       patch.value,
       '1',
-      'doesn’t change anything upon pressing ← when the first option is ' +
+      'doesn’t change anything upon pressing [←] when the first option is ' +
       'already selected'
     );});
 
@@ -95,6 +93,26 @@ test(
       keyCodes.HOME
     ));
     mock.model.patch.off('patch');
+
+    // Prepare preselected select state.
+    var preselectedMock = mockPlugin(keyboardNavigation);
+    preselectedMock.view.options.emit('update', {
+      values: ['1', '2', '3', '4'],
+    });
+    preselectedMock.model.state.emit('value', {attributes: {value: '2'}});
+
+    // Press [↓].
+    preselectedMock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
+      '3',
+      'selects the next option upon pressing [↓] if there is an initial ' +
+      'selection'
+    );});
+
+    preselectedMock.view.switchElement.emit('keydown', mockKeyboardEvent(
+      keyCodes.DOWN_ARROW
+    ));
+    preselectedMock.model.patch.off('patch');
 
     // Finnito.
     is.end();
