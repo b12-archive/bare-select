@@ -108,10 +108,8 @@ module.exports = function (args) {
         (keyCode === keyCodes.HOME) ?
         0 :
 
-        (keyCode === keyCodes.END) ?
-        Infinity :
-
-        0
+        (keyCode === keyCodes.END) &&
+        Infinity
       );
     }
 

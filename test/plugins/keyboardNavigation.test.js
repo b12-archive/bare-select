@@ -8,7 +8,7 @@ var keyboardNavigation = require('../../plugins/keyboardNavigation');
 test(
   'Changes the selected option',
   function(is) {
-    is.plan(8);
+    is.plan(9);
 
     // Prepare select state.
     var mock = mockPlugin(keyboardNavigation);
@@ -122,6 +122,23 @@ test(
     ));
 
     preselectedMock.model.patch.off('patch');
+
+    // Prepare another bare select.
+    var anotherMock = mockPlugin(keyboardNavigation);
+    anotherMock.view.options.emit('update', {values: ['1', '2', '3']});
+
+    // Press [↑].
+    anotherMock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
+      '3',
+      'selects the last option upon pressing [↑] if nothing is selected'
+    );});
+
+    anotherMock.view.switchElement.emit('keydown', mockKeyboardEvent(
+      keyCodes.UP_ARROW
+    ));
+
+    anotherMock.model.patch.off('patch');
 
     // Finnito.
     is.end();
