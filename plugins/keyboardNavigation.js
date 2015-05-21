@@ -21,6 +21,21 @@ module.exports = function (args) {
     // TODO: Check if state is OK.
   });
 
+  function selectByIndex(index) {
+    if (valuesSnapshot) {
+
+      // Update the selection snapshot.
+      selectionSnapshot = valuesSnapshot[index] || '';
+        // TODO: Should this fail silently?
+
+      // Update the view.
+      view.selection.emit('update', {newValue: selectionSnapshot});
+
+      // Update the model.
+      model.patch.emit('patch', {value: selectionSnapshot});
+    }  // TODO: Else fail silently?
+  }
+
   // Handle arrow keys.
   view.switchElement.on('keydown', function(event) {
     // TODO: Support [`event.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key).
@@ -30,9 +45,7 @@ module.exports = function (args) {
       keyCodes.DOWN_ARROW,
     ], keyCode)) {
       if (keyCode === keyCodes.DOWN_ARROW) {
-        if (!selectionSnapshot) {
-          view.selection.emit('update', {newValue: valuesSnapshot[0]});
-        }
+        if (!selectionSnapshot) selectByIndex(0);
       }
     }
   });
