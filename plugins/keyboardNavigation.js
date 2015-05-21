@@ -2,6 +2,7 @@ require('es6-set/implement');
 
 var keyCodes = require('../utils/keyCodes');
 var includes = require('array-includes');
+var between = require('1-liners/between');
 
 module.exports = function (args) {
   var view = args.view;
@@ -25,7 +26,10 @@ module.exports = function (args) {
     if (valuesSnapshot) {
 
       // Update the selection snapshot.
-      selectionSnapshot = valuesSnapshot[index] || '';
+      selectionSnapshot = (
+        valuesSnapshot[between(0, valuesSnapshot.length - 1, index)] ||
+        ''
+      );
         // TODO: Should this fail silently?
 
       // Update the view.
@@ -36,17 +40,51 @@ module.exports = function (args) {
     }  // TODO: Else fail silently?
   }
 
-  // Handle arrow keys.
+  // Handle the `keydown` event.
   view.switchElement.on('keydown', function(event) {
     // TODO: Support [`event.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key).
     var keyCode = event.keyCode;
 
+    // Handle arrow keys.
     if (includes([
       keyCodes.DOWN_ARROW,
+      keyCodes.RIGHT_ARROW,
+      keyCodes.UP_ARROW,
+      keyCodes.LEFT_ARROW,
+      keyCodes.HOME,
+      keyCodes.END,
     ], keyCode)) {
-      if (keyCode === keyCodes.DOWN_ARROW) {
-        if (!selectionSnapshot) selectByIndex(0);
-      }
+      event.preventDefault();
+
+      selectByIndex(
+        includes([
+          keyCodes.DOWN_ARROW,
+          keyCodes.RIGHT_ARROW,
+        ], keyCode) ?
+        (
+          selectionSnapshot ?
+          valuesSnapshot.indexOf(selectionSnapshot) + 1 :
+          0
+        ) :
+
+        includes([
+          keyCodes.UP_ARROW,
+          keyCodes.LEFT_ARROW,
+        ], keyCode) ?
+        (
+          selectionSnapshot ?
+          valuesSnapshot.indexOf(selectionSnapshot) - 1 :
+          Infinity
+        ) :
+
+        (keyCode === keyCodes.HOME) ?
+        0 :
+
+        (keyCode === keyCodes.END) ?
+        Infinity :
+
+        0
+      );
     }
   });
 };
