@@ -78,9 +78,9 @@ module.exports = function view(rootElement, options) {
     // `radioNodes` out of there.
     var radioNodes = optionsSnapshot.radioNodes;
 
-    // Uncheck all options if `null` is passed.
+    // Uncheck all options if `""` is passed.
     var newValue = update.newValue;
-    if (newValue === null) {
+    if (newValue === '') {
       return uncheckAll(radioNodes);
     }
 

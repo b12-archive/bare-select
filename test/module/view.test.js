@@ -268,13 +268,13 @@ test('The channel `selection` works alright.', function(is) {
   is.equal(
     radioElements[0].checked,
     true,
-    'checks the right option when it gets a new value'
+    'checks the right option when it gets an `update`'
   );
 
-  viewInstance.selection.emit('update', {newValue: null});
+  viewInstance.selection.emit('update', {newValue: ''});
   is.notOk(
     radioElements.some(function(radio) {return radio.checked;}),
-    'unchecks all options when it gets the value `null`'
+    'unchecks all options when it gets an `update` with the value `""`'
   );
 
   is.end();

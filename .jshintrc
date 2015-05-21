@@ -33,7 +33,8 @@
   "latedef": true,
 
   // Enforce line length to 80 characters
-  "maxlen": 80,
+  // No need to do that, because some comments (URLs in particular) can be longer.
+  // "maxlen": 80,
 
   // Require capitalized names for constructor functions.
   "newcap": true,
