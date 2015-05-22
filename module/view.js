@@ -51,7 +51,15 @@ module.exports = function view(rootElement, options) {
 
   // Wire up `unfolded` on the `update` channel.
   onUpdate('unfolded', function(unfolded) {
+    // TODO: Check if the message is valid.
     switchElement.checked = !!unfolded.newValue;
+  });
+
+  // Wire up `focused` on the `update` channel.
+  onUpdate('focused', function(focused) {
+    // TODO: Check if the message is valid.
+    if (focused.newValue) switchElement.focus();
+    else switchElement.blur();
   });
 
   // Wire up `selection` on the `update` channel.
