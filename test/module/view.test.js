@@ -248,41 +248,18 @@ test('`selection` on the channel `update` works alright.', function(is) {
   is.end();
 });
 
-test('The channel `selection` fails gracefully.', function(is) {
-  is.plan(4);
+test('`selection` on the `update` channel fails gracefully.', function(is) {
+  is.plan(1);
 
   var tree = mockTree();
-  var radioElements = arrayFrom(tree.children[2].children)
-    .map(function(item) {return item.children[0];})
-  ;
-  var viewInstance = view(tree, {logger: {
-    warn: function(message) {is.equal(
-      message,
-      'a message',
-      'prints the message to the console when it receives an `error` event'
-    );},
-  }});
+  var mockView = view(tree);
 
-  try {
-    viewInstance.update.emit('selection', {newValue: 'invalid'});
-  } catch (error) {
-    is.ok(
-      error.message.match(/value not found/i),
-      'throws when it gets an invalid value'
-    );
-  }
-
-  is.notOk(
-    radioElements.some(function(radio) {return radio.checked;}),
-    '– having unchecked all options'
-  );
-
-  radioElements[1].checked = true;
-  viewInstance.update.emit('error', {message: 'a message'});
-  is.notOk(
-    radioElements.some(function(radio) {return radio.checked;}),
-    'unchecks all options when it receives an `error` event'
-  );
+  mockView.error.catch(function(error) {is.ok(
+    error.message.match(/value not found/i),
+    'emits an `error` when it gets an invalid value'
+  );});
+  mockView.update.emit('selection', {newValue: 'invalid'});
+  // TODO: uncatch this test
 
   is.end();
 });
