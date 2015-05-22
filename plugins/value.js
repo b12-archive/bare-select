@@ -1,5 +1,3 @@
-require('es6-set/implement');
-
 var findIndex = require('find-index');
 var error = require('1-liners/curry')(require('../utils/error'))({
   source: 'value'

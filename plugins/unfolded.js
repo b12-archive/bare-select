@@ -1,5 +1,3 @@
-require('es6-set/implement');
-
 var error = require('1-liners/curry')(require('../utils/error'))({
   source: 'unfolded'
 });

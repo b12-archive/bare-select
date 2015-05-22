@@ -1,5 +1,3 @@
-require('es6-set/implement');
-
 var keyCodes = require('../utils/keyCodes');
 var includes = require('array-includes');
 var between = require('1-liners/between');
