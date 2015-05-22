@@ -4,33 +4,9 @@ var propertyType = require('../test-tools/propertyType');
 var test = require('../test-tools/test')('The view');
 var repeat = require('repeat-element');
 var arrayFrom = require('array-from');
+var mockTree = require('../test-tools/mockTree');
 
 var view = require('../../module/view');
-
-function mock() {return createElement(
-  h('bare-select', [
-    h('label', {for: 'switch'}),
-    h('input', {type: 'checkbox', id: 'switch'}),
-    h('ul', [
-      h('li', [
-        h('input', {type: 'radio', name: 'radio-group',
-          value: 'a',
-        }),
-      ]),
-      h('li', [
-        h('input', {type: 'radio', name: 'radio-group',
-          value: 'b',
-          checked: true,
-        }),
-      ]),
-      h('li', [
-        h('input', {type: 'radio', name: 'radio-group',
-          value: 'c',
-        }),
-      ]),
-    ]),
-  ])
-);}
 
 test('The API is in good shape.', function(is) {
   is.equal(
@@ -39,7 +15,7 @@ test('The API is in good shape.', function(is) {
     'is a constructor function'
   );
 
-  var viewInstance = view(mock());
+  var viewInstance = view(mockTree());
 
   is.ok(
     Object.isFrozen(viewInstance),
@@ -47,11 +23,14 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    viewInstance.selection && Object.keys(viewInstance.selection)
-      .map(propertyType(viewInstance.selection))
+    viewInstance.update && Object.keys(viewInstance.update)
+      .map(propertyType(viewInstance.update))
     ,
-    [{property: 'emit', type: 'function'}],
-    '• an input channel `selection`'
+    [
+      {property: 'emit', type: 'function'},
+      {property: 'catch', type: 'function'},
+    ],
+    '• an input channel `update` with error handling'
   );
 
   is.deepEqual(
@@ -63,17 +42,6 @@ test('The API is in good shape.', function(is) {
       {property: 'catch', type: 'function'},
     ],
     '• an input channel `captionContent` with error handling'
-  );
-
-  is.deepEqual(
-    viewInstance.unfolded && Object.keys(viewInstance.unfolded)
-      .map(propertyType(viewInstance.unfolded))
-    ,
-    [
-      {property: 'emit', type: 'function'},
-      {property: 'catch', type: 'function'},
-    ],
-    '• an input channel `unfolded` with error handling'
   );
 
   is.deepEqual(
@@ -97,11 +65,11 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    viewInstance.containerElement && Object.keys(viewInstance.containerElement)
-      .map(propertyType(viewInstance.containerElement))
+    viewInstance.dropdownElement && Object.keys(viewInstance.dropdownElement)
+      .map(propertyType(viewInstance.dropdownElement))
     ,
     [{property: 'on', type: 'function'}],
-    '• an output channel `containerElement`'
+    '• an output channel `dropdownElement`'
   );
 
   is.deepEqual(
@@ -116,7 +84,7 @@ test('The API is in good shape.', function(is) {
 });
 
 test('The channel `options` works alright.', function(is) {
-  var viewInstance = view(mock());
+  var viewInstance = view(mockTree());
   var executed;
 
   is.plan(5);
@@ -233,19 +201,19 @@ test('The channel `options` fails gracefully.', function(is) {
   is.end();
 });
 
-test('The channel `unfolded` works alright.', function(is) {
-  var tree = mock();
+test('`unfolded` on the channel `update` works alright.', function(is) {
+  var tree = mockTree();
   var switchElement = tree.children[1];
   var viewInstance = view(tree);
 
-  viewInstance.unfolded.emit('update', {value: true});
+  viewInstance.update.emit('unfolded', {newValue: true});
   is.equal(
     switchElement.checked,
     true,
     'checks the switch when it gets the value `true`'
   );
 
-  viewInstance.unfolded.emit('update', {value: false});
+  viewInstance.update.emit('unfolded', {newValue: false});
   is.equal(
     switchElement.checked,
     false,
@@ -257,21 +225,55 @@ test('The channel `unfolded` works alright.', function(is) {
   is.end();
 });
 
-test('The channel `selection` works alright.', function(is) {
-  var tree = mock();
+test('`focused` on the channel `update` works alright.', function(is) {
+  is.plan(2);
+
+  var tree = mockTree();
+  var switchElement = tree.children[1];
+  var viewInstance = view(tree);
+
+  var focusRun = 1;
+  switchElement.focus = function () {
+    if (focusRun++ === 1) is.pass(
+      'calls `.focus()` on the switch when it gets the value `true`'
+    );
+    else is.fail(
+      'only calls `.focus()` on the switch when it gets the value `true`'
+    );
+  };
+  viewInstance.update.emit('focused', {newValue: true});
+
+  var blurRun = 1;
+  switchElement.blur = function () {
+    if (blurRun++ === 1) is.pass(
+      'calls `.blur()` on the switch when it gets the value `false`'
+    );
+    else is.fail(
+      'only calls `.blur()` on the switch when it gets the value `false`'
+    );
+  };
+  viewInstance.update.emit('focused', {newValue: false});
+
+  // TODO: Test failure.
+
+  is.end();
+});
+
+test('`selection` on the channel `update` works alright.', function(is) {
+  var tree = mockTree();
   var radioElements = arrayFrom(tree.children[2].children)
     .map(function(item) {return item.children[0];})
   ;
   var viewInstance = view(tree);
 
-  viewInstance.selection.emit('update', {newValue: 'a'});
+  viewInstance.update.emit('selection', {newValue: 'a'});
   is.equal(
     radioElements[0].checked,
     true,
     'checks the right option when it gets an `update`'
   );
 
-  viewInstance.selection.emit('update', {newValue: ''});
+  viewInstance.update.emit('selection', {newValue: ''});
   is.notOk(
     radioElements.some(function(radio) {return radio.checked;}),
     'unchecks all options when it gets an `update` with the value `""`'
@@ -280,41 +282,18 @@ test('The channel `selection` works alright.', function(is) {
   is.end();
 });
 
-test('The channel `selection` fails gracefully.', function(is) {
-  is.plan(4);
+test('`selection` on the `update` channel fails gracefully.', function(is) {
+  is.plan(1);
 
-  var tree = mock();
-  var radioElements = arrayFrom(tree.children[2].children)
-    .map(function(item) {return item.children[0];})
-  ;
-  var viewInstance = view(tree, {logger: {
-    warn: function(message) {is.equal(
-      message,
-      'a message',
-      'prints the message to the console when it receives an `error` event'
-    );},
-  }});
+  var tree = mockTree();
+  var mockView = view(tree);
 
-  try {
-    viewInstance.selection.emit('update', {newValue: 'invalid'});
-  } catch (error) {
-    is.ok(
-      error.message.match(/value not found/i),
-      'throws when it gets an invalid value'
-    );
-  }
-
-  is.notOk(
-    radioElements.some(function(radio) {return radio.checked;}),
-    '– having unchecked all options'
-  );
-
-  radioElements[1].checked = true;
-  viewInstance.selection.emit('error', {message: 'a message'});
-  is.notOk(
-    radioElements.some(function(radio) {return radio.checked;}),
-    'unchecks all options when it receives an `error` event'
-  );
+  mockView.error.catch(function(error) {is.ok(
+    error.message.match(/value not found/i),
+    'emits an `error` when it gets an invalid value'
+  );});
+  mockView.update.emit('selection', {newValue: 'invalid'});
+  // TODO: uncatch this test
 
   is.end();
 });

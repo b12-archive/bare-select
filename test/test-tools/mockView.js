@@ -1,11 +1,10 @@
 var ø = require('stereo');
 
 module.exports = function() { return {
-  selection: ø(),
+  update: ø(),
   captionContent: ø(),
-  unfolded: ø(),
   options: ø(),
   switchElement: ø(),
-  containerElement: ø(),
+  dropdownElement: ø(),
   error: ø(),
 };};

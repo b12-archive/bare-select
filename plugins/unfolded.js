@@ -7,25 +7,24 @@ var error = require('1-liners/curry')(require('../utils/error'))({
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;
+  var valueSnapshot = null;
 
   // Update the view when the model changes.
   model.state.when('unfolded', function(state) {
-    var emitUnfolded = view.unfolded.emit;
+    var emitUpdate = view.update.emit;
 
-    if (!state || !state.attributes) return emitUnfolded('error', error(
+    if (!state || !state.attributes) return emitUpdate('error', error(
       'Invalid `unfolded` message from `model.state`. Make sure you pass an ' +
       'object with `{Object} unfolded.attributes`.'
     ));
 
-    emitUnfolded('update', (
-      state.attributes.hasOwnProperty('unfolded') ?
-      {value: true} :
-      {value: false}
-    ));
+    valueSnapshot = state.attributes.hasOwnProperty('unfolded');
+    emitUpdate('unfolded', {
+      newValue: valueSnapshot,
+    });
   });
 
   // Update the model when the view changes.
-  var valueSnapshot = null;
   view.switchElement.on('change', function(event) {
     var emitPatch = model.patch.emit;
 
@@ -34,13 +33,11 @@ module.exports = function (args) {
     ));
 
     var newValue = !!event.target.checked;
+    if (newValue === valueSnapshot) return;
 
-    if (newValue !== valueSnapshot) {
-      emitPatch('patch', {unfolded: (newValue ?
-        '' :
-        undefined
-      )});
-      valueSnapshot = newValue;
-    }
+    valueSnapshot = newValue;
+    emitPatch('patch', {
+      unfolded: (newValue ? '' : undefined),
+    });
   });
 };

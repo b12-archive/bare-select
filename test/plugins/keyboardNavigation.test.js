@@ -8,7 +8,7 @@ var keyboardNavigation = require('../../plugins/keyboardNavigation');
 test(
   'Changes the selected option',
   function(is) {
-    is.plan(8);
+    is.plan(9);
 
     // Prepare select state.
     var mock = mockPlugin(keyboardNavigation);
@@ -122,6 +122,23 @@ test(
     ));
 
     preselectedMock.model.patch.off('patch');
+
+    // Prepare another bare select.
+    var anotherMock = mockPlugin(keyboardNavigation);
+    anotherMock.view.options.emit('update', {values: ['1', '2', '3']});
+
+    // Press [↑].
+    anotherMock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
+      '3',
+      'selects the last option upon pressing [↑] if nothing is selected'
+    );});
+
+    anotherMock.view.switchElement.emit('keydown', mockKeyboardEvent(
+      keyCodes.UP_ARROW
+    ));
+
+    anotherMock.model.patch.off('patch');
 
     // Finnito.
     is.end();
@@ -309,6 +326,52 @@ test(
   }
 );
 
-test.skip(  // TODO
-  'Fails gracefully'
+test(
+  'Fails gracefully',
+  function(is) {
+    is.plan(3);
+
+    // Prepare a mock select, without any attributes.
+    var mock = mockPlugin(keyboardNavigation);
+
+    // Press [END] before any options have been loaded.
+    mock.model.patch.on('patch', function() {is.fail(
+      'fails silently if no options are loaded'
+    );});
+
+    mock.view.switchElement.emit('keydown', mockKeyboardEvent(keyCodes.END));
+    mock.model.patch.off('patch');
+
+    // Try passing invalid options.
+    mock.model.patch.catch(function(error) {is.ok(
+      error.message.match(/invalid `update` message/i),
+      'detects an invalid `update` from `view.options`'
+    );});
+
+    mock.view.options.emit('update', /invalid/);
+    mock.model.patch.off('error');
+
+    // Pass proper options.
+    mock.view.options.emit('update', {values: ['1', '2', '3', '4']});
+
+    // Try passing an invalid `value`.
+    mock.model.patch.catch(function(error) {is.ok(
+      error.message.match(/invalid `value` message/i),
+      'detects an invalid `value` from `model.state`'
+    );});
+
+    mock.model.state.emit('value', /invalid/);
+    mock.model.patch.off('error');
+
+    // Try passing an invalid `unfolded` message.
+    mock.model.patch.catch(function(error) {is.ok(
+      error.message.match(/invalid `unfolded` message/i),
+      'detects an invalid `unfolded` from `model.state`'
+    );});
+
+    mock.model.state.emit('unfolded', /invalid/);
+    mock.model.patch.off('error');
+
+    is.end();
+  }
 );
