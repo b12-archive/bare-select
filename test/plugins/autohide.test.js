@@ -9,22 +9,30 @@ test(
   function(is) {
     is.plan(1);
 
-    // Prepare an unfolded select.
+    // Prepare a mock select.
     var mock = mockPlugin(autohide);
-    mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
 
-    // Blur the select.
     mock.model.patch.on('patch', function(patch) {is.equal(
       patch.unfolded,
       undefined,
       'when the select loses focus'
     );});
 
+    // Blur the select.
     mock.view.switchElement.emit('blur');
-    mock.model.patch.off('patch');
 
-    // Finnito.
-    is.end();
+    // Prepare another mock select.
+    var anotherMock = mockPlugin(autohide);
+
+    anotherMock.model.patch.on('patch', function() {is.fail(
+      'not when the blur was triggered by a click within the dropdown'
+    );});
+
+    // Blur the select by clicking in the dropdown.
+    anotherMock.view.switchElement.emit('blur');
+    anotherMock.view.dropdownElement.emit('mousedown');
+
+    is.timeoutAfter(200);
   }
 );
 
@@ -36,16 +44,16 @@ test(
     // Prepare an unfolded select.
     var mock = mockPlugin(autohide);
 
-    // Trigger a `change`.
-    mock.view.switchElement.focus = function() {is.pass(
-      'when the selection is changed'
-    );};
+    mock.view.update.on('focused', function(focused) {is.equal(
+      focused.newValue,
+      true,
+      'when the blur was caused by a click inside the dropdown'
+    );});
 
-    mock.view.dropdownElement.emit('change');
-    mock.view.switchElement.focus = noop;
+    // Trigger a `click` within the dropdown.
+    mock.view.dropdownElement.emit('click');
 
-    // Finnito.
-    is.end();
+    is.timeoutAfter(200);
   }
 );
 
