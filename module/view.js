@@ -40,10 +40,6 @@ module.exports = function view(rootElement, options) {
 
   var optionsResult = getOptions(dropdownElement);
 
-  // Initialize the input channel `captionContent`.
-  var emitCaptionContent = emit();
-  channels.captionContent = inputChannel(emitCaptionContent);
-
   // Initialize the input channel `update`.
   var emitUpdate = emit();
   var onUpdate = on(emitUpdate);
