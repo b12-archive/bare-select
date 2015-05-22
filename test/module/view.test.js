@@ -225,6 +225,40 @@ test('`unfolded` on the channel `update` works alright.', function(is) {
   is.end();
 });
 
+test('`focused` on the channel `update` works alright.', function(is) {
+  is.plan(2);
+
+  var tree = mockTree();
+  var switchElement = tree.children[1];
+  var viewInstance = view(tree);
+
+  var focusRun = 1;
+  switchElement.focus = function () {
+    if (focusRun++ === 1) is.pass(
+      'calls `.focus()` on the switch when it gets the value `true`'
+    );
+    else is.fail(
+      'only calls `.focus()` on the switch when it gets the value `true`'
+    );
+  };
+  viewInstance.update.emit('focused', {newValue: true});
+
+  var blurRun = 1;
+  switchElement.blur = function () {
+    if (blurRun++ === 1) is.pass(
+      'calls `.blur()` on the switch when it gets the value `false`'
+    );
+    else is.fail(
+      'only calls `.blur()` on the switch when it gets the value `false`'
+    );
+  };
+  viewInstance.update.emit('focused', {newValue: false});
+
+  // TODO: Test failure.
+
+  is.end();
+});
+
 test('`selection` on the channel `update` works alright.', function(is) {
   var tree = mockTree();
   var radioElements = arrayFrom(tree.children[2].children)
