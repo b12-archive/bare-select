@@ -4,6 +4,7 @@
 
 , "dependencies":
   { "1-liners": "^0.2.6"
+  , "ainojs-requestframe": "tomekwi/ainojs-requestframe#7eab922"
   , "array-includes": "^1.1.0"
   , "as": "^0.4.1"
   , "es6-set": "^0.1.1"
