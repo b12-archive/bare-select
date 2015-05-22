@@ -251,6 +251,65 @@ test('`focused` on the channel `update` works alright.', function(is) {
   is.end();
 });
 
+test('`captionContent` on the channel `update` works alright.', function(is) {
+  var tree = mockTree();
+  var viewInstance = view(tree);
+  var caption = tree.children[0];
+
+  var mockContent = createElement(h('div'));
+  viewInstance.update.emit('captionContent', {newDOM: mockContent});
+
+  is.equal(
+    caption.children[0],
+    mockContent,
+    'replaces content of the caption'
+  );
+
+  is.equal(
+    caption.children.length,
+    1,
+    'leaves no other content inside'
+  );
+
+  is.end();
+});
+
+test(
+  '`captionContent` on the channel `update` fails gracefully.',
+  function(is) {
+    is.plan(3);
+
+    var tree = mockTree();
+    var viewInstance = view(tree);
+    var caption = tree.children[0];
+    var captionContent = arrayFrom(caption.children);
+
+    viewInstance.error.catch(function(error) {is.ok(
+      error.message.match(/invalid `captionContent` message/i),
+      'emits an error if passed a non-object in the message'
+    );});
+
+    viewInstance.update.emit('captionContent', null);
+    viewInstance.error.off('error');
+
+    viewInstance.error.catch(function(error) {is.ok(
+      error.message.match(/invalid `captionContent` message/i),
+      'emits an error if passed non-DOM in the message'
+    );});
+
+    viewInstance.update.emit('captionContent', {newDOM: 'invalid'});
+    viewInstance.error.off('error');
+
+    is.deepEqual(
+      caption.children,
+      captionContent,
+      'leaves contents of the caption intact'
+    );
+
+    is.end();
+  }
+);
+
 test('`selection` on the channel `update` works alright.', function(is) {
   var tree = mockTree();
   var radioElements = arrayFrom(tree.children[2].children)
