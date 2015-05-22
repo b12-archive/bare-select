@@ -1,0 +1,81 @@
+var findIndex = require('find-index');
+var arrayFrom = require('array-from');
+var curry = require('1-liners/curry');
+var equal = curry(require('1-liners/equal'));
+
+var error = curry(require('../utils/error'))({
+  source: 'updateCaption'
+});
+
+function getLabelByValue(options, value) {
+  var values;
+  var labelNodes;
+
+  if (
+    !options ||
+    !Array.isArray(values = options.values) ||
+    !Array.isArray(labelNodes = options.labelNodes)
+  ) return {error: error(
+    'Can’t get the selected value. The view hasn’t registered valid ' +
+    'options. I’m expecting `{String[]} options.values` and ' +
+    '`{HTMLLabelElement[]} options.labelNodes`.'
+  )};
+
+  return {value:
+    options.labelNodes[
+      findIndex(options.values, equal(value))
+    ] ||
+    null  // TODO: Should this fail silently?
+  };
+}
+
+module.exports = function (args) {
+  var view = args.view;
+  var model = args.model;
+
+  // Keep a snapshot of registered options.
+  var optionsSnapshot = null;
+  view.options.when('update', function(options) {optionsSnapshot = options;});
+
+  // Keep a snapshot of the current selection.
+  var selectionSnapshot = '';
+
+  // Whenever the selection changes,
+  model.state.when('value', function (state) {
+    var value;
+    if (
+      !state ||
+      !state.attributes ||
+      typeof (value = state.attributes.value || '') !== 'string'
+    ) return model.patch.emit('error', error(
+      'Invalid `value` message from `model.state`. Make sure you pass a ' +
+      '`state` object with `{Object} state.attributes`.'
+    ));
+      // TODO: Get rid of code duplication – this is very similar in other
+      //       plugins.
+
+    // Send the new `captionContent` to the channel `view.update` if it’s
+    // different than the snapshot.
+    var labelResult;
+    var currentLabel;
+    if (value !== selectionSnapshot) {
+      labelResult = getLabelByValue(optionsSnapshot, value);
+      if (labelResult.error) return view.update.emit('error', labelResult.error);
+      currentLabel = labelResult.value;
+
+      if (currentLabel) {
+        // The caption’s new content is a DocumentFragment containing clones of
+        // each of the label’s nodes.
+        var content = new DocumentFragment();
+        arrayFrom(currentLabel.childNodes).forEach(function(node) {
+          content.appendChild(node.cloneNode(true));
+        });
+
+        view.update.emit('captionContent', {newDOM: content});
+      }
+    }
+
+    // Update the snapshot.
+    selectionSnapshot = value;
+  });
+};
