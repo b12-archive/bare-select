@@ -110,8 +110,8 @@ test('The channel `options` works alright.', function(is) {
       'with well-formed `radioNodes`'
     );
 
-    is.ok(
-      options.radioNodes.map(function(node) {return {
+    is.deepEqual(
+      options.labelNodes.map(function(node) {return {
         tagName: node.tagName,
       };}),
       repeat({
@@ -131,7 +131,7 @@ test('The channel `options` works alright.', function(is) {
 });
 
 test('The channel `options` fails gracefully.', function(is) {
-  is.plan(4);
+  is.plan(5);
 
   try {view(createElement(
     h('bare-select', [
@@ -186,7 +186,25 @@ test('The channel `options` fails gracefully.', function(is) {
   ));} catch (error) {
     is.ok(
       error.message.match(/wrong option markup/i),
-      'when options are badly formed'
+      'when there’s no radio button in one of the options'
+    );
+  }
+
+  try {view(createElement(
+    h('bare-select', [
+      h('label'),
+      h('input', {type: 'checkbox'}),
+      h('ul', [
+        h('li', [
+          h('input'),
+          h('wrong')
+        ])
+      ])
+    ])
+  ));} catch (error) {
+    is.ok(
+      error.message.match(/wrong option markup/i),
+      'when there’s no label in one of the options'
     );
   }
 

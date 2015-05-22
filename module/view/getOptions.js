@@ -13,11 +13,14 @@ module.exports = function(dropdown) {
   else if (options.some(function(item) {
     return (
       !item.children[0] ||
-      item.children[0].tagName !== 'INPUT'
+      item.children[0].tagName !== 'INPUT' ||
+      !item.children[1] ||
+      item.children[1].tagName !== 'LABEL'
     );
   })) return {error: error(
     'Wrong option markup. The first element in every dropdown option ' +
-    '(`<li>`) should be an `<input>` element – a radio button or checkbox.'
+    '(`<li>`) should be an `<input>` – a radio button or checkbox. ' +
+    'The second element should be a `<label>`.'
   )};
 
   return {value: {
