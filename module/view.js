@@ -4,6 +4,7 @@ var emit = require('stereo/emit');
 var on = require('stereo/on');
 var when = require('stereo/when');
 var snatch = require('stereo/catch');
+var off = require('stereo/off');
 var curry = require('1-liners/curry');
 
 var error = require('./view/error');
@@ -23,6 +24,7 @@ module.exports = function view(rootElement, options) {
   var emitError = emit();
   channels.error = Object.freeze({
     catch: snatch(emitError),
+    off: off(emitError),
   });
 
   var throwError = curry(emitError)('error');

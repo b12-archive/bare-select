@@ -65,7 +65,10 @@ test('The API is in good shape.', function(is) {
     viewInstance.error && Object.keys(viewInstance.error)
       .map(propertyType(viewInstance.error))
     ,
-    [{property: 'catch', type: 'function'}],
+    [
+      {property: 'catch', type: 'function'},
+      {property: 'off', type: 'function'},
+    ],
     '• an error channel `error`'
   );
 
