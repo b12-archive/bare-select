@@ -9,18 +9,12 @@ module.exports = function attributeUpdater(args) {
   var emitter = args.emitter;
   var attributesObject = args.attributesObject;
 
-  // Make sure we emit one event for batch attribute updates.
   var executedInThisLoop = false;
-  function resetLoop() {executedInThisLoop = false;}
 
   // Keep a snapshot of attributes to detect change next time.
   var attributesSnapshot = {};
 
-  return function emitUpdate() {
-    if (executedInThisLoop) return;
-    executedInThisLoop = true;
-    asap(resetLoop);
-
+  function emitUpdate() {
     // Parse current attributes.
     // TODO: Split it out into another module.
     var attributesArray = Array.prototype.slice.call(attributesObject);
@@ -50,5 +44,15 @@ module.exports = function attributeUpdater(args) {
 
     // Update the snapshot.
     attributesSnapshot = currentAttributes;
+
+    executedInThisLoop = false;
+  }
+
+  return function() {
+    // Make sure we emit one event for batch attribute updates.
+    if (executedInThisLoop) return;
+    executedInThisLoop = true;
+
+    asap(emitUpdate);
   };
 };

@@ -34,17 +34,6 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    viewInstance.captionContent && Object.keys(viewInstance.captionContent)
-      .map(propertyType(viewInstance.captionContent))
-    ,
-    [
-      {property: 'emit', type: 'function'},
-      {property: 'catch', type: 'function'},
-    ],
-    '• an input channel `captionContent` with error handling'
-  );
-
-  is.deepEqual(
     viewInstance.options && Object.keys(viewInstance.options)
       .map(propertyType(viewInstance.options))
     ,
@@ -76,7 +65,10 @@ test('The API is in good shape.', function(is) {
     viewInstance.error && Object.keys(viewInstance.error)
       .map(propertyType(viewInstance.error))
     ,
-    [{property: 'catch', type: 'function'}],
+    [
+      {property: 'catch', type: 'function'},
+      {property: 'off', type: 'function'},
+    ],
     '• an error channel `error`'
   );
 
@@ -118,8 +110,8 @@ test('The channel `options` works alright.', function(is) {
       'with well-formed `radioNodes`'
     );
 
-    is.ok(
-      options.radioNodes.map(function(node) {return {
+    is.deepEqual(
+      options.labelNodes.map(function(node) {return {
         tagName: node.tagName,
       };}),
       repeat({
@@ -139,7 +131,7 @@ test('The channel `options` works alright.', function(is) {
 });
 
 test('The channel `options` fails gracefully.', function(is) {
-  is.plan(4);
+  is.plan(5);
 
   try {view(createElement(
     h('bare-select', [
@@ -194,7 +186,25 @@ test('The channel `options` fails gracefully.', function(is) {
   ));} catch (error) {
     is.ok(
       error.message.match(/wrong option markup/i),
-      'when options are badly formed'
+      'when there’s no radio button in one of the options'
+    );
+  }
+
+  try {view(createElement(
+    h('bare-select', [
+      h('label'),
+      h('input', {type: 'checkbox'}),
+      h('ul', [
+        h('li', [
+          h('input'),
+          h('wrong')
+        ])
+      ])
+    ])
+  ));} catch (error) {
+    is.ok(
+      error.message.match(/wrong option markup/i),
+      'when there’s no label in one of the options'
     );
   }
 
@@ -258,6 +268,65 @@ test('`focused` on the channel `update` works alright.', function(is) {
 
   is.end();
 });
+
+test('`captionContent` on the channel `update` works alright.', function(is) {
+  var tree = mockTree();
+  var viewInstance = view(tree);
+  var caption = tree.children[0];
+
+  var mockContent = createElement(h('div'));
+  viewInstance.update.emit('captionContent', {newDOM: mockContent});
+
+  is.equal(
+    caption.children[0],
+    mockContent,
+    'replaces content of the caption'
+  );
+
+  is.equal(
+    caption.children.length,
+    1,
+    'leaves no other content inside'
+  );
+
+  is.end();
+});
+
+test(
+  '`captionContent` on the channel `update` fails gracefully.',
+  function(is) {
+    is.plan(3);
+
+    var tree = mockTree();
+    var viewInstance = view(tree);
+    var caption = tree.children[0];
+    var captionContent = arrayFrom(caption.children);
+
+    viewInstance.error.catch(function(error) {is.ok(
+      error.message.match(/invalid `captionContent` message/i),
+      'emits an error if passed a non-object in the message'
+    );});
+
+    viewInstance.update.emit('captionContent', null);
+    viewInstance.error.off('error');
+
+    viewInstance.error.catch(function(error) {is.ok(
+      error.message.match(/invalid `captionContent` message/i),
+      'emits an error if passed non-DOM in the message'
+    );});
+
+    viewInstance.update.emit('captionContent', {newDOM: 'invalid'});
+    viewInstance.error.off('error');
+
+    is.deepEqual(
+      caption.children,
+      captionContent,
+      'leaves contents of the caption intact'
+    );
+
+    is.end();
+  }
+);
 
 test('`selection` on the channel `update` works alright.', function(is) {
   var tree = mockTree();

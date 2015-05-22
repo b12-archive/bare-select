@@ -1,6 +1,5 @@
-require('es6-set/implement');
-
 var requestFrame = require('ainojs-requestframe');
+
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;

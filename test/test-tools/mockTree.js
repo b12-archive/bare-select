@@ -10,17 +10,20 @@ module.exports = function() {return createElement(
         h('input', {type: 'radio', name: 'radio-group',
           value: 'a',
         }),
+        h('label'),
       ]),
       h('li', [
         h('input', {type: 'radio', name: 'radio-group',
           value: 'b',
           checked: true,
         }),
+        h('label'),
       ]),
       h('li', [
         h('input', {type: 'radio', name: 'radio-group',
           value: 'c',
         }),
+        h('label'),
       ]),
     ]),
   ])
