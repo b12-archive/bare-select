@@ -1,6 +1,5 @@
 var test = require('../test-tools/test')('“autohide” plugin');
 var mockPlugin = require('../test-tools/mockPlugin');
-var noop = require('1-liners/noop');
 
 var autohide = require('../../plugins/autohide');
 
@@ -54,13 +53,5 @@ test(
     mock.view.dropdownElement.emit('click');
 
     is.timeoutAfter(200);
-  }
-);
-
-test.skip(  // TODO
-  'Fails gracefully',
-  function(is) {
-    is.plan(0);
-    is.end();
   }
 );
