@@ -8,6 +8,7 @@ var off = require('stereo/off');
 var curry = require('1-liners/curry');
 
 var error = require('./view/error');
+var getCaption = require('./view/getCaption');
 var getDropdown = require('./view/getDropdown');
 var getOptions = require('./view/getOptions');
 var getSwitch = require('./view/getSwitch');
@@ -31,6 +32,10 @@ module.exports = function view(rootElement, options) {
 
   // Find and validate internal DOM.
   var rootChildren = rootElement.children;
+
+  var captionResult = getCaption(rootChildren);
+  if (captionResult.error) return throwError(captionResult.error);
+  var captionElement = captionResult.value;
 
   var switchResult = getSwitch(rootChildren);
   if (switchResult.error) return throwError(switchResult.error);
@@ -58,6 +63,33 @@ module.exports = function view(rootElement, options) {
     // TODO: Check if the message is valid.
     if (focused.newValue) switchElement.focus();
     else switchElement.blur();
+  });
+
+  // Wire up `captionContent` on the `update` channel.
+  onUpdate('captionContent', function(captionContent) {
+    // Check if the message is valid.
+    var newDOM;
+    if (
+      !captionContent ||
+      !(newDOM = captionContent.newDOM) ||
+      !(typeof Node === 'function' ?
+        captionContent.newDOM instanceof Node :
+        captionContent.newDOM.nodeType
+      )
+    ) return emitError('error', error(
+      'Invalid `captionContent` message on the channel `view.update`. Make ' +
+      'sure you pass an `{Object} captionContent` with a ' +
+      '`{Node} captionContent.newDOM`.'
+    ));
+
+    // Clear the contents of the caption.
+    var lastChild;
+    while ((lastChild = captionElement.lastChild)) {
+      captionElement.removeChild(lastChild);
+    }
+
+    // Add the new content.
+    captionElement.appendChild(newDOM);
   });
 
   // Wire up `selection` on the `update` channel.
