@@ -11,16 +11,16 @@ module.exports = function (args) {
 
   // Update the view when the model changes.
   model.state.when('unfolded', function(state) {
-    var emitUnfolded = view.unfolded.emit;
+    var emitUpdate = view.update.emit;
 
-    if (!state || !state.attributes) return emitUnfolded('error', error(
+    if (!state || !state.attributes) return emitUpdate('error', error(
       'Invalid `unfolded` message from `model.state`. Make sure you pass an ' +
       'object with `{Object} unfolded.attributes`.'
     ));
 
     valueSnapshot = state.attributes.hasOwnProperty('unfolded');
-    emitUnfolded('update', {
-      value: valueSnapshot,
+    emitUpdate('unfolded', {
+      newValue: valueSnapshot,
     });
   });
 

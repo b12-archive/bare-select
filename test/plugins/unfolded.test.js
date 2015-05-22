@@ -94,10 +94,10 @@ test(
 
     // Set up tests.
     var run = 1;
-    mock.view.unfolded.on('update', function (update) {
+    mock.view.update.on('unfolded', function (unfolded) {
       if (run === 1) {
         is.equal(
-          update.value,
+          unfolded.newValue,
           false,
           'switches it off when the attribute `unfolded` has gone away'
         );
@@ -105,7 +105,7 @@ test(
 
       else if (run === 2) {
         is.equal(
-          update.value,
+          unfolded.newValue,
           true,
           'switches it back on when the attribute `unfolded` has been added'
         );
@@ -138,10 +138,10 @@ test(
         'emits an error when it receives a non-object as message'
       );
     }
-    mock.view.unfolded.on('error', test1);
+    mock.view.update.on('error', test1);
     mock.model.state.emit('unfolded', null);
     mock.model.state.emit('unfolded', {});
-    mock.view.unfolded.off('error', test1);
+    mock.view.update.off('error', test1);
 
     var test2Run = 1;
     function test2(error) {

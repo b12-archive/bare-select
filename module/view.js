@@ -44,14 +44,37 @@ module.exports = function view(rootElement, options) {
   var emitCaptionContent = emit();
   channels.captionContent = inputChannel(emitCaptionContent);
 
-  // Initialize the input channel `unfolded`.
-  var emitUnfolded = emit();
-  channels.unfolded = inputChannel(emitUnfolded);
+  // Initialize the input channel `update`.
+  var emitUpdate = emit();
+  var onUpdate = on(emitUpdate);
+  channels.update = inputChannel(emitUpdate);
 
-  // Wire up the channel `unfolded`.
-  var onUnfolded = on(emitUnfolded);
-  onUnfolded('update', function(message) {
-    switchElement.checked = !!message.value;
+  // Wire up `unfolded` on the `update` channel.
+  onUpdate('unfolded', function(unfolded) {
+    switchElement.checked = !!unfolded.newValue;
+  });
+
+  // Wire up `selection` on the `update` channel.
+  onUpdate('selection', function(selection) {
+    // At this point we’re sure that `optionsSnapshot` is valid. Get
+    // `radioNodes` out of there.
+    var radioNodes = optionsSnapshot.radioNodes;
+
+    // Uncheck all options if `""` is passed.
+    var newValue = selection.newValue;
+    if (newValue === '') {
+      return uncheckAll(radioNodes);
+    }
+
+    // Uncheck all options and throw an error if the value can’t be found.
+    var valueIndex = optionsSnapshot.values.indexOf(newValue);
+    if (valueIndex === -1) {
+      uncheckAll(radioNodes);
+      return throwError(error('Value not found.'));
+    }
+
+    // Otherwise check the right value.
+    radioNodes[valueIndex].checked = true;
   });
 
   // Initialize the output channel `options`.
@@ -69,46 +92,6 @@ module.exports = function view(rootElement, options) {
     optionsSnapshot = optionsResult.value;
     emitOptions('update', optionsSnapshot);
   }
-
-  // Initialize the input channel `selection`.
-  var emitSelection = emit();
-  channels.selection = Object.freeze({
-    emit: emitSelection,
-  });
-
-  // Wire up the channel `selection`.
-  var onSelection = on(emitSelection);
-  onSelection('update', function(update) {
-    // At this point we’re sure that `optionsSnapshot` is valid. Get
-    // `radioNodes` out of there.
-    var radioNodes = optionsSnapshot.radioNodes;
-
-    // Uncheck all options if `""` is passed.
-    var newValue = update.newValue;
-    if (newValue === '') {
-      return uncheckAll(radioNodes);
-    }
-
-    // Uncheck all options and throw an error if the value can’t be found.
-    var valueIndex = optionsSnapshot.values.indexOf(newValue);
-    if (valueIndex === -1) {
-      uncheckAll(radioNodes);
-      return throwError(error('Value not found.'));
-    }
-
-    // Otherwise check the right value.
-    radioNodes[valueIndex].checked = true;
-  });
-
-  onSelection('error', function(error) {
-    // Uncheck any loaded options.
-    if (optionsSnapshot) {
-      uncheckAll(optionsSnapshot.radioNodes);
-    }
-
-    // Print the error’s message as a warning to the console.
-    logger.warn(error.message);
-  });
 
   // Initialize the output channel `switchElement`.
   channels.switchElement = Object.freeze({

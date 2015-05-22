@@ -23,11 +23,14 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    viewInstance.selection && Object.keys(viewInstance.selection)
-      .map(propertyType(viewInstance.selection))
+    viewInstance.update && Object.keys(viewInstance.update)
+      .map(propertyType(viewInstance.update))
     ,
-    [{property: 'emit', type: 'function'}],
-    '• an input channel `selection`'
+    [
+      {property: 'emit', type: 'function'},
+      {property: 'catch', type: 'function'},
+    ],
+    '• an input channel `update` with error handling'
   );
 
   is.deepEqual(
@@ -39,17 +42,6 @@ test('The API is in good shape.', function(is) {
       {property: 'catch', type: 'function'},
     ],
     '• an input channel `captionContent` with error handling'
-  );
-
-  is.deepEqual(
-    viewInstance.unfolded && Object.keys(viewInstance.unfolded)
-      .map(propertyType(viewInstance.unfolded))
-    ,
-    [
-      {property: 'emit', type: 'function'},
-      {property: 'catch', type: 'function'},
-    ],
-    '• an input channel `unfolded` with error handling'
   );
 
   is.deepEqual(
@@ -209,19 +201,19 @@ test('The channel `options` fails gracefully.', function(is) {
   is.end();
 });
 
-test('The channel `unfolded` works alright.', function(is) {
+test('`unfolded` on the channel `update` works alright.', function(is) {
   var tree = mockTree();
   var switchElement = tree.children[1];
   var viewInstance = view(tree);
 
-  viewInstance.unfolded.emit('update', {value: true});
+  viewInstance.update.emit('unfolded', {newValue: true});
   is.equal(
     switchElement.checked,
     true,
     'checks the switch when it gets the value `true`'
   );
 
-  viewInstance.unfolded.emit('update', {value: false});
+  viewInstance.update.emit('unfolded', {newValue: false});
   is.equal(
     switchElement.checked,
     false,
@@ -233,21 +225,21 @@ test('The channel `unfolded` works alright.', function(is) {
   is.end();
 });
 
-test('The channel `selection` works alright.', function(is) {
+test('`selection` on the channel `update` works alright.', function(is) {
   var tree = mockTree();
   var radioElements = arrayFrom(tree.children[2].children)
     .map(function(item) {return item.children[0];})
   ;
   var viewInstance = view(tree);
 
-  viewInstance.selection.emit('update', {newValue: 'a'});
+  viewInstance.update.emit('selection', {newValue: 'a'});
   is.equal(
     radioElements[0].checked,
     true,
     'checks the right option when it gets an `update`'
   );
 
-  viewInstance.selection.emit('update', {newValue: ''});
+  viewInstance.update.emit('selection', {newValue: ''});
   is.notOk(
     radioElements.some(function(radio) {return radio.checked;}),
     'unchecks all options when it gets an `update` with the value `""`'
@@ -272,7 +264,7 @@ test('The channel `selection` fails gracefully.', function(is) {
   }});
 
   try {
-    viewInstance.selection.emit('update', {newValue: 'invalid'});
+    viewInstance.update.emit('selection', {newValue: 'invalid'});
   } catch (error) {
     is.ok(
       error.message.match(/value not found/i),
@@ -286,7 +278,7 @@ test('The channel `selection` fails gracefully.', function(is) {
   );
 
   radioElements[1].checked = true;
-  viewInstance.selection.emit('error', {message: 'a message'});
+  viewInstance.update.emit('error', {message: 'a message'});
   is.notOk(
     radioElements.some(function(radio) {return radio.checked;}),
     'unchecks all options when it receives an `error` event'

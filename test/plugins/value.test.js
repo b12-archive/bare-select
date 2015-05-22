@@ -77,7 +77,8 @@ test(
 );
 
 test(
-  'Updates `view.selection` when the attribute `value` has changed.',
+  'Emits a `selection` on `view.update` when the attribute `value` has ' +
+  'changed.',
   function(is) {
     is.plan(4);
 
@@ -85,14 +86,14 @@ test(
     var mock = mockPlugin(value);
 
     // Emit an update before registering options.
-    mock.view.selection.on('error', function(error) {is.ok(
+    mock.view.update.on('error', function(error) {is.ok(
       error.message.match(/can’t update the value/i),
-      'logs a warning if no options have been registered.'
+      'emits an `error` if no options have been registered.'
     );});
     mock.model.state.emit('value', {attributes: {
       value: 'the value'
     }});
-    mock.view.selection.off('error');
+    mock.view.update.off('error');
 
     // Register options.
     mock.view.options.emit('update', {
@@ -101,36 +102,36 @@ test(
     });
 
     // Emit a valid option.
-    mock.view.selection.on('update', function(update) {is.equal(
-      update.newValue,
+    mock.view.update.on('selection', function(selection) {is.equal(
+      selection.newValue,
       'the value',
-      'emits an `update` synchronously when the passed value is valid'
+      'emits a `selection` synchronously when the passed value is valid'
     );});
     mock.model.state.emit('value', {attributes: {
       value: 'the value'
     }});
-    mock.view.selection.off('update');
+    mock.view.update.off('selection');
 
     // Emit an empty option.
-    mock.view.selection.on('update', function(update) {is.equal(
-      update.newValue,
+    mock.view.update.on('selection', function(selection) {is.equal(
+      selection.newValue,
       '',
-      'emits an `update` synchronously when the passed value is empty'
+      'emits a `selection` synchronously when the passed value is empty'
     );});
     mock.model.state.emit('value', {attributes: {
       value: ''
     }});
-    mock.view.selection.off('update');
+    mock.view.update.off('selection');
 
     // Emit an invalid option.
-    mock.view.selection.on('error', function(error) {is.ok(
+    mock.view.update.on('error', function(error) {is.ok(
       error.message.match(/value not found/i),
       'emits an `error` synchronously when the passed value is invalid'
     );});
     mock.model.state.emit('value', {attributes: {
       value: 'something invalid'
     }});
-    mock.view.selection.off('error');
+    mock.view.update.off('error');
 
     is.end();
   }
@@ -170,10 +171,10 @@ test(
       );
     }
 
-    mock2.view.selection.on('error', test2);
+    mock2.view.update.on('error', test2);
     mock2.model.state.emit('value', null);
     mock2.model.state.emit('value', {});
-    mock2.view.selection.off('error', test2);
+    mock2.view.update.off('error', test2);
 
     is.end();
   }
