@@ -6,6 +6,6 @@ module.exports = function() { return {
   unfolded: ø(),
   options: ø(),
   switchElement: ø(),
-  containerElement: ø(),
+  dropdownElement: ø(),
   error: ø(),
 };};

@@ -7,6 +7,7 @@ var snatch = require('stereo/catch');
 var curry = require('1-liners/curry');
 
 var error = require('./view/error');
+var getDropdown = require('./view/getDropdown');
 var getOptions = require('./view/getOptions');
 var getSwitch = require('./view/getSwitch');
 var uncheckAll = require('./view/uncheckAll');
@@ -33,7 +34,11 @@ module.exports = function view(rootElement, options) {
   if (switchResult.error) return throwError(switchResult.error);
   var switchElement = switchResult.value;
 
-  var optionsResult = getOptions(rootChildren);
+  var dropdownResult = getDropdown(rootChildren);
+  if (dropdownResult.error) return throwError(dropdownResult.error);
+  var dropdownElement = dropdownResult.value;
+
+  var optionsResult = getOptions(dropdownElement);
 
   // Initialize the input channel `captionContent`.
   var emitCaptionContent = emit();
@@ -110,9 +115,9 @@ module.exports = function view(rootElement, options) {
     on: switchElement.addEventListener.bind(switchElement),
   });
 
-  // Initialize the output channel `containerElement`.
-  channels.containerElement = Object.freeze({
-    on: rootElement.addEventListener.bind(rootElement),
+  // Initialize the output channel `dropdownElement`.
+  channels.dropdownElement = Object.freeze({
+    on: dropdownElement.addEventListener.bind(dropdownElement),
   });
 
   // Return the channels.

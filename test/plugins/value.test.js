@@ -22,7 +22,7 @@ test(
     mock.view.options.emit('update', options);
     mock.model.patch.off('patch');
 
-    // Update the second option and emit a mock `change` to `containerElement`.
+    // Update the second option and emit a mock `change` to `dropdownElement`.
     updateElement(options.radioNodes[0], mockOptionRadio({
       value: '0',
       checked: false,
@@ -37,14 +37,14 @@ test(
       {value: '2'},
       'issues a `patch` event to `model.patch` when the value changes'
     );});
-    mock.view.containerElement.emit('change');
+    mock.view.dropdownElement.emit('change');
     mock.model.patch.off('patch');
 
     // Emit a `change` without updating anything.
     mock.model.patch.on('patch', function() {is.fail(
       'doesn’t emit a `patch` event when nothing changes'
     );});
-    mock.view.containerElement.emit('change');
+    mock.view.dropdownElement.emit('change');
     mock.model.patch.off('patch');
 
     // Deselect the option
@@ -57,7 +57,7 @@ test(
       {value: ''},
       'removes the `value` attribute when all options are deselected'
     );});
-    mock.view.containerElement.emit('change');
+    mock.view.dropdownElement.emit('change');
     mock.model.patch.off('patch');
 
     // Initialize a plugin with no selected options.

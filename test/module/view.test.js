@@ -97,11 +97,11 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    viewInstance.containerElement && Object.keys(viewInstance.containerElement)
-      .map(propertyType(viewInstance.containerElement))
+    viewInstance.dropdownElement && Object.keys(viewInstance.dropdownElement)
+      .map(propertyType(viewInstance.dropdownElement))
     ,
     [{property: 'on', type: 'function'}],
-    '• an output channel `containerElement`'
+    '• an output channel `dropdownElement`'
   );
 
   is.deepEqual(

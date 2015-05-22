@@ -41,7 +41,7 @@ test(
       'when the selection is changed'
     );};
 
-    mock.view.containerElement.emit('change');
+    mock.view.dropdownElement.emit('change');
     mock.view.switchElement.focus = noop;
 
     // Finnito.

@@ -54,7 +54,7 @@ module.exports = function (args) {
 
   // * upon a `change` event on the container – when something has been
   // selected.
-  view.containerElement.on('change', function() {
+  view.dropdownElement.on('change', function() {
     updateFromOptions(optionsSnapshot);
   });
 
