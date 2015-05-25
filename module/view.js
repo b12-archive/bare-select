@@ -8,15 +8,21 @@ var off = require('stereo/off');
 var curry = require('1-liners/curry');
 
 var error = require('./view/error');
-var getCaption = require('./view/getCaption');
-var getDropdown = require('./view/getDropdown');
-var getOptions = require('./view/getOptions');
-var getSwitch = require('./view/getSwitch');
 var uncheckAll = require('./view/uncheckAll');
 var inputChannel = require('./view/inputChannel');
+var getElement = require('./view/getElement');
+var getOptions = require('./view/getOptions');
 
 module.exports = function view(rootElement, options) {
   if (!options) options = {};
+  var selectors = options.selectors || {
+    caption     : 'bare-select > label',
+    switch      : 'bare-select > input[type=checkbox]',
+    dropdown    : 'bare-select > ul',
+    option      : 'bare-select > ul > li',
+    optionRadio : 'input[type=radio]',
+    optionLabel : 'label',
+  };
 
   var channels = {};
 
@@ -30,21 +36,37 @@ module.exports = function view(rootElement, options) {
   var throwError = curry(emitError)('error');
 
   // Find and validate internal DOM.
-  var rootChildren = rootElement.children;
+  var captionResult = getElement({
+    root: rootElement,
+    elementName: 'caption',
+    selector: selectors.caption,
+  });
 
-  var captionResult = getCaption(rootChildren);
   if (captionResult.error) return throwError(captionResult.error);
   var captionElement = captionResult.value;
 
-  var switchResult = getSwitch(rootChildren);
+  var switchResult = getElement({
+    root: rootElement,
+    elementName: 'switch',
+    selector: selectors.switch,
+  });
+
   if (switchResult.error) return throwError(switchResult.error);
   var switchElement = switchResult.value;
 
-  var dropdownResult = getDropdown(rootChildren);
+  var dropdownResult = getElement({
+    root: rootElement,
+    elementName: 'dropdown',
+    selector: selectors.dropdown,
+  });
+
   if (dropdownResult.error) return throwError(dropdownResult.error);
   var dropdownElement = dropdownResult.value;
 
-  var optionsResult = getOptions(dropdownElement);
+  var optionsResult = getOptions({
+    root: rootElement,
+    selectors: selectors,
+  });
 
   // Initialize the input channel `update`.
   var emitUpdate = emit();
