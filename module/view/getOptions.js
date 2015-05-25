@@ -1,37 +1,51 @@
+var arrayFrom = require('array-from');
+
 var error = require('./error');
 
-module.exports = function(dropdown) {
-  var options = Array.prototype.slice.call(dropdown.children)
-    .filter(function(element) {return element.tagName === 'LI';})
-  ;
+module.exports = function(args) {
+  var getElement = args.getElement;
+  var selectors = args.selectors;
 
-  if (!options.length) return {error: error(
-    'No options found in the dropdown. Every option should be a `<li>` ' +
-    'element with a radio button.'
+  // Get and validate the options.
+  var optionsResult = getElement({
+    selector: selectors.option,
+    multiple: true,
+    elementName: 'option',
+  });
+
+  if (optionsResult.error) return optionsResult;
+  var options = arrayFrom(optionsResult.value);
+
+  // Check and parse each option in one loop.
+  var values = [];
+  var radioNodes = [];
+  var labelNodes = [];
+
+  if (!options.every(
+    function(option, index) {
+      var radio = option.querySelector(selectors.optionRadio);
+      var label = option.querySelector(selectors.optionLabel);
+      if (!radio || !label) return false;
+
+      values[index] = radio.value;
+      radioNodes[index] = radio;
+      labelNodes[index] = label;
+      return true;
+    }
+  )) return {error: error(
+    'Wrong markup within options. Make sure every option (`' +
+    selectors.option +
+    '`) has a radio button matching the selector `' +
+    selectors.optionRadio +
+    '` and a label matching `' +
+    selectors.optionLabel +
+    '`. Make sure the radio button has a `value` property.'
   )};
 
-  else if (options.some(function(item) {
-    return (
-      !item.children[0] ||
-      item.children[0].tagName !== 'INPUT' ||
-      !item.children[1] ||
-      item.children[1].tagName !== 'LABEL'
-    );
-  })) return {error: error(
-    'Wrong option markup. The first element in every dropdown option ' +
-    '(`<li>`) should be an `<input>` – a radio button or checkbox. ' +
-    'The second element should be a `<label>`.'
-  )};
-
+  // Return the value.
   return {value: {
-    values: options.map(
-      function(item) {return item.children[0].value;}
-    ),
-    radioNodes: options.map(
-      function(item) {return item.children[0];}
-    ),
-    labelNodes: options.map(
-      function(item) {return item.children[1];}
-    ),
+    values: values,
+    radioNodes: radioNodes,
+    labelNodes: labelNodes,
   }};
 };

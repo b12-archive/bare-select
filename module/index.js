@@ -1,5 +1,6 @@
 var viewConstructor = require('./view');
 var modelConstructor = require('./model');
+var assign = require('object-assign');
 
 var executed = false;
 
@@ -29,34 +30,42 @@ function proto(options) {
   result.createdCallback = function createdCallback() {
 
     // Initialize the `view` and `model`.
-    var view = this.view = viewConstructor(this);
-    var model = this.model = modelConstructor(this);
+    var view = viewConstructor(this, options);
+    var model = modelConstructor(this, options);
 
-    // Add the method `registerPlugin` and register default plugins.
+    // Define the method `registerPlugin` and register default plugins.
     var registeredPlugins = [];
-    var registerPlugin = this.registerPlugin = function(plugin) {
+    var pluginOptions = assign({
+      view: view,
+      model: model,
+    }, options);
+
+    var registerPlugin = function(plugin) {
       if (typeof plugin !== 'function') return logger.warn('bare-select: ' +
         'Can’t register plugin – it’s not a function.',
         '\nPlugin:',
         plugin
       );
-      registeredPlugins.push(plugin({
-        view: view,
-        model: model,
-        logger: logger,
-      }));
+      registeredPlugins.push(plugin(pluginOptions));
     };
+
     plugins.forEach(registerPlugin);
 
-    // Define a read-only property `plugins`.
+    // Export public properties.
+    this.registerPlugin = registerPlugin;
+
     Object.defineProperty(this, 'plugins', {
       get: function() {return registeredPlugins.slice();}
     });
+
+    // Export other properties.
+    this._view = view;
+    this._model = model;
   };
 
   // Inherit `attributeChangedCallback` from the model.
   result.attributeChangedCallback = function attributeChangedCallback() {
-    this.model.attributeChangedCallback.apply(null, arguments);
+    this._model.attributeChangedCallback.apply(null, arguments);
   };
 
   // Return the prototype.
