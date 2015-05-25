@@ -17,7 +17,6 @@ var inputChannel = require('./view/inputChannel');
 
 module.exports = function view(rootElement, options) {
   if (!options) options = {};
-  var logger = options.logger || console;
 
   var channels = {};
 
