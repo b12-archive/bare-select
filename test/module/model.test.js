@@ -67,19 +67,19 @@ test('The API is in good shape.', function(is) {
   is.end();
 });
 
-test('The channel `state` works alright.', {timeout: 2000}, function(is) {
+test('The channel `state` works alright.', function(is) {
   var mock = mockRoot();
   var modelInstance = model(mock);
   var firstRun = true;
   var valueState;
 
-  is.plan(16);
+  is.plan(15);
+  is.timeoutAfter(1000);
 
-  var justCalled = true;
   modelInstance.state.when('value', function(state) {
     if (firstRun) {
       is.pass(
-        'issues the event `value` for the attribute `value`'
+        'issues the event `value` for the attribute `value` initially'
       );
 
       is.ok(
@@ -110,10 +110,6 @@ test('The channel `state` works alright.', {timeout: 2000}, function(is) {
         '– passing the current value of the attribute'
       );
 
-      is.ok(justCalled,
-        '– executing synchronously with a cached message'
-      );
-
       valueState = state;
     }
 
@@ -135,7 +131,6 @@ test('The channel `state` works alright.', {timeout: 2000}, function(is) {
       );
     }
   });
-  justCalled = false;
 
   modelInstance.state.when('unfolded', function(state) {
     if (firstRun) {
@@ -183,8 +178,9 @@ test('The channel `state` works alright.', {timeout: 2000}, function(is) {
   });
 
   // Trigger the second run.
-  firstRun = false;
   setTimeout(function () {
+    firstRun = false;
+
     modelInstance.state.on('unchanged', function() {
       is.fail('an unchanged attribute shouldn’t receive an update');
     });
@@ -193,12 +189,10 @@ test('The channel `state` works alright.', {timeout: 2000}, function(is) {
     modelInstance.attributeChangedCallback('value');
     modelInstance.attributeChangedCallback('disabled');
     modelInstance.attributeChangedCallback('unfolded');
-
-    is.end();
   }, 100);
 });
 
-test('The channel `patch` works alright.', {timeout: 2000}, function(is) {
+test('The channel `patch` works alright.', function(is) {
   var mock = mockRoot();
   var modelInstance = model(mock);
 
