@@ -25,7 +25,7 @@ function getLabelByValue(options, value) {
     options.labelNodes[
       findIndex(options.values, equal(value))
     ] ||
-    null  // TODO: Should this fail silently?
+    null
   };
 }
 
@@ -48,6 +48,8 @@ module.exports = function (args) {
       !state ||
       !state.attributes ||
       typeof (value = state.attributes.value || '') !== 'string'
+        // TODO: '' or null?
+        // TODO: Clear caption on empty value.
     ) return view.update.emit('error', error(
       'Invalid `value` message from `model.state`. Make sure you pass a ' +
       '`state` object with `{Object} state.attributes`.'
