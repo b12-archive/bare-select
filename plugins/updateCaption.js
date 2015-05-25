@@ -48,7 +48,7 @@ module.exports = function (args) {
       !state ||
       !state.attributes ||
       typeof (value = state.attributes.value || '') !== 'string'
-    ) return model.patch.emit('error', error(
+    ) return view.update.emit('error', error(
       'Invalid `value` message from `model.state`. Make sure you pass a ' +
       '`state` object with `{Object} state.attributes`.'
     ));
