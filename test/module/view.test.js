@@ -140,7 +140,7 @@ test('The channel `options` fails gracefully.', function(is) {
     ])
   ));} catch (error) {
     is.ok(
-      error.message.match(/switch element not found/i),
+      error.message.match(/can’t find the switch element/i),
       'when the switch isn’t there'
     );
   }
@@ -153,7 +153,7 @@ test('The channel `options` fails gracefully.', function(is) {
     ])
   ));} catch (error) {
     is.ok(
-      error.message.match(/dropdown element not found/i),
+      error.message.match(/can’t find the dropdown element/i),
       'when the dropdown isn’t there'
     );
   }
@@ -168,7 +168,7 @@ test('The channel `options` fails gracefully.', function(is) {
     ])
   ));} catch (error) {
     is.ok(
-      error.message.match(/no options found in the dropdown/i),
+      error.message.match(/can’t find any option element/i),
       'when the dropdown is empty'
     );
   }
@@ -185,7 +185,7 @@ test('The channel `options` fails gracefully.', function(is) {
     ])
   ));} catch (error) {
     is.ok(
-      error.message.match(/wrong option markup/i),
+      error.message.match(/wrong markup within options/i),
       'when there’s no radio button in one of the options'
     );
   }
@@ -196,14 +196,14 @@ test('The channel `options` fails gracefully.', function(is) {
       h('input', {type: 'checkbox'}),
       h('ul', [
         h('li', [
-          h('input'),
+          h('input', {type: 'radio'}),
           h('wrong')
         ])
       ])
     ])
   ));} catch (error) {
     is.ok(
-      error.message.match(/wrong option markup/i),
+      error.message.match(/wrong markup within options/i),
       'when there’s no label in one of the options'
     );
   }
