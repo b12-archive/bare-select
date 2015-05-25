@@ -1,5 +1,6 @@
 var test = require('../test-tools/test')('“updateCaption” plugin');
 var mockPlugin = require('../test-tools/mockPlugin');
+var doc = require('jsdom').jsdom().defaultView.document;
 var always = require('1-liners/always');
 
 var updateCaption = require('../../plugins/updateCaption');
@@ -62,5 +63,49 @@ test(
       },
       'fails silently when given an invalid value'
     );
+  }
+);
+
+test(
+  'Fails gracefully.',
+  function (is) {
+    is.plan(2);
+
+    // Prepare a mock select, without any attributes.
+    var mock = mockPlugin(updateCaption,
+      {DocumentFragment: always(doc.createDocumentFragment())}
+    );
+
+    // Emit a `value` before any options have been loaded.
+    mock.view.update.catch(function(error) {is.ok(
+      error.message.match(/the view hasn’t registered valid options/i),
+      'when no options have been registered'
+    );});
+
+    mock.model.state.emit('value', {attributes: {value: 'a'}});
+    mock.view.update.off('error');
+
+    // Emit an invalid `value` message.
+    mock.view.update.catch(function(error) {is.ok(
+      error.message.match(/invalid `value` message/i),
+      'when passed an invalid `value` message from `model.state`'
+    );});
+
+    mock.model.state.emit('value', new Date());
+    mock.view.update.off('error');
+
+    // Emit an unknown `value`.
+    mock.view.update.on(['captionContent', 'error'], function(e) {console.log(e); is.fail(
+      'fails silently when passed an unknown `value`'
+    );});
+
+    mock.view.options.emit('update', {
+      values: ['a', 'b'],
+      labelNodes: [null, null],
+    });
+    mock.model.state.emit('value', {attributes: {value: 'unknown'}});
+    mock.view.update.off(['captionContent', 'error']);
+
+    is.end();
   }
 );
