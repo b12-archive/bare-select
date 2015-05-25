@@ -27,10 +27,7 @@ module.exports = function(args) {
       var label = option.querySelector(selectors.optionLabel);
       if (!radio || !label) return false;
 
-      var value = radio.value;
-      if (typeof value !== 'string') return false;
-
-      values[index] = value;
+      values[index] = radio.value;
       radioNodes[index] = radio;
       labelNodes[index] = label;
       return true;
