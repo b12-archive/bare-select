@@ -3,7 +3,7 @@ var createElement = require('../test-tools/createElement');
 
 module.exports = function() {return createElement(
   h('bare-select', [
-    h('label', {for: 'switch'}),
+    h('label', {for: 'switch'}, ['dummy caption']),
     h('input', {type: 'checkbox', id: 'switch'}),
     h('ul', [
       h('li', [

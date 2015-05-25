@@ -131,7 +131,19 @@ test('The channel `options` works alright.', function(is) {
 });
 
 test('The channel `options` fails gracefully.', function(is) {
-  is.plan(5);
+  is.plan(6);
+
+  try {view(createElement(
+    h('bare-select', [
+      h(),
+      h('input', {type: 'checkbox'}),
+    ])
+  ));} catch (error) {
+    is.ok(
+      error.message.match(/can’t find the caption element/i),
+      'when the caption isn’t there'
+    );
+  }
 
   try {view(createElement(
     h('bare-select', [
