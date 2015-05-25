@@ -103,6 +103,7 @@ test(
       values: ['a', 'b'],
       labelNodes: [null, null],
     });
+
     mock.model.state.emit('value', {attributes: {value: 'unknown'}});
     mock.view.update.off(['captionContent', 'error']);
 
