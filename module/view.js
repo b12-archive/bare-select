@@ -10,7 +10,7 @@ var curry = require('1-liners/curry');
 var error = require('./view/error');
 var uncheckAll = require('./view/uncheckAll');
 var inputChannel = require('./view/inputChannel');
-var getElement = require('./view/getElement');
+var getElement_ = require('./view/getElement');
 var getOptions = require('./view/getOptions');
 
 module.exports = function view(rootElement, options) {
@@ -36,8 +36,11 @@ module.exports = function view(rootElement, options) {
   var throwError = curry(emitError)('error');
 
   // Find and validate internal DOM.
-  var captionResult = getElement({
+  var getElement = getElement_({
     root: rootElement,
+  });
+
+  var captionResult = getElement({
     elementName: 'caption',
     selector: selectors.caption,
   });
@@ -46,7 +49,6 @@ module.exports = function view(rootElement, options) {
   var captionElement = captionResult.value;
 
   var switchResult = getElement({
-    root: rootElement,
     elementName: 'switch',
     selector: selectors.switch,
   });
@@ -55,7 +57,6 @@ module.exports = function view(rootElement, options) {
   var switchElement = switchResult.value;
 
   var dropdownResult = getElement({
-    root: rootElement,
     elementName: 'dropdown',
     selector: selectors.dropdown,
   });
@@ -64,8 +65,8 @@ module.exports = function view(rootElement, options) {
   var dropdownElement = dropdownResult.value;
 
   var optionsResult = getOptions({
-    root: rootElement,
     selectors: selectors,
+    getElement: getElement,
   });
 
   // Initialize the input channel `update`.

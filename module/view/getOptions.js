@@ -1,15 +1,13 @@
 var arrayFrom = require('array-from');
 
 var error = require('./error');
-var getElement = require('./getElement');
 
 module.exports = function(args) {
-  var root = args.root;
+  var getElement = args.getElement;
   var selectors = args.selectors;
 
   // Get and validate the options.
   var optionsResult = getElement({
-    root: root,
     selector: selectors.option,
     multiple: true,
     elementName: 'option',
