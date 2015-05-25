@@ -65,7 +65,7 @@ function proto(options) {
 
   // Inherit `attributeChangedCallback` from the model.
   result.attributeChangedCallback = function attributeChangedCallback() {
-    this.model.attributeChangedCallback.apply(null, arguments);
+    this._model.attributeChangedCallback.apply(null, arguments);
   };
 
   // Return the prototype.
