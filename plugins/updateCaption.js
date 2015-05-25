@@ -16,7 +16,7 @@ function getLabelByValue(options, value) {
     !Array.isArray(values = options.values) ||
     !Array.isArray(labelNodes = options.labelNodes)
   ) return {error: error(
-    'Can’t get the selected value. The view hasn’t registered valid ' +
+    'Can’t get the requested label. The view hasn’t registered valid ' +
     'options. I’m expecting `{String[]} options.values` and ' +
     '`{HTMLLabelElement[]} options.labelNodes`.'
   )};
@@ -32,6 +32,7 @@ function getLabelByValue(options, value) {
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;
+  var DocFragment = args.DocumentFragment || DocumentFragment;
 
   // Keep a snapshot of registered options.
   var optionsSnapshot = null;
@@ -66,7 +67,7 @@ module.exports = function (args) {
       if (currentLabel) {
         // The caption’s new content is a DocumentFragment containing clones of
         // each of the label’s nodes.
-        var content = new DocumentFragment();
+        var content = new DocFragment();
         arrayFrom(currentLabel.childNodes).forEach(function(node) {
           content.appendChild(node.cloneNode(true));
         });
