@@ -148,7 +148,7 @@ test(
 test(
   'Unfolds the dropdown and folds it back up',
   function(is) {
-    is.plan(7);
+    is.plan(8);
 
     // Prepare a mock select, folded initially.
     var mock = mockPlugin(keyboardNavigation);
@@ -177,6 +177,14 @@ test(
 
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(keyCodes.SPACE));
     mock.model.patch.off('patch');
+
+    // Unpress [SPACE].
+    mock.view.switchElement.emit('keyup', {
+      keyCode: keyCodes.SPACE,
+      preventDefault: function() {is.pass(
+        'prevents the default behavior of [SPACE]'
+      );},
+    });
 
     // Press [TAB].
     mock.model.patch.on('patch', function(patch) {is.equal(

@@ -143,4 +143,11 @@ module.exports = function (args) {
       }
     }
   });
+
+  // Prevent default behavior of [SPACE] (flicking the switch).
+  view.switchElement.on('keyup', function(event) {
+    if (event.keyCode === keyCodes.SPACE) {
+      event.preventDefault();
+    }
+  });
 };
