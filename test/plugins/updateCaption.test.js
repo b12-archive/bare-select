@@ -20,7 +20,7 @@ test(
     };
 
     var mock = mockPlugin(updateCaption,
-      {DocumentFragment: always(mockFragment)}
+      {documentFragment: always(mockFragment)}
     );
 
     var mockItems = [
@@ -73,7 +73,7 @@ test(
 
     // Prepare a mock select, without any attributes.
     var mock = mockPlugin(updateCaption,
-      {DocumentFragment: always(doc.createDocumentFragment())}
+      {documentFragment: always(doc.createDocumentFragment())}
     );
 
     // Emit a `value` before any options have been loaded.
