@@ -8,14 +8,20 @@ module.exports = function (args) {
   var switchJustBlurred = false;
   var dropdownJustMousedowned = false;
 
+  // Read event channels.
+  var switchElement = view.switchElement;
+  var dropdownElement = view.dropdownElement;
+
   // Fold the dropdown when the switch element has been blurred.
-  view.switchElement.on('blur', function() {
+  switchElement.on('blur', function() {
+
     // Update the state.
     switchJustBlurred = true;
 
     // Throttle the fold by one frame to make sure the blur wasn’t triggered
     // by a click within the dropdown.
     requestFrame(function () {
+
       // Update the model.
       if (switchJustBlurred && !dropdownJustMousedowned) {
         model.patch.emit('patch', {unfolded: undefined});
@@ -28,7 +34,8 @@ module.exports = function (args) {
   });
 
   // Prevent the fold when the dropdown is clicked.
-  view.dropdownElement.on('mousedown', function() {
+  dropdownElement.on('mousedown', function() {
+
     // Update the state.
     dropdownJustMousedowned = true;
 
@@ -42,7 +49,19 @@ module.exports = function (args) {
   });
 
   // Restore focus on the switch after the dropdown has been clicked.
-  view.dropdownElement.on('click', function() {
+  dropdownElement.on('click', function() {
     view.update.emit('focused', {newValue: true});
+  });
+
+  // Don’t re-show the dropdown when the loss of focus came from flicking the
+  // switch.
+  switchElement.on('mousedown', function() {  // TODO: This should be on the captionElement
+    function preventDefault(event) {event.preventDefault();}
+
+    switchElement.once('change', preventDefault);
+
+    switchElement.once('mouseleave', function() {
+      switchElement.off('change', preventDefault);
+    });
   });
 };
