@@ -33,6 +33,7 @@ module.exports = function (args) {
   var view = args.view;
   var model = args.model;
   var fragment = (args.documentFragment ||
+    /* istanbul ignore next */
     function () {return document.createDocumentFragment();}
   );
 
