@@ -4,9 +4,9 @@ var mockPlugin = require('../test-tools/mockPlugin');
 var autohide = require('../../plugins/autohide');
 
 test(
-  'Hides the dropdown',
+  'Hides the dropdown.',
   function(is) {
-    is.plan(1);
+    is.plan(2);
 
     // Prepare a mock select.
     var mock = mockPlugin(autohide);
@@ -20,6 +20,45 @@ test(
     // Blur the select.
     mock.view.switchElement.emit('blur');
 
+    // Blur it again by flicking the switch.
+    setTimeout(function () {
+      mock.model.patch.off('patch');
+
+      mock.view.switchElement.emit('mousedown');
+      mock.view.switchElement.emit('blur');
+
+      setTimeout(function () {
+        mock.view.switchElement.emit('change', {
+          preventDefault: function() {is.pass(
+            'keeps it hidden when the loss of focus came from flicking the ' +
+            'switch'
+          );}
+        });
+
+        mock.view.switchElement.emit('change', {
+          preventDefault: function() {is.fail(
+            'doesn’t break the switch'
+          );}
+        });
+      }, 100);
+    }, 100);
+
+    // Blur it again by clicking the switch, but moving the pointer away in
+    // the meantime.
+    setTimeout(function () {
+      mock.view.switchElement.emit('mousedown');
+      mock.view.switchElement.emit('blur');
+
+      setTimeout(function () {
+        mock.view.switchElement.emit('mouseleave');
+        mock.view.switchElement.emit('change', {
+          preventDefault: function() {is.fail(
+            'detects when the switch has been mousedowned but not changed'
+          );}
+        });
+      }, 100);
+    }, 300);
+
     // Prepare another mock select.
     var anotherMock = mockPlugin(autohide);
 
@@ -31,12 +70,12 @@ test(
     anotherMock.view.switchElement.emit('blur');
     anotherMock.view.dropdownElement.emit('mousedown');
 
-    is.timeoutAfter(200);
+    is.timeoutAfter(2000);
   }
 );
 
 test(
-  'Prevents the select from losing focus unintentionally',
+  'Prevents the select from losing focus unintentionally.',
   function(is) {
     is.plan(1);
 
