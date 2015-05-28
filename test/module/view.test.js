@@ -23,7 +23,8 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    viewInstance.update && Object.keys(viewInstance.update)
+    viewInstance.update &&
+    Object.keys(viewInstance.update)
       .map(propertyType(viewInstance.update))
     ,
     [
@@ -34,7 +35,8 @@ test('The API is in good shape.', function(is) {
   );
 
   is.deepEqual(
-    viewInstance.options && Object.keys(viewInstance.options)
+    viewInstance.options &&
+    Object.keys(viewInstance.options)
       .map(propertyType(viewInstance.options))
     ,
     [
@@ -42,27 +44,44 @@ test('The API is in good shape.', function(is) {
       {property: 'when', type: 'function'},
       {property: 'catch', type: 'function'},
     ],
-    '• a cacheable output channel `options` with error handling'
+    '• a promise-like output channel `options` with error handling'
   );
 
+  var domChannelSignature = [
+    {property: 'on', type: 'function'},
+    {property: 'off', type: 'function'},
+  ];
+
   is.deepEqual(
-    viewInstance.switchElement && Object.keys(viewInstance.switchElement)
+    viewInstance.switchElement &&
+    Object.keys(viewInstance.switchElement)
       .map(propertyType(viewInstance.switchElement))
     ,
-    [{property: 'on', type: 'function'}],
-    '• an output channel `switchElement`'
+    domChannelSignature,
+    '• an output DOM channel `switchElement`'
   );
 
   is.deepEqual(
-    viewInstance.dropdownElement && Object.keys(viewInstance.dropdownElement)
+    viewInstance.dropdownElement &&
+    Object.keys(viewInstance.dropdownElement)
       .map(propertyType(viewInstance.dropdownElement))
     ,
-    [{property: 'on', type: 'function'}],
-    '• an output channel `dropdownElement`'
+    domChannelSignature,
+    '• an output DOM channel `dropdownElement`'
   );
 
   is.deepEqual(
-    viewInstance.error && Object.keys(viewInstance.error)
+    viewInstance.selectLabelElement &&
+    Object.keys(viewInstance.selectLabelElement)
+      .map(propertyType(viewInstance.selectLabelElement))
+    ,
+    domChannelSignature,
+    '• an output DOM channel `selectLabelElement`'
+  );
+
+  is.deepEqual(
+    viewInstance.error &&
+    Object.keys(viewInstance.error)
       .map(propertyType(viewInstance.error))
     ,
     [
@@ -140,8 +159,8 @@ test('The channel `options` fails gracefully.', function(is) {
     ])
   ));} catch (error) {
     is.ok(
-      error.message.match(/can’t find the caption element/i),
-      'when the caption isn’t there'
+      error.message.match(/can’t find the (?:select label|caption) element/i),
+      'when the select label or caption isn’t there'
     );
   }
 

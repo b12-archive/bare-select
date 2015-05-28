@@ -4,9 +4,9 @@ var mockPlugin = require('../test-tools/mockPlugin');
 var autohide = require('../../plugins/autohide');
 
 test(
-  'Hides the dropdown',
+  'Hides the dropdown.',
   function(is) {
-    is.plan(1);
+    is.plan(2);
 
     // Prepare a mock select.
     var mock = mockPlugin(autohide);
@@ -20,6 +20,60 @@ test(
     // Blur the select.
     mock.view.switchElement.emit('blur');
 
+    setTimeout(function () {
+      mock.model.patch.off('patch');
+
+      // Blur it again by flicking the switch.
+      mock.view.selectLabelElement.emit('mousedown');
+      mock.view.switchElement.emit('blur');
+
+      setTimeout(function () {
+        mock.view.selectLabelElement.emit('click', {
+          preventDefault: function() {is.pass(
+            'keeps it hidden when the loss of focus came from flicking the ' +
+            'switch'
+          );},
+        });
+
+        mock.view.selectLabelElement.emit('click', {
+          preventDefault: function() {is.fail(
+            'doesn’t break the switch'
+          );},
+        });
+      }, 100);
+    }, 100);
+
+    setTimeout(function () {
+
+      // Blur the switch again by pressing the pointer over the select. Before
+      // releasing the pointer, move it away from the select.
+      mock.view.selectLabelElement.emit('mousedown');
+      mock.view.switchElement.emit('blur');
+
+      setTimeout(function () {
+        mock.view.selectLabelElement.emit('mouseleave');
+        mock.view.selectLabelElement.emit('click', {
+          preventDefault: function() {is.fail(
+            'not when the switch has been mousedowned but not mouseupped'
+          );}
+        });
+      }, 100);
+    }, 300);
+
+    setTimeout(function () {
+
+      // Click the switch without blurring it.
+      mock.view.selectLabelElement.emit('mousedown');
+
+      setTimeout(function () {
+        mock.view.selectLabelElement.emit('click', {
+          preventDefault: function() {is.fail(
+            'not when the switch has been mousedowned but not blurred'
+          );}
+        });
+      }, 100);
+    }, 500);
+
     // Prepare another mock select.
     var anotherMock = mockPlugin(autohide);
 
@@ -31,12 +85,12 @@ test(
     anotherMock.view.switchElement.emit('blur');
     anotherMock.view.dropdownElement.emit('mousedown');
 
-    is.timeoutAfter(200);
+    is.timeoutAfter(2000);
   }
 );
 
 test(
-  'Prevents the select from losing focus unintentionally',
+  'Prevents the select from losing focus unintentionally.',
   function(is) {
     is.plan(1);
 

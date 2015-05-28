@@ -6,23 +6,30 @@ var when = require('stereo/when');
 var snatch = require('stereo/catch');
 var off = require('stereo/off');
 var curry = require('1-liners/curry');
+var asObject = require('as/object');
+var spacify = require('reassemble-string')(function(lastLetter, firstLetter) {
+  return lastLetter + ' ' + firstLetter.toLowerCase();
+});
+var assign = require('object-assign');
 
 var error = require('./view/error');
 var uncheckAll = require('./view/uncheckAll');
 var inputChannel = require('./view/inputChannel');
 var getElement_ = require('./view/getElement');
 var getOptions = require('./view/getOptions');
+var domChannel = require('./view/domChannel');
 
 module.exports = function view(rootElement, options) {
   if (!options) options = {};
-  var selectors = options.selectors || {
+  var selectors = assign({
     caption     : 'bare-select > label',
+    selectLabel : 'bare-select > label',
     switch      : 'bare-select > input[type=checkbox]',
     dropdown    : 'bare-select > ul',
     option      : 'bare-select > ul > li',
     optionRadio : 'input[type=radio]',
     optionLabel : 'label',
-  };
+  }, options.selectors);
 
   var channels = {};
 
@@ -40,31 +47,36 @@ module.exports = function view(rootElement, options) {
     root: rootElement,
   });
 
-  var captionResult = getElement({
-    elementName: 'caption',
-    selector: selectors.caption,
-  });
+  var elementKeys = [
+    'selectLabel',
+    'caption',
+    'switch',
+    'dropdown',
+  ];
 
-  if (captionResult.error) return throwError(captionResult.error);
-  var captionElement = captionResult.value;
+  var elementQueries = Object.freeze(asObject(
+    elementKeys.map(function(key) {return {
+      key: key,
+      value: getElement({
+        elementName: spacify(key),
+        selector: selectors[key],
+      })
+    };})
+  ));
 
-  var switchResult = getElement({
-    elementName: 'switch',
-    selector: selectors.switch,
-  });
+  if (elementKeys.some(function(key) {
+    if (elementQueries[key].error) {
+      throwError(elementQueries[key].error);
+      return true;
+    }
+  })) return;
 
-  if (switchResult.error) return throwError(switchResult.error);
-  var switchElement = switchResult.value;
+  var elements = asObject(elementKeys.map(function(key) {return {
+    key: key,
+    value: elementQueries[key].value,
+  };}));
 
-  var dropdownResult = getElement({
-    elementName: 'dropdown',
-    selector: selectors.dropdown,
-  });
-
-  if (dropdownResult.error) return throwError(dropdownResult.error);
-  var dropdownElement = dropdownResult.value;
-
-  var optionsResult = getOptions({
+  var optionsQuery = getOptions({
     selectors: selectors,
     getElement: getElement,
   });
@@ -77,14 +89,14 @@ module.exports = function view(rootElement, options) {
   // Wire up `unfolded` on the `update` channel.
   onUpdate('unfolded', function(unfolded) {
     // TODO: Check if the message is valid.
-    switchElement.checked = !!unfolded.newValue;
+    elements.switch.checked = !!unfolded.newValue;
   });
 
   // Wire up `focused` on the `update` channel.
   onUpdate('focused', function(focused) {
     // TODO: Check if the message is valid.
-    if (focused.newValue) switchElement.focus();
-    else switchElement.blur();
+    if (focused.newValue) elements.switch.focus();
+    else elements.switch.blur();
   });
 
   // Wire up `captionContent` on the `update` channel.
@@ -106,12 +118,12 @@ module.exports = function view(rootElement, options) {
 
     // Clear the contents of the caption.
     var lastChild;
-    while ((lastChild = captionElement.lastChild)) {
-      captionElement.removeChild(lastChild);
+    while ((lastChild = elements.caption.lastChild)) {
+      elements.caption.removeChild(lastChild);
     }
 
     // Add the new content.
-    captionElement.appendChild(newDOM);
+    elements.caption.appendChild(newDOM);
   });
 
   // Wire up `selection` on the `update` channel.
@@ -147,21 +159,20 @@ module.exports = function view(rootElement, options) {
 
   // Emit an initial `update` or `error` to `options`.
   var optionsSnapshot;
-  if (optionsResult.error) emitOptions('error', optionsResult.error);
+  if (optionsQuery.error) emitOptions('error', optionsQuery.error);
   else {
-    optionsSnapshot = optionsResult.value;
+    optionsSnapshot = optionsQuery.value;
     emitOptions('update', optionsSnapshot);
   }
 
   // Initialize the output channel `switchElement`.
-  channels.switchElement = Object.freeze({
-    on: switchElement.addEventListener.bind(switchElement),
-  });
+  channels.switchElement = domChannel(elements.switch);
 
   // Initialize the output channel `dropdownElement`.
-  channels.dropdownElement = Object.freeze({
-    on: dropdownElement.addEventListener.bind(dropdownElement),
-  });
+  channels.dropdownElement = domChannel(elements.dropdown);
+
+  // Initialize the output channel `selectLabelElement`.
+  channels.selectLabelElement = domChannel(elements.selectLabel);
 
   // Return the channels.
   return Object.freeze(channels);
