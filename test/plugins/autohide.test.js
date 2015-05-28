@@ -24,21 +24,22 @@ test(
     setTimeout(function () {
       mock.model.patch.off('patch');
 
-      mock.view.switchElement.emit('mousedown');
+      mock.view.captionElement.emit('mousedown');
       mock.view.switchElement.emit('blur');
 
       setTimeout(function () {
-        mock.view.switchElement.emit('change', {
+        mock.view.captionElement.emit('click', {
           preventDefault: function() {is.pass(
             'keeps it hidden when the loss of focus came from flicking the ' +
             'switch'
-          );}
+          );},
+          stopPropagation: function () {},
         });
 
-        mock.view.switchElement.emit('change', {
+        mock.view.captionElement.emit('click', {
           preventDefault: function() {is.fail(
             'doesn’t break the switch'
-          );}
+          );},
         });
       }, 100);
     }, 100);
@@ -46,12 +47,12 @@ test(
     // Blur it again by clicking the switch, but moving the pointer away in
     // the meantime.
     setTimeout(function () {
-      mock.view.switchElement.emit('mousedown');
+      mock.view.captionElement.emit('mousedown');
       mock.view.switchElement.emit('blur');
 
       setTimeout(function () {
-        mock.view.switchElement.emit('mouseleave');
-        mock.view.switchElement.emit('change', {
+        mock.view.captionElement.emit('mouseleave');
+        mock.view.captionElement.emit('click', {
           preventDefault: function() {is.fail(
             'detects when the switch has been mousedowned but not changed'
           );}

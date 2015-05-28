@@ -9,8 +9,9 @@ module.exports = function (args) {
   var dropdownJustMousedowned = false;
 
   // Read event channels.
-  var switchElement = view.switchElement;
+  var captionElement = view.captionElement;
   var dropdownElement = view.dropdownElement;
+  var switchElement = view.switchElement;
 
   // Fold the dropdown when the switch element has been blurred.
   switchElement.on('blur', function() {
@@ -55,13 +56,20 @@ module.exports = function (args) {
 
   // Don’t re-show the dropdown when the loss of focus came from flicking the
   // switch.
-  switchElement.on('mousedown', function() {  // TODO: This should be on the captionElement
-    function preventDefault(event) {event.preventDefault();}
+  captionElement.on('mousedown', function() {
+    function preventDefaultOnce(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      captionElement.off('click', preventDefaultOnce);
+    }
 
-    switchElement.once('change', preventDefault);
+    captionElement.on('click', preventDefaultOnce);
 
-    switchElement.once('mouseleave', function() {
-      switchElement.off('change', preventDefault);
-    });
+    function unhookPreventDefaultOnce() {
+      captionElement.off('click', preventDefaultOnce);
+      captionElement.off('mouseleave', unhookPreventDefaultOnce);
+    }
+
+    captionElement.on('mouseleave', unhookPreventDefaultOnce);
   });
 };
