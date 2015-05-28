@@ -10,12 +10,14 @@ module.exports = function (args) {
 
   // Fold the dropdown when the switch element has been blurred.
   view.switchElement.on('blur', function() {
+
     // Update the state.
     switchJustBlurred = true;
 
     // Throttle the fold by one frame to make sure the blur wasn’t triggered
     // by a click within the dropdown.
     requestFrame(function () {
+
       // Update the model.
       if (switchJustBlurred && !dropdownJustMousedowned) {
         model.patch.emit('patch', {unfolded: undefined});
@@ -29,6 +31,7 @@ module.exports = function (args) {
 
   // Prevent the fold when the dropdown is clicked.
   view.dropdownElement.on('mousedown', function() {
+
     // Update the state.
     dropdownJustMousedowned = true;
 
