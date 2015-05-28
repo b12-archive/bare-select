@@ -15,7 +15,7 @@ module.exports = function() { return {
   update: ø(),
   captionContent: ø(),
   options: ø(),
-  captionElement: domChannel(),
+  selectLabelElement: domChannel(),
   dropdownElement: domChannel(),
   switchElement: domChannel(),
   error: ø(),

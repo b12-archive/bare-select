@@ -9,7 +9,7 @@ module.exports = function (args) {
   var dropdownJustMousedowned = false;
 
   // Read event channels.
-  var captionElement = view.captionElement;
+  var selectLabelElement = view.selectLabelElement;
   var dropdownElement = view.dropdownElement;
   var switchElement = view.switchElement;
 
@@ -56,20 +56,20 @@ module.exports = function (args) {
 
   // Don’t re-show the dropdown when the loss of focus came from flicking the
   // switch.
-  captionElement.on('mousedown', function() {
+  selectLabelElement.on('mousedown', function() {
     function preventDefaultOnce(event) {
       event.preventDefault();
       event.stopPropagation();
-      captionElement.off('click', preventDefaultOnce);
+      selectLabelElement.off('click', preventDefaultOnce);
     }
 
-    captionElement.on('click', preventDefaultOnce);
+    selectLabelElement.on('click', preventDefaultOnce);
 
     function unhookPreventDefaultOnce() {
-      captionElement.off('click', preventDefaultOnce);
-      captionElement.off('mouseleave', unhookPreventDefaultOnce);
+      selectLabelElement.off('click', preventDefaultOnce);
+      selectLabelElement.off('mouseleave', unhookPreventDefaultOnce);
     }
 
-    captionElement.on('mouseleave', unhookPreventDefaultOnce);
+    selectLabelElement.on('mouseleave', unhookPreventDefaultOnce);
   });
 };
