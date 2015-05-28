@@ -4,7 +4,7 @@ module.exports = function (args) {
   var view = args.view;
   var model = args.model;
 
-  // We need a state machine here.
+  // We need a freakin’ complicated state machine here.
   var switchJustBlurred = false;
   var dropdownJustMousedowned = false;
   var selectJustMousedowned = false;
