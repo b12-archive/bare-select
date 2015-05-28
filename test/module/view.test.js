@@ -159,8 +159,8 @@ test('The channel `options` fails gracefully.', function(is) {
     ])
   ));} catch (error) {
     is.ok(
-      error.message.match(/can’t find the caption element/i),
-      'when the caption isn’t there'
+      error.message.match(/can’t find the (?:select label|caption) element/i),
+      'when the select label or caption isn’t there'
     );
   }
 
