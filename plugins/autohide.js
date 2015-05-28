@@ -9,6 +9,7 @@ module.exports = function (args) {
   var dropdownJustMousedowned = false;
   var selectJustMousedowned = false;
   var preventReshow = false;
+  var optionClickedRecently = false;
 
   function resetDropdownJustMousedowned() {dropdownJustMousedowned = false;}
   function resetSelectJustMousedowned() {selectJustMousedowned = false;}
@@ -18,8 +19,12 @@ module.exports = function (args) {
   var dropdownElement = view.dropdownElement;
   var switchElement = view.switchElement;
 
-  // Fold the dropdown after an option has been selected.
-  dropdownElement.on('change', function() {
+  // Fold the dropdown after an option has been clicked.
+  dropdownElement.on('click', function() {
+
+    // Update the state.
+    optionClickedRecently = true;
+
     model.patch.emit('patch', {unfolded: undefined});
   });
 
@@ -72,21 +77,19 @@ module.exports = function (args) {
     requestFrame(resetSelectJustMousedowned);
 
     function preventDefaultOnce(event) {
-      if (preventReshow) {
-        event.preventDefault();
-        selectLabelElement.off('click', preventDefaultOnce);
-        preventReshow = false;
-      }
+      if (preventReshow && !optionClickedRecently) event.preventDefault();
+
+      preventReshow = false;
+      optionClickedRecently = false;
+      selectLabelElement.off('click', preventDefaultOnce);
     }
 
     selectLabelElement.on('click', preventDefaultOnce);
 
     function unhookPreventDefaultOnce() {
-      if (preventReshow) {
-        selectLabelElement.off('click', preventDefaultOnce);
-        selectLabelElement.off('mouseleave', unhookPreventDefaultOnce);
-        preventReshow = false;
-      }
+      preventReshow = false;
+      selectLabelElement.off('click', preventDefaultOnce);
+      selectLabelElement.off('mouseleave', unhookPreventDefaultOnce);
     }
 
     selectLabelElement.on('mouseleave', unhookPreventDefaultOnce);

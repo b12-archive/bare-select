@@ -15,10 +15,10 @@ test(
     mock.model.patch.on('patch', function(patch) {is.equal(
       patch.unfolded,
       undefined,
-      'when an option is selected'
+      'when an option is clicked'
     );});
 
-    mock.view.dropdownElement.emit('change');
+    mock.view.dropdownElement.emit('click');
     mock.model.patch.off('patch');
 
     // Blur the select.
