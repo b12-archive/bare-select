@@ -12,6 +12,7 @@ var uncheckAll = require('./view/uncheckAll');
 var inputChannel = require('./view/inputChannel');
 var getElement_ = require('./view/getElement');
 var getOptions = require('./view/getOptions');
+var domChannel = require('./view/domChannel');
 
 module.exports = function view(rootElement, options) {
   if (!options) options = {};
@@ -154,19 +155,13 @@ module.exports = function view(rootElement, options) {
   }
 
   // Initialize the output channel `switchElement`.
-  channels.switchElement = Object.freeze({
-    on: switchElement.addEventListener.bind(switchElement),
-  });
+  channels.switchElement = domChannel(switchElement);
 
   // Initialize the output channel `dropdownElement`.
-  channels.dropdownElement = Object.freeze({
-    on: dropdownElement.addEventListener.bind(dropdownElement),
-  });
+  channels.dropdownElement = domChannel(dropdownElement);
 
   // Initialize the output channel `captionElement`.
-  channels.captionElement = Object.freeze({
-    on: captionElement.addEventListener.bind(captionElement),
-  });
+  channels.captionElement = domChannel(captionElement);
 
   // Return the channels.
   return Object.freeze(channels);

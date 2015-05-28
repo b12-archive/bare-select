@@ -49,7 +49,10 @@ test('The API is in good shape.', function(is) {
     viewInstance.switchElement && Object.keys(viewInstance.switchElement)
       .map(propertyType(viewInstance.switchElement))
     ,
-    [{property: 'on', type: 'function'}],
+    [
+      {property: 'on', type: 'function'},
+      {property: 'off', type: 'function'},
+    ],
     '• an output channel `switchElement`'
   );
 
@@ -57,7 +60,10 @@ test('The API is in good shape.', function(is) {
     viewInstance.dropdownElement && Object.keys(viewInstance.dropdownElement)
       .map(propertyType(viewInstance.dropdownElement))
     ,
-    [{property: 'on', type: 'function'}],
+    [
+      {property: 'on', type: 'function'},
+      {property: 'off', type: 'function'},
+    ],
     '• an output channel `dropdownElement`'
   );
 
@@ -65,7 +71,10 @@ test('The API is in good shape.', function(is) {
     viewInstance.captionElement && Object.keys(viewInstance.captionElement)
       .map(propertyType(viewInstance.captionElement))
     ,
-    [{property: 'on', type: 'function'}],
+    [
+      {property: 'on', type: 'function'},
+      {property: 'off', type: 'function'},
+    ],
     '• an output channel `captionElement`'
   );
 
