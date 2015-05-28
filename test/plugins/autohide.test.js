@@ -20,10 +20,10 @@ test(
     // Blur the select.
     mock.view.switchElement.emit('blur');
 
-    // Blur it again by flicking the switch.
     setTimeout(function () {
       mock.model.patch.off('patch');
 
+      // Blur it again by flicking the switch.
       mock.view.selectLabelElement.emit('mousedown');
       mock.view.switchElement.emit('blur');
 
@@ -44,9 +44,10 @@ test(
       }, 100);
     }, 100);
 
-    // Blur it again by clicking the switch, but moving the pointer away in
-    // the meantime.
     setTimeout(function () {
+
+      // Blur the switch again by pressing the pointer over the select. Before
+      // releasing the pointer, move it away from the select.
       mock.view.selectLabelElement.emit('mousedown');
       mock.view.switchElement.emit('blur');
 
@@ -54,11 +55,25 @@ test(
         mock.view.selectLabelElement.emit('mouseleave');
         mock.view.selectLabelElement.emit('click', {
           preventDefault: function() {is.fail(
-            'detects when the switch has been mousedowned but not changed'
+            'not when the switch has been mousedowned but not mouseupped'
           );}
         });
       }, 100);
     }, 300);
+
+    setTimeout(function () {
+
+      // Click the switch without blurring it.
+      mock.view.selectLabelElement.emit('mousedown');
+
+      setTimeout(function () {
+        mock.view.selectLabelElement.emit('click', {
+          preventDefault: function() {is.fail(
+            'not when the switch has been mousedowned but not blurred'
+          );}
+        });
+      }, 100);
+    }, 500);
 
     // Prepare another mock select.
     var anotherMock = mockPlugin(autohide);
