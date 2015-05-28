@@ -10,6 +10,7 @@ var asObject = require('as/object');
 var spacify = require('reassemble-string')(function(lastLetter, firstLetter) {
   return lastLetter + ' ' + firstLetter.toLowerCase();
 });
+var assign = require('object-assign');
 
 var error = require('./view/error');
 var uncheckAll = require('./view/uncheckAll');
@@ -20,7 +21,7 @@ var domChannel = require('./view/domChannel');
 
 module.exports = function view(rootElement, options) {
   if (!options) options = {};
-  var selectors = options.selectors || {
+  var selectors = assign({
     caption     : 'bare-select > label',
     selectLabel : 'bare-select > label',
     switch      : 'bare-select > input[type=checkbox]',
@@ -28,7 +29,7 @@ module.exports = function view(rootElement, options) {
     option      : 'bare-select > ul > li',
     optionRadio : 'input[type=radio]',
     optionLabel : 'label',
-  };
+  }, options.selectors);
 
   var channels = {};
 
