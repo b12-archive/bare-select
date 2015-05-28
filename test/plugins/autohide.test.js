@@ -6,18 +6,28 @@ var autohide = require('../../plugins/autohide');
 test(
   'Hides the dropdown.',
   function(is) {
-    is.plan(2);
+    is.plan(3);
 
     // Prepare a mock select.
     var mock = mockPlugin(autohide);
 
+    // Select an option.
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.unfolded,
+      undefined,
+      'when an option is selected'
+    );});
+
+    mock.view.dropdownElement.emit('change');
+    mock.model.patch.off('patch');
+
+    // Blur the select.
     mock.model.patch.on('patch', function(patch) {is.equal(
       patch.unfolded,
       undefined,
       'when the select loses focus'
     );});
 
-    // Blur the select.
     mock.view.switchElement.emit('blur');
 
     setTimeout(function () {
