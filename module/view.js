@@ -163,6 +163,11 @@ module.exports = function view(rootElement, options) {
     on: dropdownElement.addEventListener.bind(dropdownElement),
   });
 
+  // Initialize the output channel `captionElement`.
+  channels.captionElement = Object.freeze({
+    on: captionElement.addEventListener.bind(captionElement),
+  });
+
   // Return the channels.
   return Object.freeze(channels);
 };
