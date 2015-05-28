@@ -33,7 +33,6 @@ test(
             'keeps it hidden when the loss of focus came from flicking the ' +
             'switch'
           );},
-          stopPropagation: function () {},
         });
 
         mock.view.selectLabelElement.emit('click', {

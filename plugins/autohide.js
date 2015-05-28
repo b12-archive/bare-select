@@ -7,6 +7,11 @@ module.exports = function (args) {
   // We need a state machine here.
   var switchJustBlurred = false;
   var dropdownJustMousedowned = false;
+  var selectJustMousedowned = false;
+  var preventReshow = false;
+
+  function resetDropdownJustMousedowned() {dropdownJustMousedowned = false;}
+  function resetSelectJustMousedowned() {selectJustMousedowned = false;}
 
   // Read event channels.
   var selectLabelElement = view.selectLabelElement;
@@ -18,6 +23,7 @@ module.exports = function (args) {
 
     // Update the state.
     switchJustBlurred = true;
+    if (selectJustMousedowned) preventReshow = true;
 
     // Throttle the fold by one frame to make sure the blur wasn’t triggered
     // by a click within the dropdown.
@@ -43,9 +49,7 @@ module.exports = function (args) {
     // Reset the state after two frames. We need to be sure we don’t reset
     // before the fold.
     requestFrame(function() {
-      requestFrame(function () {
-        dropdownJustMousedowned = false;
-      });
+      requestFrame(resetDropdownJustMousedowned);
     });
   });
 
@@ -57,17 +61,27 @@ module.exports = function (args) {
   // Don’t re-show the dropdown when the loss of focus came from flicking the
   // switch.
   selectLabelElement.on('mousedown', function() {
+
+    // Update the state.
+    selectJustMousedowned = true;
+    requestFrame(resetSelectJustMousedowned);
+
     function preventDefaultOnce(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      selectLabelElement.off('click', preventDefaultOnce);
+      if (preventReshow) {
+        event.preventDefault();
+        selectLabelElement.off('click', preventDefaultOnce);
+        preventReshow = false;
+      }
     }
 
     selectLabelElement.on('click', preventDefaultOnce);
 
     function unhookPreventDefaultOnce() {
-      selectLabelElement.off('click', preventDefaultOnce);
-      selectLabelElement.off('mouseleave', unhookPreventDefaultOnce);
+      if (preventReshow) {
+        selectLabelElement.off('click', preventDefaultOnce);
+        selectLabelElement.off('mouseleave', unhookPreventDefaultOnce);
+        preventReshow = false;
+      }
     }
 
     selectLabelElement.on('mouseleave', unhookPreventDefaultOnce);
