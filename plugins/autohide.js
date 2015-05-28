@@ -18,6 +18,11 @@ module.exports = function (args) {
   var dropdownElement = view.dropdownElement;
   var switchElement = view.switchElement;
 
+  // Fold the dropdown after an option has been selected.
+  dropdownElement.on('change', function() {
+    model.patch.emit('patch', {unfolded: undefined});
+  });
+
   // Fold the dropdown when the switch element has been blurred.
   switchElement.on('blur', function() {
 
