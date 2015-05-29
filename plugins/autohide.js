@@ -9,7 +9,6 @@ module.exports = function (args) {
   var dropdownJustMousedowned = false;
   var selectJustMousedowned = false;
   var preventReshow = false;
-  var optionClickedRecently = false;
 
   function resetDropdownJustMousedowned() {dropdownJustMousedowned = false;}
   function resetSelectJustMousedowned() {selectJustMousedowned = false;}
@@ -21,10 +20,6 @@ module.exports = function (args) {
 
   // Fold the dropdown after an option has been clicked.
   dropdownElement.on('click', function() {
-
-    // Update the state.
-    optionClickedRecently = true;
-
     model.patch.emit('patch', {unfolded: undefined});
   });
 
@@ -36,7 +31,7 @@ module.exports = function (args) {
     if (selectJustMousedowned) preventReshow = true;
 
     // Throttle the fold by one frame to make sure the blur wasn’t triggered
-    // by a click within the dropdown.
+    // by a mousedown within the dropdown.
     requestFrame(function () {
 
       // Update the model.
@@ -77,10 +72,11 @@ module.exports = function (args) {
     requestFrame(resetSelectJustMousedowned);
 
     function preventDefaultOnce(event) {
-      if (preventReshow && !optionClickedRecently) event.preventDefault();
+      if (preventReshow) {
+        event.preventDefault();
+        preventReshow = false;
+      }
 
-      preventReshow = false;
-      optionClickedRecently = false;
       selectLabelElement.off('click', preventDefaultOnce);
     }
 
