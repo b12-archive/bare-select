@@ -2,6 +2,23 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   source: 'unfolded'
 });
 
+ /**
+  * Adds support for the attribute `unfolded`. Adding the attribute to the
+  * `<bare-select>` will unfold the select – and removing the attribute will
+  * fold it.
+  *
+  * @param  {Object}       args
+  * @param  {Object}       args.view
+  * @param  {ø input}      args.view.update
+  * @param  {ø DOM proxy}  args.view.switchElement
+  * @param  {Object}       args.model
+  * @param  {ø output}     args.model.state
+  * @param  {ø input}      args.model.patch
+  *
+  * @protected
+  * @function
+  * @module     bare-select/module/plugins/unfolded
+  */
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;

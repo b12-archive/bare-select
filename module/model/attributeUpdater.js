@@ -2,7 +2,6 @@ var asObject = require('as/object');
 var asap = require('set-immediate-shim');
 var shallowDiff = require('shallow-diff');
 
-// TODO: Document the function.
 module.exports = function attributeUpdater(args) {
 
   // Read args.

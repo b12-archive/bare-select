@@ -19,16 +19,83 @@ var getElement_ = require('./view/getElement');
 var getOptions = require('./view/getOptions');
 var domChannel = require('./view/domChannel');
 
+ /**
+  * Create a new pure HTML view. Here’s the pseudo-markup it’s designed for:
+  *
+  *     <bare-select>                        │ • The custom element
+  *       <select-label>                     │ • A `<label>` for the switch
+  *         <caption></caption>              │ • The content displayed in the
+  *                                          │   select box
+  *       </select-label>                    │
+  *                                          │
+  *       <switch />                         │ • A checkbox controlling the
+  *                                          │   dropdown’s visibility
+  *       <dropdown>                         │ • A list of options
+  *         <option>                         │ • A list item
+  *           <option-radio />               │ • A radio button – its `value`
+  *                                          │   attribute is the value of the
+  *                                          │   option
+  *           <option-label></option-label>  │ • The content displayed in the
+  *                                          │   option
+  *         </option>                        │
+  *       </dropdown>                        │
+  *     </bare-select>                       │
+  *
+  * @param  {HTMLElement}  rootElement
+  *   The `<bare-select>` element. It should contain
+  * @param  {[Object]}     options
+  *
+  * @param  {[Object]}  options.selectors
+  * @param  {[String='bare-select > label']}
+  *   options.selectors.caption
+  * @param  {[String='bare-select > label']}
+  *   options.selectors.selectLabel
+  * @param  {[String='bare-select > input[type=checkbox]']
+  *   options.selectors.switch
+  * @param  {[String='bare-select > ul']}
+  *   options.selectors.dropdown
+  * @param  {[String='bare-select > ul > li']}
+  *   options.selectors.option
+  * @param  {[String='input[type=radio]']
+  *   options.selectors.optionRadio
+  * @param  {[String='label']}
+  *   options.selectors.optionLabel
+  *
+  * @returns  {Object}       view
+  * @returns  {ø input}      view.update
+  * @returns  {Function}     view.update.emit
+  * @returns  {Function}     view.update.catch
+  * @returns  {ø output}     view.options
+  * @returns  {Function}     view.options.on
+  * @returns  {Function}     view.options.when
+  * @returns  {Function}     view.options.off
+  * @returns  {ø DOM proxy}  view.switchElement
+  * @returns  {Function}     view.switchElement.on
+  * @returns  {Function}     view.switchElement.off
+  * @returns  {ø DOM proxy}  view.dropdownElement
+  * @returns  {Function}     view.dropdownElement.on
+  * @returns  {Function}     view.dropdownElement.off
+  * @returns  {ø DOM proxy}  view.selectLabelElement
+  * @returns  {Function}     view.selectLabelElement.on
+  * @returns  {Function}     view.selectLabelElement.off
+  * @returns  {ø error}      view.options
+  * @returns  {Function}     view.options.catch
+  * @returns  {Function}     view.options.off
+  *
+  * @protected
+  * @function
+  * @module     bare-select/module/view
+  */
 module.exports = function view(rootElement, options) {
   if (!options) options = {};
   var selectors = assign({
-    caption     : 'bare-select > label',
-    selectLabel : 'bare-select > label',
-    switch      : 'bare-select > input[type=checkbox]',
-    dropdown    : 'bare-select > ul',
-    option      : 'bare-select > ul > li',
-    optionRadio : 'input[type=radio]',
-    optionLabel : 'label',
+    caption:      'bare-select > label',
+    selectLabel:  'bare-select > label',
+    switch:       'bare-select > input[type=checkbox]',
+    dropdown:     'bare-select > ul',
+    option:       'bare-select > ul > li',
+    optionRadio:  'input[type=radio]',
+    optionLabel:  'label',
   }, options.selectors);
 
   var channels = {};

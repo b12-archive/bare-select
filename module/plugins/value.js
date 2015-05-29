@@ -3,6 +3,7 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   source: 'value'
 });
 
+// TODO: Move to own file.
 function getSelectedValue(options) {
   var values;
   var radioNodes;
@@ -24,6 +25,22 @@ function getSelectedValue(options) {
   ]};
 }
 
+ /**
+  * Adds support for the attribute `value`. Changing the selection will update
+  * the attribute `value` within the `<bare-select>`. Changing the attribute
+  * will update the selection.
+  *
+  * @param  {Object}       args
+  * @param  {Object}       args.view
+  * @param  {ø output}     args.view.options
+  * @param  {ø input}      args.view.update
+  * @param  {Object}       args.model
+  * @param  {ø output}     args.model.state
+  *
+  * @protected
+  * @function
+  * @module     bare-select/module/plugins/keyboardNavigation
+  */
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;

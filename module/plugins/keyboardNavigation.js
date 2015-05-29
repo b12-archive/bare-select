@@ -6,6 +6,21 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   source: 'keyboardNavigation'
 });
 
+ /**
+  * Great keyboard navigation.
+  *
+  * @param  {Object}       args
+  * @param  {Object}       args.view
+  * @param  {ø output}     args.view.options
+  * @param  {ø DOM proxy}  args.view.switchElement
+  * @param  {Object}       args.model
+  * @param  {ø output}     args.model.state
+  * @param  {ø input}      args.model.patch
+  *
+  * @protected
+  * @function
+  * @module     bare-select/module/plugins/keyboardNavigation
+  */
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;

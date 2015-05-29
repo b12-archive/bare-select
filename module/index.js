@@ -4,15 +4,6 @@ var assign = require('object-assign');
 
 var executed = false;
 
- /**
-  * Create the element’s prototype
-  *
-  * @param  {Object}  [options={}]
-  *   Options passed from `bareSelect`.
-  *
-  * @function  proto
-  * @api       private
-  */
 function proto(options) {
 
   // Read options.
@@ -86,6 +77,8 @@ function proto(options) {
   * @param  {Function}    [options.logger.warn]
   * @param  {Function}    [options.logger.info]
   *
+  * (WIP)
+  *
   * @module    bare-select
   * @function  default
   * @alias     bareSelect
@@ -98,6 +91,7 @@ module.exports = function bareSelect(options) {
   if (executed) return logger.warn('bare-select: ' +
     'The initialization function can only be called once.'
   );
+
   executed = true;
 
   // Register the element.

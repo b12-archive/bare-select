@@ -7,6 +7,7 @@ var error = curry(require('../utils/error'))({
   source: 'updateCaption'
 });
 
+// TODO: Move to own file.
 function getLabelByValue(options, value) {
   var values;
   var labelNodes;
@@ -29,6 +30,20 @@ function getLabelByValue(options, value) {
   };
 }
 
+ /**
+  * Updates content displayed in the caption to match the selected option.
+  *
+  * @param  {Object}       args
+  * @param  {Object}       args.view
+  * @param  {ø output}     args.view.options
+  * @param  {ø input}      args.view.update
+  * @param  {Object}       args.model
+  * @param  {ø output}     args.model.state
+  *
+  * @protected
+  * @function
+  * @module     bare-select/module/plugins/updateCaption
+  */
 module.exports = function (args) {
   var view = args.view;
   var model = args.model;
