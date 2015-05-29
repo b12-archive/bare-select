@@ -67,9 +67,13 @@ module.exports = function view(rootElement, options) {
   if (elementKeys.some(function(key) {
     if (elementQueries[key].error) {
       throwError(elementQueries[key].error);
+      // TODO: At the moment this just throws through `stereo.catch`. This
+      //       check will make sense when we push
+      //       <https://redmine.sb12.de/issues/6877> through.
+      /* istanbul ignore next */
       return true;
     }
-  })) return;
+  })) /* istanbul ignore next */ return;
 
   var elements = asObject(elementKeys.map(function(key) {return {
     key: key,
