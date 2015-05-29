@@ -61,26 +61,7 @@ var domChannel = require('./view/domChannel');
   * @param  {[String='label']}
   *   options.selectors.optionLabel
   *
-  * @returns  {Object}       view
-  * @returns  {ø input}      view.update
-  * @returns  {Function}     view.update.emit
-  * @returns  {Function}     view.update.catch
-  * @returns  {ø output}     view.options
-  * @returns  {Function}     view.options.on
-  * @returns  {Function}     view.options.when
-  * @returns  {Function}     view.options.off
-  * @returns  {ø DOM proxy}  view.switchElement
-  * @returns  {Function}     view.switchElement.on
-  * @returns  {Function}     view.switchElement.off
-  * @returns  {ø DOM proxy}  view.dropdownElement
-  * @returns  {Function}     view.dropdownElement.on
-  * @returns  {Function}     view.dropdownElement.off
-  * @returns  {ø DOM proxy}  view.selectLabelElement
-  * @returns  {Function}     view.selectLabelElement.on
-  * @returns  {Function}     view.selectLabelElement.off
-  * @returns  {ø error}      view.options
-  * @returns  {Function}     view.options.catch
-  * @returns  {Function}     view.options.off
+  * @returns  {view}
   *
   * @protected
   * @function
@@ -100,7 +81,17 @@ module.exports = function view(rootElement, options) {
 
   var channels = {};
 
-  // Initialize the `error` channel.
+   /**
+    * An error has occured in the view.
+    *
+    * @event  view.error#error
+    *
+    * @type      {Object}
+    * @property  {String}  message
+    * @property  {String}  name
+    *
+    * @protected
+    */
   var emitError = emit();
   channels.error = Object.freeze({
     catch: snatch(emitError),
@@ -152,25 +143,52 @@ module.exports = function view(rootElement, options) {
     getElement: getElement,
   });
 
-  // Initialize the input channel `update`.
   var emitUpdate = emit();
   var onUpdate = on(emitUpdate);
   channels.update = inputChannel(emitUpdate);
 
-  // Wire up `unfolded` on the `update` channel.
+   /**
+    * The dropdown should be folded or unfolded.
+    *
+    * @event  view.update#unfolded
+    *
+    * @type      {Object}
+    * @property  {Boolean}  newValue
+    *
+    * @protected
+    */
   onUpdate('unfolded', function(unfolded) {
     // TODO: Check if the message is valid.
     elements.switch.checked = !!unfolded.newValue;
   });
+  // TODO: This should be named `folded` for consistency.
 
-  // Wire up `focused` on the `update` channel.
+   /**
+    * The select should be focused or blurred.
+    *
+    * @event  view.update#focused
+    *
+    * @type      {Object}
+    * @property  {Boolean}  newValue
+    *
+    * @protected
+    */
   onUpdate('focused', function(focused) {
     // TODO: Check if the message is valid.
     if (focused.newValue) elements.switch.focus();
     else elements.switch.blur();
   });
 
-  // Wire up `captionContent` on the `update` channel.
+   /**
+    * The caption’s content should be replaced with a new DOM tree.
+    *
+    * @event  view.update#captionContent
+    *
+    * @type      {Object}
+    * @property  {Node}    newValue
+    *
+    * @protected
+    */
   onUpdate('captionContent', function(captionContent) {
     // Check if the message is valid.
     var newDOM;
@@ -197,7 +215,17 @@ module.exports = function view(rootElement, options) {
     elements.caption.appendChild(newDOM);
   });
 
-  // Wire up `selection` on the `update` channel.
+   /**
+    * Another option should be selected.
+    *
+    * @event  view.update#selection
+    *
+    * @type      {Object}
+    * @property  {String}  newValue
+    *
+    * @protected
+    */
+  // TODO: * @property  {(String|null)}  newValue
   onUpdate('selection', function(selection) {
     // At this point we’re sure that `optionsSnapshot` is valid. Get
     // `radioNodes` out of there.
@@ -227,22 +255,59 @@ module.exports = function view(rootElement, options) {
     when: when(emitOptions),
     catch: snatch(emitOptions),
   });
+  // TODO: `catch` -> `off`.
 
-  // Emit an initial `update` or `error` to `options`.
+   /**
+    * The set of options has been updated.
+    *
+    * At the moment options are only read and updated at initialization. Keep
+    * in mind that this will change.
+    *
+    * @event  view.options#update
+    *
+    * @type      {Object}
+    * @property  {Array}   values
+    *   A list of option values, in the same order as in the DOM.
+    * @property  {Array}   radioNodes
+    *   The options’ radio button nodes, in the same order as in the DOM.
+    * @property  {Array}   labelNodes
+    *   The options’ label nodes, in the same order as in the DOM.
+    *
+    * @protected
+    */
   var optionsSnapshot;
   if (optionsQuery.error) emitOptions('error', optionsQuery.error);
+    // TODO: Use `view.error`.
   else {
     optionsSnapshot = optionsQuery.value;
     emitOptions('update', optionsSnapshot);
   }
 
-  // Initialize the output channel `switchElement`.
+   /**
+    * A DOM event has occured on the switch.
+    *
+    * @event      view.switchElement#<domEventName>
+    * @type       {DOMEvent}
+    * @protected
+    */
   channels.switchElement = domChannel(elements.switch);
 
-  // Initialize the output channel `dropdownElement`.
+   /**
+    * A DOM event has occured on the dropdown.
+    *
+    * @event      view.dropdownElement#<domEventName>
+    * @type       {DOMEvent}
+    * @protected
+    */
   channels.dropdownElement = domChannel(elements.dropdown);
 
-  // Initialize the output channel `selectLabelElement`.
+   /**
+    * A DOM event has occured on the select label.
+    *
+    * @event      view.selectLabelElement#<domEventName>
+    * @type       {DOMEvent}
+    * @protected
+    */
   channels.selectLabelElement = domChannel(elements.selectLabel);
 
   // Return the channels.

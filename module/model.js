@@ -15,18 +15,7 @@ var curry = require('1-liners/curry');
   * @param  {HTMLElement}  rootElement
   *   The `<bare-select>` element.
   *
-  * @returns  {Object}    model
-  * @returns  {ø input}   model.patch
-  * @returns  {Function}  model.patch.emit
-  * @returns  {Function}  model.patch.catch
-  * @returns  {ø output}  model.state
-  * @returns  {Function}  model.state.on
-  * @returns  {Function}  model.state.when
-  * @returns  {Function}  model.state.off
-  *
-  * @listens  model.patch#patch
-  * @listens  model.patch#error
-  * @fires    model.state#<attributeName>
+  * @returns  {model}
   *
   * @protected
   * @function
@@ -37,11 +26,12 @@ module.exports = function model(rootElement) {
    /**
     * Patch the model’s state.
     *
-    * @protected
-    * @event      model.patch#patch
+    * @event  model.patch#patch
     *
     * @type      {Object}
     * @property  {...(String|null)}  <attributeName>
+    *
+    * @protected
     */
   var emitPatches = emit();
   var patch = Object.freeze({
@@ -56,12 +46,13 @@ module.exports = function model(rootElement) {
    /**
     * The model’s state has been updated.
     *
-    * @protected
-    * @event      model.state#<attributeName>
+    * @event  model.state#<attributeName>
     *
     * @type      {Object}
     * @property  {Object}     current
     * @property  {...String}  current.<attributeName>
+    *
+    * @protected
     */
   var emitUpdates = emit();
   var state = Object.freeze({

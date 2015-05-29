@@ -35,10 +35,12 @@ function getLabelByValue(options, value) {
   *
   * @param  {Object}       args
   * @param  {Object}       args.view
-  * @param  {ø output}     args.view.options
-  * @param  {ø input}      args.view.update
+  * @param  {ø-output}     args.view.options
+  * @param  {ø-input}      args.view.update
   * @param  {Object}       args.model
-  * @param  {ø output}     args.model.state
+  * @param  {ø-output}     args.model.state
+  *
+  * @returns  {plugin-handle}
   *
   * @protected
   * @function

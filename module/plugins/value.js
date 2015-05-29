@@ -32,10 +32,12 @@ function getSelectedValue(options) {
   *
   * @param  {Object}       args
   * @param  {Object}       args.view
-  * @param  {ø output}     args.view.options
-  * @param  {ø input}      args.view.update
+  * @param  {ø-output}     args.view.options
+  * @param  {ø-DOM-proxy}  args.view.dropdownElement
+  * @param  {ø-input}      args.view.update
   * @param  {Object}       args.model
-  * @param  {ø output}     args.model.state
+  * @param  {ø-output}     args.model.state
+  * @param  {ø-input}      args.model.patch
   *
   * @protected
   * @function

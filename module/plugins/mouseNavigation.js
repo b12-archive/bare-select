@@ -5,12 +5,14 @@ var requestFrame = require('ainojs-requestframe');
   *
   * @param  {Object}       args
   * @param  {Object}       args.view
-  * @param  {ø input}      args.view.update
-  * @param  {ø DOM proxy}  args.view.selectLabelElement
-  * @param  {ø DOM proxy}  args.view.dropdownElement
-  * @param  {ø DOM proxy}  args.view.switchElement
+  * @param  {ø-DOM-proxy}  args.view.selectLabelElement
+  * @param  {ø-DOM-proxy}  args.view.dropdownElement
+  * @param  {ø-DOM-proxy}  args.view.switchElement
+  * @param  {ø-input}      args.view.update
   * @param  {Object}       args.model
-  * @param  {ø output}     args.model.state
+  * @param  {ø-output}     args.model.state
+  *
+  * @returns  {plugin-handle}
   *
   * @protected
   * @function

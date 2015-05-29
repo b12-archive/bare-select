@@ -77,12 +77,11 @@ function proto(options) {
   * @param  {Function}    [options.logger.warn]
   * @param  {Function}    [options.logger.info]
   *
-  * (WIP)
-  *
   * @module    bare-select
   * @function  default
   * @alias     bareSelect
   */
+// TODO: This is very much out of date.
 module.exports = function bareSelect(options) {
   if (!options) options = {};
   var logger = options.logger || console;

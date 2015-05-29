@@ -9,11 +9,13 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   *
   * @param  {Object}       args
   * @param  {Object}       args.view
-  * @param  {ø input}      args.view.update
-  * @param  {ø DOM proxy}  args.view.switchElement
+  * @param  {ø-DOM-proxy}  args.view.switchElement
+  * @param  {ø-input}      args.view.update
   * @param  {Object}       args.model
-  * @param  {ø output}     args.model.state
-  * @param  {ø input}      args.model.patch
+  * @param  {ø-output}     args.model.state
+  * @param  {ø-input}      args.model.patch
+  *
+  * @returns  {plugin-handle}
   *
   * @protected
   * @function
