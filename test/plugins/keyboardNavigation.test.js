@@ -1,4 +1,4 @@
-var test = require('../test-tools/test')('“keyboardNavigation” plugin');
+var test = require('../test-tools/test')('“keyboard navigation” plugin');
 var keyCodes = require('../../utils/keyCodes');
 var mockPlugin = require('../test-tools/mockPlugin');
 var mockKeyboardEvent = require('../test-tools/mockKeyboardEvent');

@@ -1,4 +1,4 @@
-var test = require('../test-tools/test')('“updateCaption” plugin');
+var test = require('../test-tools/test')('“update caption” plugin');
 var mockPlugin = require('../test-tools/mockPlugin');
 var doc = require('jsdom').jsdom().defaultView.document;
 var always = require('1-liners/always');
