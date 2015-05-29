@@ -9,6 +9,7 @@ module.exports = function (args) {
   var dropdownJustMousedowned = false;
   var selectJustMousedowned = false;
   var preventReshow = false;
+  var unfoldedInThisFrame = false;
 
   function resetDropdownJustMousedowned() {dropdownJustMousedowned = false;}
   function resetSelectJustMousedowned() {selectJustMousedowned = false;}
@@ -17,6 +18,20 @@ module.exports = function (args) {
   var selectLabelElement = view.selectLabelElement;
   var dropdownElement = view.dropdownElement;
   var switchElement = view.switchElement;
+  var state = model.state;
+
+  // Watch the `unfolded` state.
+  state.on('unfolded', function (state) {
+
+    // Fail silently if the message is wrong.
+    if (!state.attributes) return;
+
+    requestFrame(
+      typeof state.attributes.unfolded === 'string' ?
+      function () {unfoldedInThisFrame = true;} :
+      function () {unfoldedInThisFrame = false;}
+    );
+  });
 
   // Fold the dropdown after an option has been clicked.
   dropdownElement.on('click', function() {
@@ -28,7 +43,7 @@ module.exports = function (args) {
 
     // Update the state.
     switchJustBlurred = true;
-    if (selectJustMousedowned) preventReshow = true;
+    if (selectJustMousedowned && unfoldedInThisFrame) preventReshow = true;
 
     // Throttle the fold by one frame to make sure the blur wasn’t triggered
     // by a mousedown within the dropdown.
@@ -72,11 +87,8 @@ module.exports = function (args) {
     requestFrame(resetSelectJustMousedowned);
 
     function preventDefaultOnce(event) {
-      if (preventReshow) {
-        event.preventDefault();
-        preventReshow = false;
-      }
-
+      if (preventReshow && !unfoldedInThisFrame) event.preventDefault();
+      preventReshow = false;
       selectLabelElement.off('click', preventDefaultOnce);
     }
 

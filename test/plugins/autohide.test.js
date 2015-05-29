@@ -57,6 +57,9 @@ test(
         setTimeout(function() {
           mock.view.selectLabelElement.emit('mousedown');
           mock.view.switchElement.emit('blur');
+          mock.model.state.emit('unfolded', {attributes:
+            {unfolded: undefined}
+          }); // We already know that a blur triggers a fold here.
 
           setTimeout(function () {
             mock.view.selectLabelElement.emit('click', {
