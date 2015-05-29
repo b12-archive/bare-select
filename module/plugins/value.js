@@ -105,3 +105,4 @@ module.exports = function (args) {
     emitUpdate('selection', {newValue: newValue});
   });
 };
+// TODO: Make sure no other plugin depends on this one.

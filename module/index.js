@@ -52,6 +52,8 @@ function proto(options) {
     // Export other properties.
     this._view = view;
     this._model = model;
+    // TODO: this._logger = logger
+    //       Plugins should use it as well. No implicit passing options around.
   };
 
   // Inherit `attributeChangedCallback` from the model.
