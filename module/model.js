@@ -2,6 +2,7 @@ require('es6-set/implement');
 
 var emit = require('stereo/emit');
 var on = require('stereo/on');
+var off = require('stereo/off');
 var snatch = require('stereo/catch');
 var when = require('stereo/when');
 var attributeUpdater = require('./model/attributeUpdater');
@@ -26,6 +27,7 @@ module.exports = function model(rootElement) {
   var state = Object.freeze({
     on: on(emitUpdates),
     when: when(emitUpdates),
+    off: off(emitUpdates),
   });
   // TODO: Add `off`.
   var emitCurrentAttributes = attributeUpdater({

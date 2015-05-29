@@ -60,6 +60,7 @@ test('The API is in good shape.', function(is) {
     [
       {property: 'on', type: 'function'},
       {property: 'when', type: 'function'},
+      {property: 'off', type: 'function'},
     ],
     '• a cacheable output channel `state`'
   );
