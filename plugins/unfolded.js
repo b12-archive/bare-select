@@ -11,12 +11,12 @@ module.exports = function (args) {
   model.state.when('unfolded', function(state) {
     var emitUpdate = view.update.emit;
 
-    if (!state || !state.attributes) return emitUpdate('error', error(
+    if (!state || !state.current) return emitUpdate('error', error(
       'Invalid `unfolded` message from `model.state`. Make sure you pass an ' +
-      'object with `{Object} unfolded.attributes`.'
+      'object with `{Object} unfolded.current`.'
     ));
 
-    valueSnapshot = state.attributes.hasOwnProperty('unfolded');
+    valueSnapshot = state.current.hasOwnProperty('unfolded');
     emitUpdate('unfolded', {
       newValue: valueSnapshot,
     });

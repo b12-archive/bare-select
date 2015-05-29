@@ -90,7 +90,7 @@ test(
       error.message.match(/can’t update the value/i),
       'emits an `error` if no options have been registered.'
     );});
-    mock.model.state.emit('value', {attributes: {
+    mock.model.state.emit('value', {current: {
       value: 'the value'
     }});
     mock.view.update.off('error');
@@ -107,7 +107,7 @@ test(
       'the value',
       'emits a `selection` synchronously when the passed value is valid'
     );});
-    mock.model.state.emit('value', {attributes: {
+    mock.model.state.emit('value', {current: {
       value: 'the value'
     }});
     mock.view.update.off('selection');
@@ -118,7 +118,7 @@ test(
       '',
       'emits a `selection` synchronously when the passed value is empty'
     );});
-    mock.model.state.emit('value', {attributes: {
+    mock.model.state.emit('value', {current: {
       value: ''
     }});
     mock.view.update.off('selection');
@@ -128,7 +128,7 @@ test(
       error.message.match(/value not found/i),
       'emits an `error` synchronously when the passed value is invalid'
     );});
-    mock.model.state.emit('value', {attributes: {
+    mock.model.state.emit('value', {current: {
       value: 'something invalid'
     }});
     mock.view.update.off('error');

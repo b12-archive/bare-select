@@ -38,7 +38,7 @@ module.exports = function attributeUpdater(args) {
         .concat(diff.added)
       ,
       Object.freeze({
-        attributes: currentAttributes,
+        current: currentAttributes,
       })
     );
 

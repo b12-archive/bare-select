@@ -16,7 +16,7 @@ test(
       values: ['1', '2', '3'],
     });
 
-    mock.model.state.emit('value', {attributes: {}});
+    mock.model.state.emit('value', {current: {}});
 
     // Press [↓].
     mock.model.patch.on('patch', function(patch) {is.equal(
@@ -107,7 +107,7 @@ test(
       values: ['1', '2', '3', '4'],
     });
 
-    preselectedMock.model.state.emit('value', {attributes: {value: '2'}});
+    preselectedMock.model.state.emit('value', {current: {value: '2'}});
 
     // Press [↓].
     preselectedMock.model.patch.on('patch', function(patch) {is.equal(
@@ -152,7 +152,7 @@ test(
 
     // Prepare a mock select, folded initially.
     var mock = mockPlugin(keyboardNavigation);
-    mock.model.state.emit('unfolded', {attributes: {}});
+    mock.model.state.emit('unfolded', {current: {}});
 
     // Press [SPACE].
     mock.model.patch.on('patch', function(patch) {is.equal(
@@ -240,7 +240,7 @@ test(
 
     // Prepare a mock select, initially unfolded.
     var unfoldedMock = mockPlugin(keyboardNavigation);
-    unfoldedMock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
+    unfoldedMock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
     // Press [ESCAPE].
     unfoldedMock.model.patch.on('patch', function(patch) {is.equal(
@@ -294,7 +294,7 @@ test(
     mock.model.patch.off('patch');
 
     // Update externally and press [↓] again.
-    mock.model.state.emit('value', {attributes: {value: '3'}});
+    mock.model.state.emit('value', {current: {value: '3'}});
     mock.model.patch.on('patch', function(patch) {is.equal(
       patch.value,
       '4',
@@ -319,7 +319,7 @@ test(
     mock.model.patch.off('patch');
 
     // Update externally and press [ENTER] again.
-    mock.model.state.emit('unfolded', {attributes: {}});
+    mock.model.state.emit('unfolded', {current: {}});
     mock.model.patch.on('patch', function(patch) {is.equal(
       patch.unfolded,
       '',

@@ -24,10 +24,10 @@ module.exports = function (args) {
   state.on('unfolded', function (state) {
 
     // Fail silently if the message is wrong.
-    if (!state.attributes) return;
+    if (!state.current) return;
 
     requestFrame(
-      typeof state.attributes.unfolded === 'string' ?
+      typeof state.current.unfolded === 'string' ?
       function () {unfoldedInThisFrame = true;} :
       function () {unfoldedInThisFrame = false;}
     );

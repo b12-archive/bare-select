@@ -46,7 +46,7 @@ test(
       values: ['a', 'b'],
       labelNodes: mockItems,
     });
-    mock.model.state.emit('value', {attributes: {value: 'b'}});
+    mock.model.state.emit('value', {current: {value: 'b'}});
 
     mock.view.update.when('captionContent', function (captionContent) {
       is.equal(
@@ -59,7 +59,7 @@ test(
 
     is.doesNotThrow(
       function () {
-        mock.model.state.emit('value', {attributes: {value: 'invalid'}});
+        mock.model.state.emit('value', {current: {value: 'invalid'}});
       },
       'fails silently when given an invalid value'
     );
@@ -82,7 +82,7 @@ test(
       'when no options have been registered'
     );});
 
-    mock.model.state.emit('value', {attributes: {value: 'a'}});
+    mock.model.state.emit('value', {current: {value: 'a'}});
     mock.view.update.off('error');
 
     // Emit an invalid `value` message.
@@ -104,7 +104,7 @@ test(
       labelNodes: [null, null],
     });
 
-    mock.model.state.emit('value', {attributes: {value: 'unknown'}});
+    mock.model.state.emit('value', {current: {value: 'unknown'}});
     mock.view.update.off(['captionContent', 'error']);
 
     is.end();

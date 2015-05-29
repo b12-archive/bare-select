@@ -65,12 +65,12 @@ module.exports = function (args) {
       'Can’t update the value. The view hasn’t registered any options.'
     ));
 
-    if (!state || !state.attributes) return emitUpdate('error', error(
+    if (!state || !state.current) return emitUpdate('error', error(
       'Invalid `value` message from `model.state`. Make sure you pass an ' +
-      'object with `{Object} value.attributes`.'
+      'object with `{Object} value.current`.'
     ));
 
-    var newValue = state.attributes.value || '';
+    var newValue = state.current.value || '';
     if (
       newValue !== '' &&
       values.indexOf(newValue) === -1

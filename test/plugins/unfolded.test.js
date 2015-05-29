@@ -115,8 +115,8 @@ test(
     });
 
     // Fire!
-    mock.model.state.emit('unfolded', {attributes: {}});
-    mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
+    mock.model.state.emit('unfolded', {current: {}});
+    mock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
     is.end();
   }

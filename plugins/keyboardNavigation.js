@@ -31,11 +31,11 @@ module.exports = function (args) {
     var value;
     if (
       !state ||
-      !state.attributes ||
-      typeof (value = state.attributes.value || '') !== 'string'
+      !state.current ||
+      typeof (value = state.current.value || '') !== 'string'
     ) return model.patch.emit('error', error(
       'Invalid `value` message from `model.state`. Make sure you pass a ' +
-      '`state` object with `{Object} state.attributes`.'
+      '`state` object with `{Object} state.current`.'
     ));
 
     selectionSnapshot = value;
@@ -45,13 +45,13 @@ module.exports = function (args) {
   model.state.when('unfolded', function (state) {
     if (
       !state ||
-      !state.attributes
+      !state.current
     ) return model.patch.emit('error', error(
       'Invalid `unfolded` message from `model.state`. Make sure you pass a ' +
-      '`state` object with `{Object} state.attributes`.'
+      '`state` object with `{Object} state.current`.'
     ));
 
-    unfoldedSnapshot = (state.attributes.unfolded === '');
+    unfoldedSnapshot = (state.current.unfolded === '');
   });
 
   function selectByIndex(index) {

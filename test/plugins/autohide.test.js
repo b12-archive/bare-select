@@ -16,7 +16,7 @@ test(
       // Unfold a select and pick an option. The select should fold.
       function(done) {
         var mock = mockPlugin(autohide);
-        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
+        mock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
         mock.model.patch.on('patch', function(patch) {is.equal(
           patch.unfolded,
@@ -35,7 +35,7 @@ test(
       // Unfold a select and blur it. It should fold back.
       function(done) {
         var mock = mockPlugin(autohide);
-        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
+        mock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
         mock.model.patch.on('patch', function(patch) {is.equal(
           patch.unfolded,
@@ -53,12 +53,12 @@ test(
       // been folded, it shouldn’t unfold upon the `click`.
       function(done) {
         var mock = mockPlugin(autohide);
-        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
+        mock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
         setTimeout(function() {
           mock.view.selectLabelElement.emit('mousedown');
           mock.view.switchElement.emit('blur');
-          mock.model.state.emit('unfolded', {attributes:
+          mock.model.state.emit('unfolded', {current:
             {unfolded: undefined}
           }); // We already know that a blur triggers a fold here.
 
@@ -86,7 +86,7 @@ test(
       // select though. It shouldn’t affect the `click` event afterwards.
       function(done) {
         var mock = mockPlugin(autohide);
-        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
+        mock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
         setTimeout(function() {
           mock.view.selectLabelElement.emit('mousedown');
@@ -110,7 +110,7 @@ test(
       // down. The select should still unfold though.
       function(done) {
         var mock = mockPlugin(autohide);
-        mock.model.state.emit('unfolded', {attributes: {unfolded: undefined}});
+        mock.model.state.emit('unfolded', {current: {unfolded: undefined}});
 
         setTimeout(function() {
           mock.view.selectLabelElement.emit('mousedown');
@@ -131,7 +131,7 @@ test(
       // Unfold a select. Click the switch without blurring it.
       function(done) {
         var mock = mockPlugin(autohide);
-        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
+        mock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
         setTimeout(function() {
           mock.view.selectLabelElement.emit('mousedown');
@@ -151,7 +151,7 @@ test(
       // Unfold another select, and blur it by clicking inside the dropdown.
       function(done) {
         var mock = mockPlugin(autohide);
-        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
+        mock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
         mock.model.patch.on('patch', function() {is.fail(
           'not when the blur was triggered by a click within the dropdown'

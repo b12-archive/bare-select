@@ -49,13 +49,13 @@ module.exports = function (args) {
     var value;
     if (
       !state ||
-      !state.attributes ||
-      typeof (value = state.attributes.value || '') !== 'string'
+      !state.current ||
+      typeof (value = state.current.value || '') !== 'string'
         // TODO: '' or null?
         // TODO: Clear caption on empty value.
     ) return view.update.emit('error', error(
       'Invalid `value` message from `model.state`. Make sure you pass a ' +
-      '`state` object with `{Object} state.attributes`.'
+      '`state` object with `{Object} state.current`.'
     ));
       // TODO: Get rid of code duplication – this is very similar in other
       //       plugins.

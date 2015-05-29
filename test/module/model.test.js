@@ -89,23 +89,23 @@ test('The channel `state` works alright.', function(is) {
 
       is.deepEqual(
         Object.keys(state),
-        ['attributes'],
-        '– with the key `attributes`'
+        ['current'],
+        '– with the key `current`'
       );
 
       is.ok(
-        Object.isFrozen(state.attributes),
+        Object.isFrozen(state.current),
         '– with a frozen object inside'
       );
 
       is.deepEqual(
-        Object.keys(state.attributes),
+        Object.keys(state.current),
         ['value', 'unfolded', 'unchanged'],
-        '– containing all attributes'
+        '– containing all current'
       );
 
       is.equal(
-        state.attributes.value,
+        state.current.value,
         'a',
         '– passing the current value of the attribute'
       );
@@ -119,13 +119,13 @@ test('The channel `state` works alright.', function(is) {
       );
 
       is.deepEqual(
-        Object.keys(state.attributes),
+        Object.keys(state.current),
         ['value', 'unchanged', 'disabled'],
         '– passing an updated state'
       );
 
       is.equal(
-        state.attributes.value,
+        state.current.value,
         'b',
         '– with the updated value'
       );
@@ -152,7 +152,7 @@ test('The channel `state` works alright.', function(is) {
       );
 
       is.equal(
-        state.attributes.unfolded,
+        state.current.unfolded,
         undefined,
         '– passing `undefined`'
       );
@@ -166,7 +166,7 @@ test('The channel `state` works alright.', function(is) {
       );
 
       is.equal(
-        state.attributes.disabled,
+        state.current.disabled,
         '',
         '– passing its value'
       );
