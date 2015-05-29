@@ -105,6 +105,29 @@ test(
         }, frameThrottle);
       },
 
+      // Create a select while the switch is in focus. Flick the switch by
+      // clicking on its label. It will be blurred while the pointer is
+      // down. The select should still unfold though.
+      function(done) {
+        var mock = mockPlugin(autohide);
+        mock.model.state.emit('unfolded', {attributes: {unfolded: undefined}});
+
+        setTimeout(function() {
+          mock.view.selectLabelElement.emit('mousedown');
+          mock.view.switchElement.emit('blur');
+
+          setTimeout(function () {
+            mock.view.selectLabelElement.emit('click', {
+              preventDefault: function() {is.fail(
+                'not when we really want to unfold it'
+              );}
+            });
+
+            done();
+          }, frameThrottle);
+        }, frameThrottle);
+      },
+
       // Unfold a select. Click the switch without blurring it.
       function(done) {
         var mock = mockPlugin(autohide);
