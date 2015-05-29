@@ -13,7 +13,7 @@ test(
     // Prepare a set of async tests – each operating on its own mock select.
     var tests = [
 
-      // Unfold a select and pick an option.
+      // Unfold a select and pick an option. The select should fold.
       function(done) {
         var mock = mockPlugin(autohide);
         mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
@@ -32,7 +32,7 @@ test(
         }, frameThrottle);
       },
 
-      // Unfold a select and blur it.
+      // Unfold a select and blur it. It should fold back.
       function(done) {
         var mock = mockPlugin(autohide);
         mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
@@ -49,7 +49,8 @@ test(
         }, frameThrottle);
       },
 
-      // Unfold another one, and blur it by flicking the switch.
+      // Unfold another one, and blur it by flicking the switch. After it has
+      // been folded, it shouldn’t unfold upon the `click`.
       function(done) {
         var mock = mockPlugin(autohide);
         mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
@@ -82,7 +83,7 @@ test(
 
       // Again, unfold a select. Then blur its switch by pressing the pointer
       // over the select. Before releasing the pointer, move it away from the
-      // select though.
+      // select though. It shouldn’t affect the `click` event afterwards.
       function(done) {
         var mock = mockPlugin(autohide);
         mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
