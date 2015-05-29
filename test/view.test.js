@@ -1,12 +1,12 @@
 var h = require('virtual-dom/h');
-var createElement = require('../test-tools/createElement');
-var propertyType = require('../test-tools/propertyType');
-var test = require('../test-tools/test')('The view');
+var createElement = require('./test-tools/createElement');
+var propertyType = require('./test-tools/propertyType');
+var test = require('./test-tools/test')('The view');
 var repeat = require('repeat-element');
 var arrayFrom = require('array-from');
-var mockTree = require('../test-tools/mockTree');
+var mockTree = require('./test-tools/mockTree');
 
-var view = require('../../module/view');
+var view = require('../module/view');
 
 test('The API is in good shape.', function(is) {
   is.equal(

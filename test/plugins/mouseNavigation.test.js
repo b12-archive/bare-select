@@ -2,7 +2,7 @@ var test = require('../test-tools/test')('“mouse navigation” plugin');
 var mockPlugin = require('../test-tools/mockPlugin');
 var async = require('async');
 
-var mouseNavigation = require('../../plugins/mouseNavigation');
+var mouseNavigation = require('../../module/plugins/mouseNavigation');
 
 test(
   'Hides the dropdown.',

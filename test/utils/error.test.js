@@ -1,6 +1,6 @@
 var test = require('../test-tools/test')('error util');
 
-var error = require('../../utils/error');
+var error = require('../../module/utils/error');
 
 test(
   'Returns a lightweight error object.',

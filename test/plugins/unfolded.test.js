@@ -4,7 +4,7 @@ var mockModel = require('../test-tools/mockModel');
 var mockPlugin = require('../test-tools/mockPlugin');
 var mockSwitch = require('../test-tools/mockSwitch');
 
-var unfolded = require('../../plugins/unfolded');
+var unfolded = require('../../module/plugins/unfolded');
 
 test(
   'Patches the attribute `unfolded` when the switch is flicked.',

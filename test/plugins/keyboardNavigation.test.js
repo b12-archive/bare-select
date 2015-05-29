@@ -1,9 +1,9 @@
 var test = require('../test-tools/test')('“keyboard navigation” plugin');
-var keyCodes = require('../../utils/keyCodes');
+var keyCodes = require('../../module/utils/keyCodes');
 var mockPlugin = require('../test-tools/mockPlugin');
 var mockKeyboardEvent = require('../test-tools/mockKeyboardEvent');
 
-var keyboardNavigation = require('../../plugins/keyboardNavigation');
+var keyboardNavigation = require('../../module/plugins/keyboardNavigation');
 
 test(
   'Changes the selected option',

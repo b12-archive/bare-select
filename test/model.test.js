@@ -1,13 +1,13 @@
 var h = require('virtual-dom/h');
-var createElement = require('../test-tools/createElement');
-var updateElement = require('../test-tools/updateElement');
-var propertyType = require('../test-tools/propertyType');
-var test = require('../test-tools/test')('The model');
+var createElement = require('./test-tools/createElement');
+var updateElement = require('./test-tools/updateElement');
+var propertyType = require('./test-tools/propertyType');
+var test = require('./test-tools/test')('The model');
 var equal = require('1-liners/implode')(
   require('1-liners/equal')
 );
 
-var model = require('../../module/model');
+var model = require('../module/model');
 
 var virtualMock =
   h('bare-select', {attributes: {

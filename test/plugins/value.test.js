@@ -4,7 +4,7 @@ var mockPlugin = require('../test-tools/mockPlugin');
 var mockOptionRadio = require('../test-tools/mockOptionRadio');
 var mockOptions = require('../test-tools/mockOptions');
 
-var value = require('../../plugins/value');
+var value = require('../../module/plugins/value');
 
 test(
   'Patches the attribute `value` when an option is selected.',

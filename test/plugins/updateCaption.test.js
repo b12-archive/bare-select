@@ -3,7 +3,7 @@ var mockPlugin = require('../test-tools/mockPlugin');
 var doc = require('jsdom').jsdom().defaultView.document;
 var always = require('1-liners/always');
 
-var updateCaption = require('../../plugins/updateCaption');
+var updateCaption = require('../../module/plugins/updateCaption');
 
 test(
   'Updates `captionContent` on the channel `view.update`',
