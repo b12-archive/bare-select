@@ -1,100 +1,145 @@
 var test = require('../test-tools/test')('“autohide” plugin');
 var mockPlugin = require('../test-tools/mockPlugin');
+var async = require('async');
 
 var autohide = require('../../plugins/autohide');
 
 test(
   'Hides the dropdown.',
   function(is) {
+    var frameThrottle = 100;
     is.plan(3);
 
-    // Prepare a mock select.
-    var mock = mockPlugin(autohide);
+    // Prepare a set of async tests – each operating on its own mock select.
+    var tests = [
 
-    // Select an option.
-    mock.model.patch.on('patch', function(patch) {is.equal(
-      patch.unfolded,
-      undefined,
-      'when an option is clicked'
-    );});
+      // Unfold a select and pick an option.
+      function(done) {
+        var mock = mockPlugin(autohide);
+        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
 
-    mock.view.dropdownElement.emit('click');
-    mock.model.patch.off('patch');
+        mock.model.patch.on('patch', function(patch) {is.equal(
+          patch.unfolded,
+          undefined,
+          'when an option is clicked'
+        );});
 
-    // Blur the select.
-    mock.model.patch.on('patch', function(patch) {is.equal(
-      patch.unfolded,
-      undefined,
-      'when the select loses focus'
-    );});
+        // The unfold is throttled until the next frame. So we need to postpone
+        // every test.
+        setTimeout(function() {
+          mock.view.dropdownElement.emit('click');
+          done();
+        }, frameThrottle);
+      },
 
-    mock.view.switchElement.emit('blur');
+      // Unfold a select and blur it.
+      function(done) {
+        var mock = mockPlugin(autohide);
+        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
 
-    setTimeout(function () {
-      mock.model.patch.off('patch');
+        mock.model.patch.on('patch', function(patch) {is.equal(
+          patch.unfolded,
+          undefined,
+          'when the select loses focus'
+        );});
 
-      // Blur it again by flicking the switch.
-      mock.view.selectLabelElement.emit('mousedown');
-      mock.view.switchElement.emit('blur');
+        setTimeout(function () {
+          mock.view.switchElement.emit('blur');
+          done();
+        }, frameThrottle);
+      },
 
-      setTimeout(function () {
-        mock.view.selectLabelElement.emit('click', {
-          preventDefault: function() {is.pass(
-            'keeps it hidden when the loss of focus came from flicking the ' +
-            'switch'
-          );},
-        });
+      // Unfold another one, and blur it by flicking the switch.
+      function(done) {
+        var mock = mockPlugin(autohide);
+        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
 
-        mock.view.selectLabelElement.emit('click', {
-          preventDefault: function() {is.fail(
-            'doesn’t break the switch'
-          );},
-        });
-      }, 100);
-    }, 100);
+        setTimeout(function() {
+          mock.view.selectLabelElement.emit('mousedown');
+          mock.view.switchElement.emit('blur');
 
-    setTimeout(function () {
+          setTimeout(function () {
+            mock.view.selectLabelElement.emit('click', {
+              preventDefault: function() {is.pass(
+                'keeps it hidden when the loss of focus came from flicking the ' +
+                'switch'
+              );},
+            });
 
-      // Blur the switch again by pressing the pointer over the select. Before
-      // releasing the pointer, move it away from the select.
-      mock.view.selectLabelElement.emit('mousedown');
-      mock.view.switchElement.emit('blur');
+            mock.view.selectLabelElement.emit('click', {
+              preventDefault: function() {is.fail(
+                'doesn’t break the switch'
+              );},
+            });
 
-      setTimeout(function () {
-        mock.view.selectLabelElement.emit('mouseleave');
-        mock.view.selectLabelElement.emit('click', {
-          preventDefault: function() {is.fail(
-            'not when the switch has been mousedowned but not mouseupped'
-          );}
-        });
-      }, 100);
-    }, 300);
+            done();
+          }, frameThrottle);
+        }, frameThrottle);
+      },
 
-    setTimeout(function () {
+      // Again, unfold a select. Then blur its switch by pressing the pointer
+      // over the select. Before releasing the pointer, move it away from the
+      // select though.
+      function(done) {
+        var mock = mockPlugin(autohide);
+        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
 
-      // Click the switch without blurring it.
-      mock.view.selectLabelElement.emit('mousedown');
+        setTimeout(function() {
+          mock.view.selectLabelElement.emit('mousedown');
+          mock.view.switchElement.emit('blur');
 
-      setTimeout(function () {
-        mock.view.selectLabelElement.emit('click', {
-          preventDefault: function() {is.fail(
-            'not when the switch has been mousedowned but not blurred'
-          );}
-        });
-      }, 100);
-    }, 500);
+          setTimeout(function () {
+            mock.view.selectLabelElement.emit('mouseleave');
+            mock.view.selectLabelElement.emit('click', {
+              preventDefault: function() {is.fail(
+                'not when the switch has been mousedowned but not mouseupped'
+              );}
+            });
 
-    // Prepare another mock select.
-    var anotherMock = mockPlugin(autohide);
+            done();
+          }, frameThrottle);
+        }, frameThrottle);
+      },
 
-    anotherMock.model.patch.on('patch', function() {is.fail(
-      'not when the blur was triggered by a click within the dropdown'
-    );});
+      // Unfold a select. Click the switch without blurring it.
+      function(done) {
+        var mock = mockPlugin(autohide);
+        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
 
-    // Blur the select by clicking in the dropdown.
-    anotherMock.view.switchElement.emit('blur');
-    anotherMock.view.dropdownElement.emit('mousedown');
+        setTimeout(function() {
+          mock.view.selectLabelElement.emit('mousedown');
 
+          setTimeout(function () {
+            mock.view.selectLabelElement.emit('click', {
+              preventDefault: function() {is.fail(
+                'not when the switch has been mousedowned but not blurred'
+              );}
+            });
+
+            done();
+          }, frameThrottle);
+        }, frameThrottle);
+      },
+
+      // Unfold another select, and blur it by clicking inside the dropdown.
+      function(done) {
+        var mock = mockPlugin(autohide);
+        mock.model.state.emit('unfolded', {attributes: {unfolded: ''}});
+
+        mock.model.patch.on('patch', function() {is.fail(
+          'not when the blur was triggered by a click within the dropdown'
+        );});
+
+        setTimeout(function() {
+          mock.view.switchElement.emit('blur');
+          mock.view.dropdownElement.emit('mousedown');
+          done();
+        }, frameThrottle);
+      },
+    ];
+
+    // Execute the async tests one after another.
+    async.parallel(tests, function () {is.end();});
     is.timeoutAfter(2000);
   }
 );
