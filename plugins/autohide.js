@@ -50,7 +50,7 @@ module.exports = function (args) {
     requestFrame(function () {
 
       // Update the model.
-      if (switchJustBlurred && !dropdownJustMousedowned) {
+      if (switchJustBlurred && !selectJustMousedowned && !dropdownJustMousedowned) {
         model.patch.emit('patch', {unfolded: undefined});
       }
 
