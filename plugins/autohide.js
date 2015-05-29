@@ -9,6 +9,7 @@ module.exports = function (args) {
   var dropdownJustMousedowned = false;
   var selectJustMousedowned = false;
   var preventReshow = false;
+  var unfoldedInThisFrame = false;
 
   function resetDropdownJustMousedowned() {dropdownJustMousedowned = false;}
   function resetSelectJustMousedowned() {selectJustMousedowned = false;}
@@ -17,20 +18,39 @@ module.exports = function (args) {
   var selectLabelElement = view.selectLabelElement;
   var dropdownElement = view.dropdownElement;
   var switchElement = view.switchElement;
+  var state = model.state;
+
+  // Watch the `unfolded` state.
+  state.on('unfolded', function (state) {
+
+    // Fail silently if the message is wrong.
+    if (!state.attributes) return;
+
+    requestFrame(
+      typeof state.attributes.unfolded === 'string' ?
+      function () {unfoldedInThisFrame = true;} :
+      function () {unfoldedInThisFrame = false;}
+    );
+  });
+
+  // Fold the dropdown after an option has been clicked.
+  dropdownElement.on('click', function() {
+    model.patch.emit('patch', {unfolded: undefined});
+  });
 
   // Fold the dropdown when the switch element has been blurred.
   switchElement.on('blur', function() {
 
     // Update the state.
     switchJustBlurred = true;
-    if (selectJustMousedowned) preventReshow = true;
+    if (selectJustMousedowned && unfoldedInThisFrame) preventReshow = true;
 
     // Throttle the fold by one frame to make sure the blur wasn’t triggered
-    // by a click within the dropdown.
+    // by a mousedown within the dropdown.
     requestFrame(function () {
 
       // Update the model.
-      if (switchJustBlurred && !dropdownJustMousedowned) {
+      if (switchJustBlurred && !selectJustMousedowned && !dropdownJustMousedowned) {
         model.patch.emit('patch', {unfolded: undefined});
       }
 
@@ -67,21 +87,17 @@ module.exports = function (args) {
     requestFrame(resetSelectJustMousedowned);
 
     function preventDefaultOnce(event) {
-      if (preventReshow) {
-        event.preventDefault();
-        selectLabelElement.off('click', preventDefaultOnce);
-        preventReshow = false;
-      }
+      if (preventReshow && !unfoldedInThisFrame) event.preventDefault();
+      preventReshow = false;
+      selectLabelElement.off('click', preventDefaultOnce);
     }
 
     selectLabelElement.on('click', preventDefaultOnce);
 
     function unhookPreventDefaultOnce() {
-      if (preventReshow) {
-        selectLabelElement.off('click', preventDefaultOnce);
-        selectLabelElement.off('mouseleave', unhookPreventDefaultOnce);
-        preventReshow = false;
-      }
+      preventReshow = false;
+      selectLabelElement.off('click', preventDefaultOnce);
+      selectLabelElement.off('mouseleave', unhookPreventDefaultOnce);
     }
 
     selectLabelElement.on('mouseleave', unhookPreventDefaultOnce);
