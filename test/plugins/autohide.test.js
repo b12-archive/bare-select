@@ -191,3 +191,22 @@ test(
     is.timeoutAfter(200);
   }
 );
+
+test(
+  'Degrades silently.',
+  function(is) {
+    is.plan(1);
+
+    var mock = mockPlugin(autohide);
+
+    is.doesNotThrow(
+      function () {
+        mock.model.state.emit('unfolded', /something wrong/);
+      },
+
+      'when it gets a bad message from `model.state`'
+    );
+
+    is.end();
+  }
+);
