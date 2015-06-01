@@ -20,7 +20,8 @@ var getOptions = require('./view/getOptions');
 var domChannel = require('./view/domChannel');
 
  /**
-  * @typedef  view
+  * @typedef    view
+  * @protected
   *
   * @type      {Object}
   * @property  {ø-input}                update
@@ -36,43 +37,47 @@ var domChannel = require('./view/domChannel');
   * @listens  view.update#selection
   * @fires    view.error#error
   * @fires    view.options#update
-  * @fires    view.switchElement#<domEventName>
-  * @fires    view.dropdownElement#<domEventName>
-  * @fires    view.selectLabelElement#<domEventName>
+  * @fires    view.switchElement#(domEventName)
+  * @fires    view.dropdownElement#(domEventName)
+  * @fires    view.selectLabelElement#(domEventName)
   */
  // TODO: * @property  {String}  version
  //       *   The exact string `'0'`
+
+ /**
+  * @typedef    view-constructor
+  * @protected
+  *
+  * @type     {Function}
+  * @param    {HTMLElement}  rootElement
+  * @returns  {view}
+  */
 
  /**
   * Create a new pure HTML view.
   *
   * Have a look at <../Readme.md> to see an example of the markup.
   *
-  * @param  {HTMLElement}  rootElement
-  *   The `<bare-select>` element. It should contain
-  * @param  {[Object]}     options
+  * @module  {Function}  bare-select/module/view
   *
-  * @param  {[Object]}  options.selectors
-  * @param  {[String='bare-select > label']}
-  *   options.selectors.caption
-  * @param  {[String='bare-select > label']}
-  *   options.selectors.selectLabel
-  * @param  {[String='bare-select > input[type=checkbox]']
-  *   options.selectors.switch
-  * @param  {[String='bare-select > ul']}
-  *   options.selectors.dropdown
-  * @param  {[String='bare-select > ul > li']}
-  *   options.selectors.option
-  * @param  {[String='input[type=radio]']
-  *   options.selectors.optionRadio
-  * @param  {[String='label']}
-  *   options.selectors.optionLabel
+  * @param  {Object}  options
+  * @param  {Object}  options.selectors
+  * @param  {String}
+  *   [options.selectors.caption='bare-select > label']
+  * @param  {String}
+  *   [options.selectors.selectLabel='bare-select > label']
+  * @param  {String}
+  *   [options.selectors.switch='bare-select > input[type=checkbox]']
+  * @param  {String}
+  *   [options.selectors.dropdown='bare-select > ul']
+  * @param  {String}
+  *   [options.selectors.option='bare-select > ul > li']
+  * @param  {String}
+  *   [options.selectors.optionRadio='input[type=radio]']
+  * @param  {String}
+  *   [options.selectors.optionLabel='label']
   *
-  * @returns  {view}
-  *
-  * @protected
-  * @function
-  * @module     bare-select/module/view
+  * @returns  {view-constructor}
   */
 module.exports = function view(rootElement, options) {
   if (!options) options = {};
@@ -91,13 +96,12 @@ module.exports = function view(rootElement, options) {
    /**
     * An error has occured in the view.
     *
-    * @event  view.error#error
+    * @event      view.error#error
+    * @protected
     *
     * @type      {Object}
     * @property  {String}  message
     * @property  {String}  name
-    *
-    * @protected
     */
   var emitError = emit();
   channels.error = Object.freeze({
@@ -157,12 +161,11 @@ module.exports = function view(rootElement, options) {
    /**
     * The dropdown should be folded or unfolded.
     *
-    * @event  view.update#unfolded
+    * @event      view.update#unfolded
+    * @protected
     *
     * @type      {Object}
     * @property  {Boolean}  newValue
-    *
-    * @protected
     */
   onUpdate('unfolded', function(unfolded) {
     // TODO: Check if the message is valid.
@@ -173,12 +176,11 @@ module.exports = function view(rootElement, options) {
    /**
     * The select should be focused or blurred.
     *
-    * @event  view.update#focused
+    * @event      view.update#focused
+    * @protected
     *
     * @type      {Object}
     * @property  {Boolean}  newValue
-    *
-    * @protected
     */
   onUpdate('focused', function(focused) {
     // TODO: Check if the message is valid.
@@ -189,12 +191,11 @@ module.exports = function view(rootElement, options) {
    /**
     * The caption’s content should be replaced with a new DOM tree.
     *
-    * @event  view.update#captionContent
+    * @event      view.update#captionContent
+    * @protected
     *
     * @type      {Object}
     * @property  {Node}    newValue
-    *
-    * @protected
     */
   onUpdate('captionContent', function(captionContent) {
     // Check if the message is valid.
@@ -225,12 +226,11 @@ module.exports = function view(rootElement, options) {
    /**
     * Another option should be selected.
     *
-    * @event  view.update#selection
+    * @event      view.update#selection
+    * @protected
     *
     * @type      {Object}
     * @property  {String}  newValue
-    *
-    * @protected
     */
   // TODO: * @property  {(String|null)}  newValue
   onUpdate('selection', function(selection) {
@@ -270,7 +270,8 @@ module.exports = function view(rootElement, options) {
     * At the moment options are only read and updated at initialization. Keep
     * in mind that this will change.
     *
-    * @event  view.options#update
+    * @event      view.options#update
+    * @protected
     *
     * @type      {Object}
     * @property  {Array}   values
@@ -279,8 +280,6 @@ module.exports = function view(rootElement, options) {
     *   The options’ radio button nodes, in the same order as in the DOM.
     * @property  {Array}   labelNodes
     *   The options’ label nodes, in the same order as in the DOM.
-    *
-    * @protected
     */
   var optionsSnapshot;
   if (optionsQuery.error) emitOptions('error', optionsQuery.error);
@@ -293,27 +292,30 @@ module.exports = function view(rootElement, options) {
    /**
     * A DOM event has occured on the switch.
     *
-    * @event      view.switchElement#<domEventName>
-    * @type       {DOMEvent}
+    * @event      view.switchElement#(domEventName)
     * @protected
+    *
+    * @type  {DOMEvent}
     */
   channels.switchElement = domChannel(elements.switch);
 
    /**
     * A DOM event has occured on the dropdown.
     *
-    * @event      view.dropdownElement#<domEventName>
-    * @type       {DOMEvent}
+    * @event      view.dropdownElement#(domEventName)
     * @protected
+    *
+    * @type  {DOMEvent}
     */
   channels.dropdownElement = domChannel(elements.dropdown);
 
    /**
     * A DOM event has occured on the select label.
     *
-    * @event      view.selectLabelElement#<domEventName>
-    * @type       {DOMEvent}
+    * @event      view.selectLabelElement#(domEventName)
     * @protected
+    *
+    * @type  {DOMEvent}
     */
   channels.selectLabelElement = domChannel(elements.selectLabel);
 

@@ -70,6 +70,8 @@ function proto(options) {
   *
   * This function should only be called once.
   *
+  * @module  {Function}  bare-select
+  *
   * @param  {Object}      [options={}]
   * @param  {Function[]}  [options.plugins=[]]
   *   Default plugins. They’ll be registered on any newly created <bare-select>
@@ -78,13 +80,9 @@ function proto(options) {
   *   A custom logger, implementing the interface of `console`.
   * @param  {Function}    [options.logger.warn]
   * @param  {Function}    [options.logger.info]
-  *
-  * @module    bare-select
-  * @function  default
-  * @alias     bareSelect
   */
 // TODO: This is very much out of date.
-module.exports = function bareSelect(options) {
+module.exports = function(options) {
   if (!options) options = {};
   var logger = options.logger || console;
 

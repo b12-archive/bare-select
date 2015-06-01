@@ -10,7 +10,8 @@ var patchAttributes = require('./model/patchAttributes');
 var curry = require('1-liners/curry');
 
  /**
-  * @typedef  model
+  * @typedef    model
+  * @protected
   *
   * @type      {Object}
   * @property  {ø-input}   patch
@@ -18,9 +19,7 @@ var curry = require('1-liners/curry');
   *
   * @listens  model.patch#patch
   * @listens  model.patch#error
-  * @fires    model.state#<attributeName>
-  *
-  * @protected
+  * @fires    model.state#(attributeName)
   */
  // TODO: * @property  {String}  version
  //       *   The exact string `'0'`
@@ -31,14 +30,13 @@ var curry = require('1-liners/curry');
   * The state of the model is stored as attributes on a custom element.
   * Changing the attribute manually will also update the model.
   *
+  * @module     {Function}  bare-select/module/model
+  * @protected
+  *
   * @param  {HTMLElement}  rootElement
   *   The `<bare-select>` element.
   *
   * @returns  {model}
-  *
-  * @protected
-  * @function
-  * @module     bare-select/module/model
   */
 module.exports = function model(rootElement) {
 
@@ -48,12 +46,11 @@ module.exports = function model(rootElement) {
     * Passing a `String` will update the value of the attribute
     * `attributeName`. Passing `null` will remove the attribute.
     *
-    * @event  model.patch#patch
+    * @event      model.patch#patch
+    * @protected
     *
     * @type      {Object}
-    * @property  {...(String|null)}  <attributeName>
-    *
-    * @protected
+    * @property  {...(String|null)}  (attributeName)
     */
   var emitPatches = emit();
   var patch = Object.freeze({
@@ -75,14 +72,13 @@ module.exports = function model(rootElement) {
     *     bareSelect.setAttribute('value', 'abc');
     *     bareSelect.removeAttribute('unfolded');
     *
-    * @event  model.state#<attributeName>
+    * @event      model.state#(attributeName)
+    * @protected
     *
     * @type      {Object}
     * @property  {Object}     current
     *   The state of all attributes
-    * @property  {...String}  current.<attributeName>
-    *
-    * @protected
+    * @property  {...String}  current.(attributeName)
     */
   var emitUpdates = emit();
   var state = Object.freeze({

@@ -33,6 +33,9 @@ function getLabelByValue(options, value) {
  /**
   * Updates content displayed in the caption to match the selected option.
   *
+  * @module     {Function}  bare-select/module/plugins/updateCaption
+  * @protected
+  *
   * @param  {Object}       args
   * @param  {Object}       args.view
   * @param  {ø-output}     args.view.options
@@ -41,10 +44,6 @@ function getLabelByValue(options, value) {
   * @param  {ø-output}     args.model.state
   *
   * @returns  {plugin-handle}
-  *
-  * @protected
-  * @function
-  * @module     bare-select/module/plugins/updateCaption
   */
 module.exports = function (args) {
   var view = args.view;

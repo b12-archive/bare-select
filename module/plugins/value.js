@@ -30,6 +30,9 @@ function getSelectedValue(options) {
   * the attribute `value` within the `<bare-select>`. Changing the attribute
   * will update the selection.
   *
+  * @module     {Function}  bare-select/module/plugins/value
+  * @protected
+  *
   * @param  {Object}       args
   * @param  {Object}       args.view
   * @param  {ø-output}     args.view.options
@@ -38,10 +41,6 @@ function getSelectedValue(options) {
   * @param  {Object}       args.model
   * @param  {ø-output}     args.model.state
   * @param  {ø-input}      args.model.patch
-  *
-  * @protected
-  * @function
-  * @module     bare-select/module/plugins/keyboardNavigation
   */
 module.exports = function (args) {
   var view = args.view;

@@ -9,6 +9,9 @@ var error = require('1-liners/curry')(require('../utils/error'))({
  /**
   * Great keyboard navigation.
   *
+  * @module     {Function}  bare-select/module/plugins/keyboardNavigation
+  * @protected
+  *
   * @param  {Object}       args
   * @param  {Object}       args.view
   * @param  {ø-output}     args.view.options
@@ -18,10 +21,6 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   * @param  {ø-input}      args.model.patch
   *
   * @returns  {plugin-handle}
-  *
-  * @protected
-  * @function
-  * @module     bare-select/module/plugins/keyboardNavigation
   */
 module.exports = function (args) {
   var view = args.view;

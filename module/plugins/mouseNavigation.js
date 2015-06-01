@@ -3,6 +3,9 @@ var requestFrame = require('ainojs-requestframe');
  /**
   * Great mouse navigation.
   *
+  * @module     {Function}  bare-select/module/plugins/mouseNavigation
+  * @protected
+  *
   * @param  {Object}       args
   * @param  {Object}       args.view
   * @param  {ø-DOM-proxy}  args.view.selectLabelElement
@@ -13,10 +16,6 @@ var requestFrame = require('ainojs-requestframe');
   * @param  {ø-output}     args.model.state
   *
   * @returns  {plugin-handle}
-  *
-  * @protected
-  * @function
-  * @module     bare-select/module/plugins/mouseNavigation
   */
 module.exports = function (args) {
   var view = args.view;
