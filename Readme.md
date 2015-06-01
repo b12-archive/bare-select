@@ -20,9 +20,15 @@
 &lt;bare-select&gt;
 ===================
 
-**A customizable replacement for &lt;select&gt;.**  
-**Scripts from us.**  
-**Styles by you.**
+**An ultra-stylable &lt;select&gt;.**
+
+* [Dead-easy to style][]. Just match it to your design.
+* Usable without JavaScript. [Here’s why we care][].
+* Mimicks the native `<select>`. Keyboard navigation included.
+* Event-driven and plugin-based. Hackable from head to toe.
+
+[Here’s why we care]:  http://aaronmbushnell.com/lets-stop-customizing-form-fields/  "Let's stop customizing form fields"
+[Dead-easy to style]:  ./dev/null  "Work in progress…"
 
 
 
@@ -38,7 +44,7 @@ $ npm run prepublish
 ```
 
 
-Once we’ve published to npmjs.org it’ll be a lot easier:
+Once we’ve published to <http://npmjs.org>, it’ll be a lot easier:
 
 ```sh
 $ npm install bare-select
@@ -50,65 +56,82 @@ $ npm install bare-select
 Usage
 -----
 
-…
+You’ll likely be fine with the default settings. Just execute this to register the `<bare-select>`:
+
+```js
+require('bare-select')();
+```
+
+
+Then prepare your markup:
+
+```html
+<bare-select>             <!-- • The custom element.                         -->
+  <label></label>         <!-- • A `<label>` for the switch. A click on this -->
+                          <!--   element will unfold the dropdown.           -->
+                          <!-- • The caption of the select box. It’s the     -->
+                          <!--   same element as the label unless you        -->
+                          <!--   configure it otherwise.                     -->
+  <input type=checkbox>   <!-- • The switch. Controls the visibility of the  -->
+                          <!--   dropdown.                                   -->
+  <ul>                    <!-- • The dropdown. Folds and unfolds.            -->
+    <li>                  <!-- • An option. You can have zero or more.       -->
+      <input type=radio>  <!-- • The option’s radio. Its `value` is the      -->
+                          <!--   value of the option. When it’s checked, the -->
+                          <!--   option is selected.                         -->
+      <label></label>     <!-- • The content of the option. What the user    -->
+    </li>                 <!--   sees.                                       -->
+  </ul>
+</bare-select>
+```
+
+
+Looks complicated? How about an example:
+
+```html
+<bare-select unfolded>
+  <label>Pick a number</label>
+  <input type="checkbox" />
+  <ul>
+    <li><input type="radio" value="1" /><label>
+      One
+    </label></li>
+    <li><input type="radio" value="2" /><label>
+      Two
+    </label></li>
+    <li><input type="radio" value="3" /><label>
+      Three
+    </label></li>
+  </ul>
+</bare-select>
+```
+
+
+Now try taking the `unfolded` off your `<bare-select>`. Try setting `value="2"` on it.
 
 
 
 
-This is quality code
---------------------
+Configuring
+-----------
 
-Here’s what we ship:
-
-- The behavior of the native &lt;select&gt; mimicked as closely as possible.
-
-- Keyboard navigation is a pleasure.
-
-- Super-extendable. Every feature is a plugin.
-
-- Works without JavaScript – here’s why:
-  - you can extend or replace this script without breaking anything
-  - it works before the page fully loads
-  - there’s no magical DOM manipulation
+<!-- doxie public start -->
+*Work in progress…*
+<!-- doxie public end -->
 
 
 
 
-Plugins
+Hacking
 -------
 
-We leverage the decoupled Model-Plugins-View architecture. Every feature is a plugin. You can also easily write your own.
+Our event-driven design means that every feature is a plugin. Plugins are the glue between the view and model.
 
-Models:
-  - Custom element
+You can easily add, remove, fork and modify plugins to suit them to your needs. You can even replace the view and the model with your own custom implementations.
 
-Views:
-  - Pure CSS
-
-Plugins:
-  - `value` synchronization
-  - `unfolded` option
-  - Update the select caption
-  - Keyboard navigation
-  - Hide on exit
-  - Hide on selection
-
-
-**Extras:** We’ll build these in if we have the time. PRs are also very welcome.
-
-Alternative models:
-  + Pure JavaScript API
-
-Alternative views:
-  + Shadow DOM
-  + Hidden select variation
-
-Plugins:
-  + `disabled` option
-  + Quick mousedown-hover-release selection (as in Mac OS X or GNOME)
-  + Select on mousedown, hide on mouseup
-  + DOM events
-  + Fuzzy text search
+<!-- doxie protected start -->
+*Work in progress…*
+<!-- doxie protected end -->
 
 
 
