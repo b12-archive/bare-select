@@ -8,3 +8,6 @@
 
 # - Coverage reports
 /coverage/
+
+# - Default jsDoc output
+/out/

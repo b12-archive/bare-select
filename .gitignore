@@ -16,3 +16,6 @@
 # - Editor files
 *.sublime-project
 *.sublime-workspace
+
+# - Default jsDoc output
+/out/
