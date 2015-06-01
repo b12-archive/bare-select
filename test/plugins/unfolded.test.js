@@ -16,7 +16,7 @@ test(
 
     var anotherView = mockView();
     var anotherModel = mockModel();
-    unfolded({
+    unfolded()({
       view: anotherView,
       model: anotherModel,
     });
