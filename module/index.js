@@ -1,5 +1,3 @@
-var assign = require('object-assign');
-
 var executed = false;
 
 function proto(options) {
