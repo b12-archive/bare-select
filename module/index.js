@@ -3,7 +3,6 @@ var executed = false;
 function proto(options) {
 
   // Read options.
-  if (!options) options = {};
   var pluginMakers = (Array.isArray(options.plugins) && options.plugins) || [
     require('./plugins/keyboardNavigation')(),
     require('./plugins/mouseNavigation')(),
@@ -16,10 +15,19 @@ function proto(options) {
   var modelMaker = options.model || require('./model')();
   var viewMaker = options.view || require('./view')();
 
+
   // Create the prototype.
   var result = Object.create(HTMLElement.prototype);
 
-  // Enclose all properties within the constructor function
+   /**
+    * @class  HTMLBareSelectElement
+    *
+    * @property  {Function}  registerPlugin(plugin)
+    *   Pass a configured plugin to register it on a single `<bare-select>`
+    *   element.
+    * @property  {Array}     plugins
+    *   *[read-only]* A list of registered plugin handles.
+    */
   result.createdCallback = function createdCallback() {
 
     // Initialize the `model` and `view`.
@@ -84,6 +92,8 @@ function proto(options) {
   * @param  {logger}
   *   [options.logger=console]
   *   A custom logger. Make sure `logger.info` and `logger.warn` are functions.
+  *
+  * @returns  {HTMLBareSelectElement}
   */
 module.exports = function(options) {
   if (!options) options = {};
