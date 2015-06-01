@@ -53,46 +53,7 @@
   *
   * @protected
   */
-
- /**
-  * @typedef  view
-  *
-  * @type      {Object}
-  * @property  {ø-input}                update
-  * @property  {ø-promise-like-output}  options
-  * @property  {ø-DOM-proxy}            switchElement
-  * @property  {ø-DOM-proxy}            dropdownElement
-  * @property  {ø-DOM-proxy}            selectLabelElement
-  * @property  {ø-error}                options
-  *
-  * @listens  view.update#unfolded
-  * @listens  view.update#focused
-  * @listens  view.update#captionContent
-  * @listens  view.update#selection
-  * @fires    view.error#error
-  * @fires    view.options#update
-  * @fires    view.switchElement#<domEventName>
-  * @fires    view.dropdownElement#<domEventName>
-  * @fires    view.selectLabelElement#<domEventName>
-  */
- // TODO: * @property  {String}  version
- //       *   The exact string `'0'`
-
- /**
-  * @typedef  model
-  *
-  * @type      {Object}
-  * @property  {ø-input}   patch
-  * @property  {ø-output}  state
-  *
-  * @listens  model.patch#patch
-  * @listens  model.patch#error
-  * @fires    model.state#<attributeName>
-  *
-  * @protected
-  */
- // TODO: * @property  {String}  version
- //       *   The exact string `'0'`
+// TODO: Unsubscribe through `uncatch`.
 
  /**
   * @typedef  plugin-handle

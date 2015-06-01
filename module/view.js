@@ -20,26 +20,33 @@ var getOptions = require('./view/getOptions');
 var domChannel = require('./view/domChannel');
 
  /**
-  * Create a new pure HTML view. Here’s the pseudo-markup it’s designed for:
+  * @typedef  view
   *
-  *     <bare-select>                        │ • The custom element
-  *       <select-label>                     │ • A `<label>` for the switch
-  *         <caption></caption>              │ • The content displayed in the
-  *                                          │   select box
-  *       </select-label>                    │
-  *                                          │
-  *       <switch />                         │ • A checkbox controlling the
-  *                                          │   dropdown’s visibility
-  *       <dropdown>                         │ • A list of options
-  *         <option>                         │ • A list item
-  *           <option-radio />               │ • A radio button – its `value`
-  *                                          │   attribute is the value of the
-  *                                          │   option
-  *           <option-label></option-label>  │ • The content displayed in the
-  *                                          │   option
-  *         </option>                        │
-  *       </dropdown>                        │
-  *     </bare-select>                       │
+  * @type      {Object}
+  * @property  {ø-input}                update
+  * @property  {ø-promise-like-output}  options
+  * @property  {ø-DOM-proxy}            switchElement
+  * @property  {ø-DOM-proxy}            dropdownElement
+  * @property  {ø-DOM-proxy}            selectLabelElement
+  * @property  {ø-error}                options
+  *
+  * @listens  view.update#unfolded
+  * @listens  view.update#focused
+  * @listens  view.update#captionContent
+  * @listens  view.update#selection
+  * @fires    view.error#error
+  * @fires    view.options#update
+  * @fires    view.switchElement#<domEventName>
+  * @fires    view.dropdownElement#<domEventName>
+  * @fires    view.selectLabelElement#<domEventName>
+  */
+ // TODO: * @property  {String}  version
+ //       *   The exact string `'0'`
+
+ /**
+  * Create a new pure HTML view.
+  *
+  * Have a look at <../Readme.md> to see an example of the markup.
   *
   * @param  {HTMLElement}  rootElement
   *   The `<bare-select>` element. It should contain

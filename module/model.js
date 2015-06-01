@@ -10,7 +10,26 @@ var patchAttributes = require('./model/patchAttributes');
 var curry = require('1-liners/curry');
 
  /**
+  * @typedef  model
+  *
+  * @type      {Object}
+  * @property  {ø-input}   patch
+  * @property  {ø-output}  state
+  *
+  * @listens  model.patch#patch
+  * @listens  model.patch#error
+  * @fires    model.state#<attributeName>
+  *
+  * @protected
+  */
+ // TODO: * @property  {String}  version
+ //       *   The exact string `'0'`
+
+ /**
   * Create a new custom-element-based model.
+  *
+  * The state of the model is stored as attributes on a custom element.
+  * Changing the attribute manually will also update the model.
   *
   * @param  {HTMLElement}  rootElement
   *   The `<bare-select>` element.
@@ -25,6 +44,9 @@ module.exports = function model(rootElement) {
 
    /**
     * Patch the model’s state.
+    *
+    * Passing a `String` will update the value of the attribute
+    * `attributeName`. Passing `null` will remove the attribute.
     *
     * @event  model.patch#patch
     *
@@ -46,10 +68,18 @@ module.exports = function model(rootElement) {
    /**
     * The model’s state has been updated.
     *
+    * An event will be issued for every changed attribute. So the listeners
+    * `'value'` and `'unfolded'` will be notified asynchronously after
+    * running this:
+    *
+    *     bareSelect.setAttribute('value', 'abc');
+    *     bareSelect.removeAttribute('unfolded');
+    *
     * @event  model.state#<attributeName>
     *
     * @type      {Object}
     * @property  {Object}     current
+    *   The state of all attributes
     * @property  {...String}  current.<attributeName>
     *
     * @protected
@@ -66,7 +96,7 @@ module.exports = function model(rootElement) {
     attributesObject: rootElement.attributes,
   });
 
-  // Emit an initial messages to `state`.
+  // Emit initial messages to `state`.
   attributeChangedCallback();
 
   // Export channels and `attributeChangedCallback`.
