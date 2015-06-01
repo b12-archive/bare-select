@@ -1,5 +1,3 @@
-var viewConstructor = require('./view');
-var modelConstructor = require('./model');
 var assign = require('object-assign');
 
 var executed = false;
@@ -8,11 +6,17 @@ function proto(options) {
 
   // Read options.
   if (!options) options = {};
-  var plugins = (
-    Array.isArray(options.plugins) && options.plugins ||
-    []
-  );
+  var pluginMakers = (Array.isArray(options.plugins) && options.plugins) || [
+    require('./plugins/keyboardNavigation')(),
+    require('./plugins/mouseNavigation')(),
+    require('./plugins/unfolded')(),
+    require('./plugins/updateCaption')(),
+    require('./plugins/value')(),
+  ];
+
   var logger = options.logger || console;
+  var modelMaker = options.model || require('./model')();
+  var viewMaker = options.view || require('./view')();
 
   // Create the prototype.
   var result = Object.create(HTMLElement.prototype);
@@ -20,16 +24,14 @@ function proto(options) {
   // Enclose all properties within the constructor function
   result.createdCallback = function createdCallback() {
 
-    // Initialize the `view` and `model`.
-    var view = viewConstructor(this, options);
-    var model = modelConstructor(this, options);
+    // Initialize the `model` and `view`.
+    var modelViewOptions = {root: this, logger: logger};
+    var model = modelMaker(modelViewOptions);
+    var view = viewMaker(modelViewOptions);
 
     // Define the method `registerPlugin` and register default plugins.
-    var registeredPlugins = [];
-    var pluginOptions = assign({
-      view: view,
-      model: model,
-    }, options);
+    var plugins = [];
+    var pluginOptions = {view: view, model: model, logger: logger};
 
     var registerPlugin = function(plugin) {
       if (typeof plugin !== 'function') return logger.warn('bare-select: ' +
@@ -37,23 +39,21 @@ function proto(options) {
         '\nPlugin:',
         plugin
       );
-      registeredPlugins.push(plugin(pluginOptions));
+      plugins.push(plugin(pluginOptions));
     };
 
-    plugins.forEach(registerPlugin);
+    pluginMakers.forEach(registerPlugin);
 
     // Export public properties.
     this.registerPlugin = registerPlugin;
 
     Object.defineProperty(this, 'plugins', {
-      get: function() {return registeredPlugins.slice();}
+      get: function() {return plugins.slice();}
     });
 
     // Export other properties.
     this._view = view;
     this._model = model;
-    // TODO: this._logger = logger
-    //       Plugins should use it as well. No implicit passing options around.
   };
 
   // Inherit `attributeChangedCallback` from the model.

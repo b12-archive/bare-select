@@ -6,18 +6,9 @@ var requestFrame = require('ainojs-requestframe');
   * @module     {Function}  bare-select/module/plugins/mouseNavigation
   * @protected
   *
-  * @param  {Object}       args
-  * @param  {Object}       args.view
-  * @param  {ø-DOM-proxy}  args.view.selectLabelElement
-  * @param  {ø-DOM-proxy}  args.view.dropdownElement
-  * @param  {ø-DOM-proxy}  args.view.switchElement
-  * @param  {ø-input}      args.view.update
-  * @param  {Object}       args.model
-  * @param  {ø-output}     args.model.state
-  *
-  * @returns  {plugin}
+  * @returns  {plugin-maker}
   */
-module.exports = function (args) {
+module.exports = function() {return function (args) {
   var view = args.view;
   var model = args.model;
 
@@ -119,4 +110,4 @@ module.exports = function (args) {
 
     selectLabelElement.on('mouseleave', unhookPreventDefaultOnce);
   });
-};
+};};

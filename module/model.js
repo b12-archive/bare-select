@@ -20,7 +20,8 @@ var curry = require('1-liners/curry');
   *
   * @returns  {model-maker}
   */
-module.exports = function model(rootElement) {
+module.exports = function() {return function(args) {
+  var root = args.root;
 
    /**
     * Patch the model’s state.
@@ -41,7 +42,7 @@ module.exports = function model(rootElement) {
   });
 
   on(emitPatches)('patch',
-    curry(patchAttributes)(rootElement)
+    curry(patchAttributes)(root)
   );
 
    /**
@@ -71,7 +72,7 @@ module.exports = function model(rootElement) {
 
   var attributeChangedCallback = attributeUpdater({
     emitter: emitUpdates,
-    attributesObject: rootElement.attributes,
+    attributesObject: root.attributes,
   });
 
   // Emit initial messages to `state`.
@@ -83,4 +84,4 @@ module.exports = function model(rootElement) {
     state: state,
     attributeChangedCallback: attributeChangedCallback,
   });
-};
+};};

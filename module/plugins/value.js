@@ -33,16 +33,9 @@ function getSelectedValue(options) {
   * @module     {Function}  bare-select/module/plugins/value
   * @protected
   *
-  * @param  {Object}       args
-  * @param  {Object}       args.view
-  * @param  {ø-output}     args.view.options
-  * @param  {ø-DOM-proxy}  args.view.dropdownElement
-  * @param  {ø-input}      args.view.update
-  * @param  {Object}       args.model
-  * @param  {ø-output}     args.model.state
-  * @param  {ø-input}      args.model.patch
+  * @returns  {plugin-maker}
   */
-module.exports = function (args) {
+module.exports = function() {return function (args) {
   var view = args.view;
   var model = args.model;
 
@@ -103,5 +96,5 @@ module.exports = function (args) {
 
     emitUpdate('selection', {newValue: newValue});
   });
-};
+};};
 // TODO: Make sure no other plugin depends on this one.

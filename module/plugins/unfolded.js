@@ -10,19 +10,12 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   * @module     {Function}  bare-select/module/plugins/unfolded
   * @protected
   *
-  * @param  {Object}       args
-  * @param  {Object}       args.view
-  * @param  {ø-DOM-proxy}  args.view.switchElement
-  * @param  {ø-input}      args.view.update
-  * @param  {Object}       args.model
-  * @param  {ø-output}     args.model.state
-  * @param  {ø-input}      args.model.patch
-  *
-  * @returns  {plugin}
+  * @returns  {plugin-maker}
   */
-module.exports = function (args) {
+module.exports = function() {return function (args) {
   var view = args.view;
   var model = args.model;
+
   var valueSnapshot = null;
 
   // Update the view when the model changes.
@@ -56,5 +49,5 @@ module.exports = function (args) {
       unfolded: (newValue ? '' : undefined),
     });
   });
-};
+};};
 // TODO: Make sure no other plugin depends on this one.

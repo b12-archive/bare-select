@@ -12,17 +12,9 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   * @module     {Function}  bare-select/module/plugins/keyboardNavigation
   * @protected
   *
-  * @param  {Object}       args
-  * @param  {Object}       args.view
-  * @param  {ø-output}     args.view.options
-  * @param  {ø-DOM-proxy}  args.view.switchElement
-  * @param  {Object}       args.model
-  * @param  {ø-output}     args.model.state
-  * @param  {ø-input}      args.model.patch
-  *
-  * @returns  {plugin}
+  * @returns  {plugin-maker}
   */
-module.exports = function (args) {
+module.exports = function () {return function (args) {
   var view = args.view;
   var model = args.model;
 
@@ -166,4 +158,4 @@ module.exports = function (args) {
       event.preventDefault();
     }
   });
-};
+};};

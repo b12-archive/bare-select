@@ -36,68 +36,65 @@ function getLabelByValue(options, value) {
   * @module     {Function}  bare-select/module/plugins/updateCaption
   * @protected
   *
-  * @param  {Object}       args
-  * @param  {Object}       args.view
-  * @param  {ø-output}     args.view.options
-  * @param  {ø-input}      args.view.update
-  * @param  {Object}       args.model
-  * @param  {ø-output}     args.model.state
-  *
-  * @returns  {plugin}
+  * @returns  {plugin-maker}
   */
-module.exports = function (args) {
-  var view = args.view;
-  var model = args.model;
-  var fragment = (args.documentFragment ||
+module.exports = function (options) {
+  if (!options) options = {};
+  var fragment = (options.documentFragment ||
     /* istanbul ignore next */
     function () {return document.createDocumentFragment();}
   );
 
-  // Keep a snapshot of registered options.
-  var optionsSnapshot = null;
-  view.options.when('update', function(options) {optionsSnapshot = options;});
+  return function (args) {
+    var view = args.view;
+    var model = args.model;
 
-  // Keep a snapshot of the current selection.
-  var selectionSnapshot = '';
+    // Keep a snapshot of registered options.
+    var optionsSnapshot = null;
+    view.options.when('update', function(options) {optionsSnapshot = options;});
 
-  // Whenever the selection changes,
-  model.state.when('value', function (state) {
-    var value;
-    if (
-      !state ||
-      !state.current ||
-      typeof (value = state.current.value || '') !== 'string'
-        // TODO: '' or null?
-        // TODO: Clear caption on empty value.
-    ) return view.update.emit('error', error(
-      'Invalid `value` message from `model.state`. Make sure you pass a ' +
-      '`state` object with `{Object} state.current`.'
-    ));
-      // TODO: Get rid of code duplication – this is very similar in other
-      //       plugins.
+    // Keep a snapshot of the current selection.
+    var selectionSnapshot = '';
 
-    // Send the new `captionContent` to the channel `view.update` if it’s
-    // different than the snapshot.
-    var labelResult;
-    var currentLabel;
-    if (value !== selectionSnapshot) {
-      labelResult = getLabelByValue(optionsSnapshot, value);
-      if (labelResult.error) return view.update.emit('error', labelResult.error);
-      currentLabel = labelResult.value;
+    // Whenever the selection changes,
+    model.state.when('value', function (state) {
+      var value;
+      if (
+        !state ||
+        !state.current ||
+        typeof (value = state.current.value || '') !== 'string'
+          // TODO: '' or null?
+          // TODO: Clear caption on empty value.
+      ) return view.update.emit('error', error(
+        'Invalid `value` message from `model.state`. Make sure you pass a ' +
+        '`state` object with `{Object} state.current`.'
+      ));
+        // TODO: Get rid of code duplication – this is very similar in other
+        //       plugins.
 
-      if (currentLabel) {
-        // The caption’s new content is a DocumentFragment containing clones of
-        // each of the label’s nodes.
-        var content = fragment();
-        arrayFrom(currentLabel.childNodes).forEach(function(node) {
-          content.appendChild(node.cloneNode(true));
-        });
+      // Send the new `captionContent` to the channel `view.update` if it’s
+      // different than the snapshot.
+      var labelResult;
+      var currentLabel;
+      if (value !== selectionSnapshot) {
+        labelResult = getLabelByValue(optionsSnapshot, value);
+        if (labelResult.error) return view.update.emit('error', labelResult.error);
+        currentLabel = labelResult.value;
 
-        view.update.emit('captionContent', {newDOM: content});
+        if (currentLabel) {
+          // The caption’s new content is a DocumentFragment containing clones of
+          // each of the label’s nodes.
+          var content = fragment();
+          arrayFrom(currentLabel.childNodes).forEach(function(node) {
+            content.appendChild(node.cloneNode(true));
+          });
+
+          view.update.emit('captionContent', {newDOM: content});
+        }
       }
-    }
 
-    // Update the snapshot.
-    selectionSnapshot = value;
-  });
+      // Update the snapshot.
+      selectionSnapshot = value;
+    });
+  };
 };
