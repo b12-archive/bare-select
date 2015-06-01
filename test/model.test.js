@@ -7,7 +7,7 @@ var equal = require('1-liners/implode')(
   require('1-liners/equal')
 );
 
-var model = require('../module/model');
+var model = require('../module/model')();
 
 var virtualMock =
   h('bare-select', {attributes: {
@@ -16,6 +16,7 @@ var virtualMock =
     unchanged: 'unchanged',
   }})
 ;
+
 var virtualUpdate =
   h('bare-select', {attributes: {
     value: 'b',
@@ -23,6 +24,7 @@ var virtualUpdate =
     unchanged: 'unchanged',
   }})
 ;
+
 function mockRoot() {
   return createElement(virtualMock);
 }
@@ -35,7 +37,7 @@ test('The API is in good shape.', function(is) {
   );
 
   var mock = mockRoot();
-  var modelInstance = model(mock);
+  var modelInstance = model({root: mock});
 
   is.ok(
     Object.isFrozen(modelInstance),
@@ -70,7 +72,7 @@ test('The API is in good shape.', function(is) {
 
 test('The channel `state` works alright.', function(is) {
   var mock = mockRoot();
-  var modelInstance = model(mock);
+  var modelInstance = model({root: mock});
   var firstRun = true;
   var valueState;
 
@@ -195,7 +197,7 @@ test('The channel `state` works alright.', function(is) {
 
 test('The channel `patch` works alright.', function(is) {
   var mock = mockRoot();
-  var modelInstance = model(mock);
+  var modelInstance = model({root: mock});
 
   modelInstance.patch.emit('patch', {
     value: 'b'

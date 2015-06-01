@@ -1,6 +1,5 @@
 var mockView = require('./mockView');
 var mockModel = require('./mockModel');
-var assign = require('object-assign');
 
 module.exports = function(plugin, args) {
   var mocks = {
@@ -8,6 +7,6 @@ module.exports = function(plugin, args) {
     model: mockModel(),
   };
 
-  plugin(assign(mocks, args));
+  plugin(args)(mocks);
   return mocks;
 };

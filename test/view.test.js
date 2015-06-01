@@ -6,7 +6,7 @@ var repeat = require('repeat-element');
 var arrayFrom = require('array-from');
 var mockTree = require('./test-tools/mockTree');
 
-var view = require('../module/view');
+var view = require('../module/view')();
 
 test('The API is in good shape.', function(is) {
   is.equal(
@@ -15,7 +15,7 @@ test('The API is in good shape.', function(is) {
     'is a constructor function'
   );
 
-  var viewInstance = view(mockTree());
+  var viewInstance = view({root: mockTree()});
 
   is.ok(
     Object.isFrozen(viewInstance),
@@ -95,7 +95,7 @@ test('The API is in good shape.', function(is) {
 });
 
 test('The channel `options` works alright.', function(is) {
-  var viewInstance = view(mockTree());
+  var viewInstance = view({root: mockTree()});
   var executed;
 
   is.plan(5);
@@ -152,44 +152,44 @@ test('The channel `options` works alright.', function(is) {
 test('The channel `options` fails gracefully.', function(is) {
   is.plan(6);
 
-  try {view(createElement(
+  try {view({root: createElement(
     h('bare-select', [
       h(),
       h('input', {type: 'checkbox'}),
     ])
-  ));} catch (error) {
+  )});} catch (error) {
     is.ok(
       error.message.match(/can’t find the (?:select label|caption) element/i),
       'when the select label or caption isn’t there'
     );
   }
 
-  try {view(createElement(
+  try {view({root: createElement(
     h('bare-select', [
       h('label'),
       h(),
     ])
-  ));} catch (error) {
+  )});} catch (error) {
     is.ok(
       error.message.match(/can’t find the switch element/i),
       'when the switch isn’t there'
     );
   }
 
-  try {view(createElement(
+  try {view({root: createElement(
     h('bare-select', [
       h('label'),
       h('input', {type: 'checkbox'}),
       h(),
     ])
-  ));} catch (error) {
+  )});} catch (error) {
     is.ok(
       error.message.match(/can’t find the dropdown element/i),
       'when the dropdown isn’t there'
     );
   }
 
-  try {view(createElement(
+  try {view({root: createElement(
     h('bare-select', [
       h('label'),
       h('input', {type: 'checkbox'}),
@@ -197,14 +197,14 @@ test('The channel `options` fails gracefully.', function(is) {
         h('wrong')
       ])
     ])
-  ));} catch (error) {
+  )});} catch (error) {
     is.ok(
       error.message.match(/can’t find any option element/i),
       'when the dropdown is empty'
     );
   }
 
-  try {view(createElement(
+  try {view({root: createElement(
     h('bare-select', [
       h('label'),
       h('input', {type: 'checkbox'}),
@@ -214,14 +214,14 @@ test('The channel `options` fails gracefully.', function(is) {
         ])
       ])
     ])
-  ));} catch (error) {
+  )});} catch (error) {
     is.ok(
       error.message.match(/wrong markup within options/i),
       'when there’s no radio button in one of the options'
     );
   }
 
-  try {view(createElement(
+  try {view({root: createElement(
     h('bare-select', [
       h('label'),
       h('input', {type: 'checkbox'}),
@@ -232,7 +232,7 @@ test('The channel `options` fails gracefully.', function(is) {
         ])
       ])
     ])
-  ));} catch (error) {
+  )});} catch (error) {
     is.ok(
       error.message.match(/wrong markup within options/i),
       'when there’s no label in one of the options'
@@ -245,7 +245,7 @@ test('The channel `options` fails gracefully.', function(is) {
 test('`unfolded` on the channel `update` works alright.', function(is) {
   var tree = mockTree();
   var switchElement = tree.children[1];
-  var viewInstance = view(tree);
+  var viewInstance = view({root: tree});
 
   viewInstance.update.emit('unfolded', {newValue: true});
   is.equal(
@@ -271,7 +271,7 @@ test('`focused` on the channel `update` works alright.', function(is) {
 
   var tree = mockTree();
   var switchElement = tree.children[1];
-  var viewInstance = view(tree);
+  var viewInstance = view({root: tree});
 
   var focusRun = 1;
   switchElement.focus = function () {
@@ -302,7 +302,7 @@ test('`focused` on the channel `update` works alright.', function(is) {
 
 test('`captionContent` on the channel `update` works alright.', function(is) {
   var tree = mockTree();
-  var viewInstance = view(tree);
+  var viewInstance = view({root: tree});
   var caption = tree.children[0];
 
   var mockContent = createElement(h('div'));
@@ -329,7 +329,7 @@ test(
     is.plan(3);
 
     var tree = mockTree();
-    var viewInstance = view(tree);
+    var viewInstance = view({root: tree});
     var caption = tree.children[0];
     var captionContent = arrayFrom(caption.children);
 
@@ -364,7 +364,7 @@ test('`selection` on the channel `update` works alright.', function(is) {
   var radioElements = arrayFrom(tree.children[2].children)
     .map(function(item) {return item.children[0];})
   ;
-  var viewInstance = view(tree);
+  var viewInstance = view({root: tree});
 
   viewInstance.update.emit('selection', {newValue: 'a'});
   is.equal(
@@ -386,7 +386,7 @@ test('`selection` on the `update` channel fails gracefully.', function(is) {
   is.plan(1);
 
   var tree = mockTree();
-  var mockView = view(tree);
+  var mockView = view({root: tree});
 
   mockView.error.catch(function(error) {is.ok(
     error.message.match(/value not found/i),
