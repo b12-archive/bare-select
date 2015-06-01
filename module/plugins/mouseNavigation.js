@@ -15,7 +15,7 @@ var requestFrame = require('ainojs-requestframe');
   * @param  {Object}       args.model
   * @param  {ø-output}     args.model.state
   *
-  * @returns  {plugin-handle}
+  * @returns  {plugin}
   */
 module.exports = function (args) {
   var view = args.view;

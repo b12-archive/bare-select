@@ -20,41 +20,7 @@ var getOptions = require('./view/getOptions');
 var domChannel = require('./view/domChannel');
 
  /**
-  * @typedef    view
-  * @protected
-  *
-  * @type      {Object}
-  * @property  {ø-input}                update
-  * @property  {ø-promise-like-output}  options
-  * @property  {ø-DOM-proxy}            switchElement
-  * @property  {ø-DOM-proxy}            dropdownElement
-  * @property  {ø-DOM-proxy}            selectLabelElement
-  * @property  {ø-error}                options
-  *
-  * @listens  view.update#unfolded
-  * @listens  view.update#focused
-  * @listens  view.update#captionContent
-  * @listens  view.update#selection
-  * @fires    view.error#error
-  * @fires    view.options#update
-  * @fires    view.switchElement#(domEventName)
-  * @fires    view.dropdownElement#(domEventName)
-  * @fires    view.selectLabelElement#(domEventName)
-  */
- // TODO: * @property  {String}  version
- //       *   The exact string `'0'`
-
- /**
-  * @typedef    view-constructor
-  * @protected
-  *
-  * @type     {Function}
-  * @param    {HTMLElement}  rootElement
-  * @returns  {view}
-  */
-
- /**
-  * Create a new pure HTML view.
+  * A pure HTML+CSS view.
   *
   * Have a look at <../Readme.md> to see an example of the markup.
   *
@@ -77,7 +43,7 @@ var domChannel = require('./view/domChannel');
   * @param  {String}
   *   [options.selectors.optionLabel='label']
   *
-  * @returns  {view-constructor}
+  * @returns  {view-maker}
   */
 module.exports = function view(rootElement, options) {
   if (!options) options = {};

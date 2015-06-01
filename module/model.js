@@ -10,33 +10,15 @@ var patchAttributes = require('./model/patchAttributes');
 var curry = require('1-liners/curry');
 
  /**
-  * @typedef    model
-  * @protected
-  *
-  * @type      {Object}
-  * @property  {ø-input}   patch
-  * @property  {ø-output}  state
-  *
-  * @listens  model.patch#patch
-  * @listens  model.patch#error
-  * @fires    model.state#(attributeName)
-  */
- // TODO: * @property  {String}  version
- //       *   The exact string `'0'`
-
- /**
-  * Create a new custom-element-based model.
+  * A model based on a custom element.
   *
   * The state of the model is stored as attributes on a custom element.
-  * Changing the attribute manually will also update the model.
+  * Changing an attribute will update the model, and patching the model’s state
+  * will update the attribute.
   *
-  * @module     {Function}  bare-select/module/model
-  * @protected
+  * @module  {Function}  bare-select/module/model
   *
-  * @param  {HTMLElement}  rootElement
-  *   The `<bare-select>` element.
-  *
-  * @returns  {model}
+  * @returns  {model-maker}
   */
 module.exports = function model(rootElement) {
 

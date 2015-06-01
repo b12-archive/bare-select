@@ -18,7 +18,7 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   * @param  {ø-output}     args.model.state
   * @param  {ø-input}      args.model.patch
   *
-  * @returns  {plugin-handle}
+  * @returns  {plugin}
   */
 module.exports = function (args) {
   var view = args.view;

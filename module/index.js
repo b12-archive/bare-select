@@ -72,16 +72,21 @@ function proto(options) {
   *
   * @module  {Function}  bare-select
   *
-  * @param  {Object}      [options={}]
-  * @param  {Function[]}  [options.plugins=[]]
+  * @param  {Object}
+  *   [options={}]
+  * @param  {view-maker}
+  *   [options.view=require('bare-select/module/view')()]
+  * @param  {model-maker}
+  *   [options.model=require('bare-select/module/model')()]
+  * @param  {plugin-maker[]}
+  *   [options.plugins=[require('bare-select/module/plugins/keyboardNavigation')(), require('bare-select/module/plugins/mouseNavigation')(), require('bare-select/module/plugins/unfolded')(), require('bare-select/module/plugins/updateCaption')(), require('bare-select/module/plugins/value')()]]
   *   Default plugins. They’ll be registered on any newly created <bare-select>
   *   element.
-  * @param  {Object}      [options.logger=console]
-  *   A custom logger, implementing the interface of `console`.
-  * @param  {Function}    [options.logger.warn]
-  * @param  {Function}    [options.logger.info]
+  *
+  * @param  {logger}
+  *   [options.logger=console]
+  *   A custom logger. Make sure `logger.info` and `logger.warn` are functions.
   */
-// TODO: This is very much out of date.
 module.exports = function(options) {
   if (!options) options = {};
   var logger = options.logger || console;
