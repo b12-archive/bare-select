@@ -373,10 +373,10 @@ test('`selection` on the channel `update` works alright.', function(is) {
     'checks the right option when it gets an `update`'
   );
 
-  viewInstance.update.emit('selection', {newValue: ''});
+  viewInstance.update.emit('selection', {newValue: null});
   is.notOk(
     radioElements.some(function(radio) {return radio.checked;}),
-    'unchecks all options when it gets an `update` with the value `""`'
+    'unchecks all options when it gets an `update` with the value `null`'
   );
 
   is.end();
@@ -392,7 +392,7 @@ test('`selection` on the `update` channel fails gracefully.', function(is) {
     error.message.match(/value not found/i),
     'emits an `error` when it gets an invalid value'
   );});
-  mockView.update.emit('selection', {newValue: 'invalid'});
+  mockView.update.emit('selection', {newValue: ''});
   // TODO: uncatch this test
 
   is.end();

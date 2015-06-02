@@ -95,7 +95,7 @@ test(
     mock.view.update.off('error');
 
     // Emit an unknown `value`.
-    mock.view.update.on(['captionContent', 'error'], function(e) {console.log(e); is.fail(
+    mock.view.update.on(['captionContent', 'error'], function() {is.fail(
       'fails silently when passed an unknown `value`'
     );});
 
@@ -105,6 +105,19 @@ test(
     });
 
     mock.model.state.emit('value', {current: {value: 'unknown'}});
+    mock.view.update.off(['captionContent', 'error']);
+
+    // Emit an empty `value`.
+    mock.view.update.on(['captionContent', 'error'], function() {is.fail(
+      'does nothing when passed an empty `value`'
+    );});
+
+    mock.view.options.emit('update', {
+      values: ['a', 'b'],
+      labelNodes: [null, null],
+    });
+
+    mock.model.state.emit('value', {current: {}});
     mock.view.update.off(['captionContent', 'error']);
 
     is.end();

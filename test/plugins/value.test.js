@@ -54,7 +54,7 @@ test(
     }));
 
     mock.model.patch.on('patch', function(patch) {is.deepEqual(patch,
-      {value: ''},
+      {value: undefined},
       'removes the `value` attribute when all options are deselected'
     );});
     mock.view.dropdownElement.emit('change');
@@ -63,7 +63,7 @@ test(
     // Initialize a plugin with no selected options.
     var anotherMock = mockPlugin(value);
     anotherMock.model.patch.on('patch', function(patch) {is.deepEqual(patch,
-      {value: ''},
+      {value: undefined},
       'removes the `value` attribute when a dropdown is initialized ' +
       'without any selected options'
     );});
@@ -115,12 +115,10 @@ test(
     // Emit an empty option.
     mock.view.update.on('selection', function(selection) {is.equal(
       selection.newValue,
-      '',
+      null,
       'emits a `selection` synchronously when the passed value is empty'
     );});
-    mock.model.state.emit('value', {current: {
-      value: ''
-    }});
+    mock.model.state.emit('value', {current: {}});
     mock.view.update.off('selection');
 
     // Emit an invalid option.
