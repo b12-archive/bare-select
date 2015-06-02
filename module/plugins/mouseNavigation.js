@@ -43,7 +43,7 @@ module.exports = function() {return function (args) {
 
   // Fold the dropdown after an option has been clicked.
   dropdownElement.on('click', function() {
-    model.patch.emit('patch', {unfolded: undefined});
+    view.update.emit('unfolded', {newValue: false});
   });
 
   // Fold the dropdown when the switch element has been blurred.
@@ -59,7 +59,7 @@ module.exports = function() {return function (args) {
 
       // Update the model.
       if (switchJustBlurred && !selectJustMousedowned && !dropdownJustMousedowned) {
-        model.patch.emit('patch', {unfolded: undefined});
+        view.update.emit('unfolded', {newValue: false});
       }
 
       // Reset state.
