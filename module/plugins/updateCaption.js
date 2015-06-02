@@ -1,34 +1,6 @@
-var findIndex = require('find-index');
 var arrayFrom = require('array-from');
-var curry = require('1-liners/curry');
-var equal = curry(require('1-liners/equal'));
-
-var error = curry(require('../utils/error'))({
-  source: 'updateCaption'
-});
-
-// TODO: Move to own file.
-function getLabelByValue(options, value) {
-  var values;
-  var labelNodes;
-
-  if (
-    !options ||
-    !Array.isArray(values = options.values) ||
-    !Array.isArray(labelNodes = options.labelNodes)
-  ) return {error: error(
-    'Can’t get the requested label. The view hasn’t registered valid ' +
-    'options. I’m expecting `{String[]} options.values` and ' +
-    '`{HTMLLabelElement[]} options.labelNodes`.'
-  )};
-
-  return {value:
-    options.labelNodes[
-      findIndex(options.values, equal(value))
-    ] ||
-    null
-  };
-}
+var getLabelByValue = require('./updateCaption/getLabelByValue');
+var error = require('./updateCaption/error');
 
  /**
   * Updates content displayed in the caption to match the selected option.
