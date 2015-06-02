@@ -392,8 +392,9 @@ test('`selection` on the `update` channel fails gracefully.', function(is) {
     error.message.match(/value not found/i),
     'emits an `error` when it gets an invalid value'
   );});
+
   mockView.update.emit('selection', {newValue: ''});
-  // TODO: uncatch this test
+  mockView.error.off('error');
 
   is.end();
 });

@@ -56,8 +56,8 @@ module.exports = function (options) {
         currentLabel = labelResult.value;
 
         if (currentLabel) {
-          // The caption’s new content is a DocumentFragment containing clones of
-          // each of the label’s nodes.
+          // The caption’s new content is a DocumentFragment containing clones
+          // of each of the label’s nodes.
           var content = fragment();
           arrayFrom(currentLabel.childNodes).forEach(function(node) {
             content.appendChild(node.cloneNode(true));
