@@ -1,29 +1,5 @@
-var findIndex = require('find-index');
-var error = require('1-liners/curry')(require('../utils/error'))({
-  source: 'value'
-});
-
-// TODO: Move to own file.
-function getSelectedValue(options) {
-  var values;
-  var radioNodes;
-
-  if (
-    !options ||
-    !Array.isArray(values = options.values) ||
-    !Array.isArray(radioNodes = options.radioNodes)
-  ) return {error: error(
-    'Can’t get the selected value. The view hasn’t registered valid ' +
-    'options. I’m expecting `{String[]} options.values` and ' +
-    '`{HTMLInputElement[]} options.radioNodes`.'
-  )};
-
-  return {value: options.values[
-    findIndex(options.radioNodes, function(node) {
-      return node.checked;
-    })
-  ]};
-}
+var error = require('./value/error');
+var getSelectedValue = require('./value/getSelectedValue');
 
  /**
   * Adds support for the attribute `value`. Changing the selection will update
