@@ -207,7 +207,7 @@ module.exports = function(options) {
 
       // Uncheck all options if `""` is passed.
       var newValue = selection.newValue;
-      if (newValue === '') {
+      if (newValue == null) {
         return uncheckAll(radioNodes);
       }
 

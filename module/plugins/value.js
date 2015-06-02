@@ -15,7 +15,7 @@ module.exports = function() {return function (args) {
   var view = args.view;
   var model = args.model;
 
-  var checkedOptionSnapshot;
+  var checkedOptionSnapshot = {};  // Not equal to anything else.
   function updateCheckedOption(newValue) {
     if (newValue !== checkedOptionSnapshot) {
       model.patch.emit('patch', {value: newValue});
@@ -26,7 +26,7 @@ module.exports = function() {return function (args) {
   function updateFromOptions(options) {
     var result = getSelectedValue(options);
     if (result.error) return model.patch.emit('error', result.error);
-    updateCheckedOption(result.value || '');
+    updateCheckedOption(result.value || undefined);
   }
 
   // Rescan options and emit a patch if necessary:
@@ -57,9 +57,9 @@ module.exports = function() {return function (args) {
       'object with `{Object} value.current`.'
     ));
 
-    var newValue = state.current.value || '';
+    var newValue = state.current.value || null;
     if (
-      newValue !== '' &&
+      newValue != null &&
       values.indexOf(newValue) === -1
         // TODO: Write a lightweight shim of `array.includes` for this.
     ) return emitUpdate('error', error(

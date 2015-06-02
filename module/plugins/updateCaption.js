@@ -34,13 +34,15 @@ module.exports = function (options) {
       if (
         !state ||
         !state.current ||
-        typeof (value = state.current.value || '') !== 'string'
-          // TODO: '' or null?
-          // TODO: Clear caption on empty value.
+        (
+          typeof (value = state.current.value) !== 'string' &&
+          typeof value !== 'undefined'
+        )
       ) return view.update.emit('error', error(
         'Invalid `value` message from `model.state`. Make sure you pass a ' +
         '`state` object with `{Object} state.current`.'
       ));
+        // TODO: Clear or reset caption on empty value.
         // TODO: Get rid of code duplication – this is very similar in other
         //       plugins.
 
