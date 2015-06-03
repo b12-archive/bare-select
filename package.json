@@ -1,6 +1,6 @@
 { "name": "bare-select"
 , "version": "0.0.0-work-in-progress"
-, "description": "A customizable replacement for <select>."
+, "description": "An ultra-stylable replacement for <select>."
 
 , "dependencies":
   { "1-liners": "^0.2.7"

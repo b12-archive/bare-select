@@ -20,7 +20,7 @@
 &lt;bare-select&gt;
 ===================
 
-**An ultra-stylable &lt;select&gt;.**
+**An ultra-stylable replacement for &lt;select&gt;.**
 
 * [Dead-easy to style][]. Just match it to your design.
 * Usable without JavaScript. [Here’s why we care][].
