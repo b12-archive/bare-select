@@ -30,21 +30,14 @@ module.exports = function (options) {
 
     // Whenever the selection changes,
     model.state.when('value', function (state) {
-      var value;
-      if (
-        !state ||
-        !state.current ||
-        (
-          typeof (value = state.current.value) !== 'string' &&
-          typeof value !== 'undefined'
-        )
-      ) return view.update.emit('error', error(
+      if (!state || !state.current) return view.update.emit('error', error(
         'Invalid `value` message from `model.state`. Make sure you pass a ' +
         '`state` object with `{Object} state.current`.'
       ));
-        // TODO: Clear or reset caption on empty value.
-        // TODO: Get rid of code duplication – this is very similar in other
-        //       plugins.
+
+      var value = state.current.value;
+
+      // TODO: Clear or reset caption on empty value.
 
       // Send the new `captionContent` to the channel `view.update` if it’s
       // different than the snapshot.

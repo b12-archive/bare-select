@@ -178,4 +178,4 @@ test(
   }
 );
 
-// TODO: Test plugin unregistering
+// SOON [#6881]: Test plugin unregistering

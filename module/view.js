@@ -103,9 +103,6 @@ module.exports = function(options) {
     if (elementKeys.some(function(key) {
       if (elementQueries[key].error) {
         throwError(elementQueries[key].error);
-        // TODO: At the moment this just throws through `stereo.catch`. This
-        //       check will make sense when we push
-        //       <https://redmine.sb12.de/issues/6877> through.
         /* istanbul ignore next */
         return true;
       }
@@ -197,9 +194,8 @@ module.exports = function(options) {
       * @protected
       *
       * @type      {Object}
-      * @property  {String}  newValue
+      * @property  {(String|null)}  newValue
       */
-    // TODO: * @property  {(String|null)}  newValue
     onUpdate('selection', function(selection) {
       // At this point we’re sure that `optionsSnapshot` is valid. Get
       // `radioNodes` out of there.

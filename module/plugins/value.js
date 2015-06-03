@@ -61,7 +61,7 @@ module.exports = function() {return function (args) {
     if (
       newValue != null &&
       values.indexOf(newValue) === -1
-        // TODO: Write a lightweight shim of `array.includes` for this.
+        // SOON [#6901]: Write a lightweight shim of `array.includes` for this.
     ) return emitUpdate('error', error(
       'Value not found. Pass one of these values instead: [' +
       values

@@ -15,7 +15,7 @@ module.exports = function attributeUpdater(args) {
 
   function emitUpdate() {
     // Parse current attributes.
-    // TODO: Split it out into another module.
+    // SOON [#6898]: Split it out into another module.
     var attributesArray = Array.prototype.slice.call(attributesObject);
     var currentAttributes = Object.freeze(asObject(
       attributesArray.map(function (attribute) {

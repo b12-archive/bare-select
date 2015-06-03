@@ -76,7 +76,7 @@ module.exports = function () {return function (args) {
 
   // Handle the `keydown` event.
   view.switchElement.on('keydown', function(event) {
-    // TODO: Support [`event.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key).
+    // SOON [#6902]: Support [`event.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key).
     var keyCode = event.keyCode;
 
     // Handle arrow keys.

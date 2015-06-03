@@ -1,4 +1,4 @@
-// TODO: Split this out into another module.
+// SOON [#6899]: Split this out into another module.
 module.exports = function (element, patch) {
   Object.keys(patch).forEach(function(attribute) {
     var value = patch[attribute];

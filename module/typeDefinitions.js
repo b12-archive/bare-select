@@ -49,7 +49,7 @@
   * @property  {Function}  catch
   * @property  {Function}  off
   */
-// TODO: Unsubscribe through `uncatch`.
+// SOON (https://github.com/tomekwi/stereo/issues/13): Unsubscribe through `uncatch`.
 
  /**
   * @typedef    view-maker
@@ -83,8 +83,9 @@
   * @fires    view.dropdownElement#(domEventName)
   * @fires    view.selectLabelElement#(domEventName)
   */
- // TODO: * @property  {String}  version
- //       *   The exact string `'0'`
+ // SOON [#6900]:
+ // * @property  {String}  version
+ // *   The exact string `'0'`
 
  /**
   * @typedef    model-maker
@@ -109,8 +110,9 @@
   * @listens  model.patch#error
   * @fires    model.state#(attributeName)
   */
- // TODO: * @property  {String}  version
- //       *   The exact string `'0'`
+ // SOON [#6900]:
+ // * @property  {String}  version
+ // *   The exact string `'0'`
 
  /**
   * @typedef    plugin-maker
@@ -129,8 +131,12 @@
   *
   * @type  {undefined}
   */
- // TODO: * @type      {Object}
- //       * @property  {Function}  unplug
+ // SOON [#6900]:
+ // * @type      {Object}
+ // * @property  {String}  version
+ // *   The exact string `'0'`
+ // SOON [#6881]:
+ // * @property  {Function}  unplug
 
  /**
   * @typedef    logger
