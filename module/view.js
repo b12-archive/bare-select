@@ -63,7 +63,7 @@ module.exports = function(options) {
     var channels = {};
 
      /**
-      * An error has occured in the view.
+      * An error has occured within the view.
       *
       * @event      view.error#error
       * @protected
@@ -132,10 +132,8 @@ module.exports = function(options) {
       * @property  {Boolean}  newValue
       */
     onUpdate('unfolded', function(unfolded) {
-      // TODO: Check if the message is valid.
       elements.switch.checked = !!unfolded.newValue;
     });
-    // TODO: This should be named `folded` for consistency.
 
      /**
       * The select should be focused or blurred.
@@ -147,7 +145,6 @@ module.exports = function(options) {
       * @property  {Boolean}  newValue
       */
     onUpdate('focused', function(focused) {
-      // TODO: Check if the message is valid.
       if (focused.newValue) elements.switch.focus();
       else elements.switch.blur();
     });
@@ -171,9 +168,9 @@ module.exports = function(options) {
           captionContent.newDOM instanceof Node :
           captionContent.newDOM.nodeType
         )
-      ) return emitError('error', error(
-        'Invalid `captionContent` message on the channel `view.update`. Make ' +
-        'sure you pass an `{Object} captionContent` with a ' +
+      ) return throwError(error(
+        'Invalid `captionContent` message on the channel `view.update`. ' +
+        'Make sure you pass an `{Object} captionContent` with a ' +
         '`{Node} captionContent.newDOM`.'
       ));
 
@@ -223,9 +220,8 @@ module.exports = function(options) {
     channels.options = Object.freeze({
       on: on(emitOptions),
       when: when(emitOptions),
-      catch: snatch(emitOptions),
+      off: off(emitOptions),
     });
-    // TODO: `catch` -> `off`.
 
      /**
       * The set of options has been updated.
@@ -245,8 +241,7 @@ module.exports = function(options) {
       *   The options’ label nodes, in the same order as in the DOM.
       */
     var optionsSnapshot;
-    if (optionsQuery.error) emitOptions('error', optionsQuery.error);
-      // TODO: Use `view.error`.
+    if (optionsQuery.error) throwError(optionsQuery.error);
     else {
       optionsSnapshot = optionsQuery.value;
       emitOptions('update', optionsSnapshot);

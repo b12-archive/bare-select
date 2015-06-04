@@ -42,9 +42,9 @@ test('The API is in good shape.', function(is) {
     [
       {property: 'on', type: 'function'},
       {property: 'when', type: 'function'},
-      {property: 'catch', type: 'function'},
+      {property: 'off', type: 'function'},
     ],
-    '• a promise-like output channel `options` with error handling'
+    '• a promise-like output channel `options`'
   );
 
   var domChannelSignature = [
