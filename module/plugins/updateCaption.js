@@ -37,7 +37,7 @@ module.exports = function (options) {
 
       var value = state.current.value;
 
-      // TODO: Clear or reset caption on empty value.
+      // SOON [#6904]: Clear or reset caption on empty value.
 
       // Send the new `captionContent` to the channel `view.update` if it’s
       // different than the snapshot.
