@@ -5,6 +5,7 @@ var test = require('./test-tools/test')('The view');
 var repeat = require('repeat-element');
 var arrayFrom = require('array-from');
 var mockTree = require('./test-tools/mockTree');
+var noop = require('1-liners/noop');
 
 var view = require('../module/view')();
 
@@ -261,13 +262,18 @@ test('`unfolded` on the channel `update` works alright.', function(is) {
     'unchecks the switch when it gets the value `false`'
   );
 
-  // TODO: Test failure.
+  viewInstance.update.emit('unfolded', {newValue: 'ok'});
+  is.equal(
+    switchElement.checked,
+    true,
+    'casts non-boolean values'
+  );
 
   is.end();
 });
 
 test('`focused` on the channel `update` works alright.', function(is) {
-  is.plan(2);
+  is.plan(4);
 
   var tree = mockTree();
   var switchElement = tree.children[1];
@@ -295,7 +301,17 @@ test('`focused` on the channel `update` works alright.', function(is) {
   };
   viewInstance.update.emit('focused', {newValue: false});
 
-  // TODO: Test failure.
+  switchElement.blur = function() {is.pass(
+    'doesn’t remember state'
+  );};
+  viewInstance.update.emit('focused', {newValue: false});
+  switchElement.blur = noop;
+
+  switchElement.focus = function() {is.pass(
+    'casts non-boolean values'
+  );};
+  viewInstance.update.emit('focused', {newValue: 'ok'});
+  switchElement.focus = noop;
 
   is.end();
 });
