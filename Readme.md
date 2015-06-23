@@ -115,9 +115,9 @@ Now try taking the `unfolded` off your `<bare-select>`. Try setting `value="2"` 
 Configuring
 -----------
 
-<!-- doxie public start -->
+<!-- @doxie.inject start public -->
 *Work in progress…*
-<!-- doxie public end -->
+<!-- @doxie.inject end public -->
 
 
 
@@ -129,9 +129,9 @@ Our event-driven design means that every feature is a plugin. Plugins are the gl
 
 You can easily add, remove, fork and modify plugins to suit them to your needs. You can even replace the view and the model with your own custom implementations.
 
-<!-- doxie protected start -->
+<!-- @doxie.inject start protected -->
 *Work in progress…*
-<!-- doxie protected end -->
+<!-- @doxie.inject end protected -->
 
 
 
