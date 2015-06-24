@@ -80,11 +80,11 @@ function proto(options) {
   *
   * @param  {Object}
   *   [options={}]
-  * @param  {view-maker}
+  * @param  {viewMaker}
   *   [options.view=require('bare-select/module/view')()]
-  * @param  {model-maker}
+  * @param  {modelMaker}
   *   [options.model=require('bare-select/module/model')()]
-  * @param  {plugin-maker[]}
+  * @param  {pluginMaker[]}
   *   [options.plugins=[require('bare-select/module/plugins/keyboardNavigation')(), require('bare-select/module/plugins/mouseNavigation')(), require('bare-select/module/plugins/unfolded')(), require('bare-select/module/plugins/updateCaption')(), require('bare-select/module/plugins/value')()]]
   *   Default plugins. They’ll be registered on any newly created <bare-select>
   *   element.

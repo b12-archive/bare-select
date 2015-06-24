@@ -8,7 +8,7 @@ var error = require('./updateCaption/error');
   * @module     {Function}  bare-select/module/plugins/updateCaption
   * @protected
   *
-  * @returns  {plugin-maker}
+  * @returns  {pluginMaker}
   */
 module.exports = function (options) {
   if (!options) options = {};

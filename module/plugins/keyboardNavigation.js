@@ -12,7 +12,7 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   * @module     {Function}  bare-select/module/plugins/keyboardNavigation
   * @protected
   *
-  * @returns  {plugin-maker}
+  * @returns  {pluginMaker}
   */
 module.exports = function () {return function (args) {
   var view = args.view;

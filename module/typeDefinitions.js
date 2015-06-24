@@ -3,7 +3,7 @@
   * you emit an `'error'` event it will be thrown, unless you’ve subscribed
   * a listener through `catch`. See <http://npm.im/stereo> for details.
   *
-  * @typedef    ø-input
+  * @typedef    stereoInput
   * @protected
   *
   * @type      {Object}
@@ -16,7 +16,7 @@
   * Subscribe through `when` to get the last event issued in the past as
   * well. Unsubscribe through `off`. See <http://npm.im/stereo> for details.
   *
-  * @typedef    ø-promise-like-output
+  * @typedef    stereoPromiseLikeOutput
   * @protected
   *
   * @type      {Object}
@@ -29,7 +29,7 @@
   * An DOM proxy channel. `on` is a proxy to `addEventListener` on a DOM
   * element. `off` is a proxy to `removeEventListener`.
   *
-  * @typedef    ø-DOM-proxy
+  * @typedef    stereoDomProxy
   * @protected
   *
   * @type      {Object}
@@ -42,7 +42,7 @@
   * data will be passed to your listener instead of being thrown. Unsubscribe
   * through `off`. See <http://npm.im/stereo> for details.
   *
-  * @typedef    ø-error
+  * @typedef    stereoError
   * @protected
   *
   * @type      {Object}
@@ -52,7 +52,7 @@
 // SOON (https://github.com/tomekwi/stereo/issues/13): Unsubscribe through `uncatch`.
 
  /**
-  * @typedef    view-maker
+  * @typedef    viewMaker
   * @protected
   *
   * @type     {Function}
@@ -66,12 +66,12 @@
   * @protected
   *
   * @type      {Object}
-  * @property  {ø-input}                update
-  * @property  {ø-promise-like-output}  options
-  * @property  {ø-DOM-proxy}            switchElement
-  * @property  {ø-DOM-proxy}            dropdownElement
-  * @property  {ø-DOM-proxy}            selectLabelElement
-  * @property  {ø-error}                options
+  * @property  {stereoInput}              update
+  * @property  {stereoPromiseLikeOutput}  options
+  * @property  {stereoDomProxy}           switchElement
+  * @property  {stereoDomProxy}           dropdownElement
+  * @property  {stereoDomProxy}           selectLabelElement
+  * @property  {stereoError}              options
   *
   * @listens  view.update#unfolded
   * @listens  view.update#focused
@@ -88,7 +88,7 @@
  // *   The exact string `'0'`
 
  /**
-  * @typedef    model-maker
+  * @typedef    modelMaker
   * @protected
   *
   * @type     {Function}
@@ -102,9 +102,9 @@
   * @protected
   *
   * @type      {Object}
-  * @property  {ø-input}   patch
-  * @property  {ø-output}  state
-  * @property  {Function}  attributeChangedCallback
+  * @property  {stereoInput}   patch
+  * @property  {stereoOutput}  state
+  * @property  {Function}      attributeChangedCallback
   *
   * @listens  model.patch#patch
   * @listens  model.patch#error
@@ -115,7 +115,7 @@
  // *   The exact string `'0'`
 
  /**
-  * @typedef    plugin-maker
+  * @typedef    pluginMaker
   * @protected
   *
   * @type     {Function}

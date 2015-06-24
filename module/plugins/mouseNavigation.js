@@ -6,7 +6,7 @@ var requestFrame = require('ainojs-requestframe');
   * @module     {Function}  bare-select/module/plugins/mouseNavigation
   * @protected
   *
-  * @returns  {plugin-maker}
+  * @returns  {pluginMaker}
   */
 module.exports = function() {return function (args) {
   var view = args.view;

@@ -9,7 +9,7 @@ var getSelectedValue = require('./value/getSelectedValue');
   * @module     {Function}  bare-select/module/plugins/value
   * @protected
   *
-  * @returns  {plugin-maker}
+  * @returns  {pluginMaker}
   */
 module.exports = function() {return function (args) {
   var view = args.view;
