@@ -121,7 +121,7 @@ null
 &nbsp;
 
 <h3><pre>
-bare-select()
+bare-select([{[view], [model], [plugins], [logger]}])
   → HTMLBareSelectElement
 </pre></h3>
 
@@ -184,7 +184,7 @@ None.
 &nbsp;
 
 <h3><pre>
-view()
+view([{[selectors]}])
   → pureView
 </pre></h3>
 
@@ -200,7 +200,7 @@ Have a look at <../Readme.md> to see an example of the markup.
   <sup>type: `Object`&ensp;|&ensp;required</sup>
 
 * **`options.selectors`**  
-  <sup>type: `Object`&ensp;|&ensp;required</sup>
+  <sup>type: `Object`&ensp;|&ensp;default: `{}`&ensp;|&ensp;optional</sup>
 
 * **`options.selectors.caption`**  
   <sup>type: `String`&ensp;|&ensp;default: `'bare-select > label'`&ensp;|&ensp;optional</sup>

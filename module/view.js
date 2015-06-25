@@ -27,7 +27,7 @@ var domChannel = require('./view/domChannel');
   * @module  {Function}  bare-select/module/view
   *
   * @param  {Object}  options
-  * @param  {Object}  options.selectors
+  * @param  {Object}  [options.selectors={}]
   * @param  {String}
   *   [options.selectors.caption='bare-select > label']
   * @param  {String}

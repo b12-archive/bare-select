@@ -1,11 +1,9 @@
-var compose = require('1-liners/compose');
-var not = require('1-liners/not');
-var isFalsy = require('1-liners/isFalsy');
+var isTruthy = require('1-liners/isTruthy');
 var curry = require('1-liners/curry');
 var match = require('1-liners/match');
 
-var parseParam = curry(match)(new RegExp(
-  '(?:\\{(.+)\\})?' + '\\s*' +          // (1) Type
+var paramData = new RegExp(
+  '(?:\\{(.+?)\\})?' + '\\s*' +          // (1) Type
   '(?:' +
     '([\\w\\.]+)' + '|' +               // (2) Required parameter
     '\\[' +
@@ -14,24 +12,35 @@ var parseParam = curry(match)(new RegExp(
     '\\]' +
   ')?' + '\\s*' +
   '(.*)'                                // (5) Description
-));
+);
   // Fix until https://github.com/tj/dox/issues/173 and
   // https://github.com/tj/dox/issues/172
+
+var parseParam = function (param) {
+  var string = param.string;
+  var data = string.match(paramData);
+
+  return {
+    string: string,
+    data: data,
+    required: !!data[3],
+    name: (
+      (data && (data[2] || data[3])) ||
+      string
+    ).trim(),
+  };
+};
 
 var parsePath = curry(match)(/\{Function\}\s*(.*)/);
 var parseName = curry(match)(/([^\/\s]*)\s*$/);
 
-var renderParam = function (tag, options) {
+var renderParam = function (param, options) {
   if (!options) options = {};
 
-  var string = tag.string;
-  var data = parseParam(string);
+  var data = param.data;
 
   return (
-    ('* **`' + (
-      (data && (data[2] || data[3])) ||
-      string
-    ).trim().replace(/\s/g, ' ') + '`**') +
+    ('* **`' + param.name + '`**') +
 
     ('  \n  <sup>' + [
       (data[1] && 'type: `' + data[1] + '`'),
@@ -40,12 +49,26 @@ var renderParam = function (tag, options) {
         null :
         (data[2] ? 'required' : 'optional')
       ),
-    ].filter(compose(isFalsy, not)).join('&ensp;|&ensp;') + '</sup>') +
+    ].filter(isTruthy).join('&ensp;|&ensp;') + '</sup>') +
 
     (data[5] ? '  \n  ' + data[5] : '') +
 
     '\n'
   );
+};
+
+var renderArgument = function(param) {
+  var name = param.name.replace(/^options\./, '');
+  if (name.indexOf('.') !== -1) return null;
+
+  return (param.required ?
+    ('[' + name + ']') :
+    name
+  );
+};
+
+var renderArguments = function(params) {
+  return params.map(renderArgument).filter(isTruthy).join(', ');
 };
 
 module.exports = function (doc) {
@@ -55,7 +78,7 @@ module.exports = function (doc) {
   var tags = {};
   var params = [];
   data.tags.forEach(function (tag) {
-    if (tag.type === 'param') params.push(tag);
+    if (tag.type === 'param') params.push(parseParam(tag));
     else tags[tag.type] = tag;
   });
 
@@ -69,15 +92,21 @@ module.exports = function (doc) {
   var path = pathResult[1];
   var name = parseName(path)[1];
 
-  var returns = tags.returns;
+  var returns = parseParam(tags.returns);
 
   return (
     '\n' +
     '&nbsp;\n' +
     '\n' +
     '<h3><pre>\n' +
-    name + '()\n' +
-    '  → ' + parseParam(returns.string)[2] + '\n' +
+    name + '(' + (
+      (params[0] && params[0].name === 'options') ?
+      ('[{' +
+        renderArguments(params.slice(1)) +
+      '}]') :
+      renderArguments(params)
+    ) + ')\n' +
+    '  → ' + returns.name + '\n' +
     '</pre></h3>\n' +
     '\n' +
     data.description.full + '\n' +
