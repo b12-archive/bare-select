@@ -6,7 +6,6 @@
   { "1-liners": "^0.2.7"
   , "ainojs-requestframe": "tomekwi/ainojs-requestframe#7eab922"
   , "array-includes": "^1.1.0"
-  , "array-find": "^1.0.0"
   , "array-from": "^1.0.0"
   , "as": "^0.4.1"
   , "es6-set": "^0.1.1"
