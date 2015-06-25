@@ -169,7 +169,7 @@ The state of the model is stored as attributes on a custom element.
 Changing an attribute will update the model, and patching the model’s state
 will update the attribute.
 
-**Importing:** `var model = require('bare-select/module/model')`
+**Importing:** `var model = require('bare-select/model')`
 
 **Parameters:**
 
@@ -192,7 +192,7 @@ A pure HTML+CSS view.
 
 Have a look at <../Readme.md> to see an example of the markup.
 
-**Importing:** `var view = require('bare-select/module/view')`
+**Importing:** `var view = require('bare-select/view')`
 
 **Parameters:**
 
@@ -238,7 +238,7 @@ keyboardNavigation()
 
 Great keyboard navigation.
 
-**Importing:** `var keyboardNavigation = require('bare-select/module/plugins/keyboardNavigation')`
+**Importing:** `var keyboardNavigation = require('bare-select/plugins/keyboardNavigation')`
 
 **Parameters:**
 
@@ -259,7 +259,7 @@ mouseNavigation()
 
 Great mouse navigation.
 
-**Importing:** `var mouseNavigation = require('bare-select/module/plugins/mouseNavigation')`
+**Importing:** `var mouseNavigation = require('bare-select/plugins/mouseNavigation')`
 
 **Parameters:**
 
@@ -282,7 +282,7 @@ Adds support for the attribute `unfolded`. Adding the attribute to the
 `<bare-select>` will unfold the select – and removing the attribute will
 fold it.
 
-**Importing:** `var unfolded = require('bare-select/module/plugins/unfolded')`
+**Importing:** `var unfolded = require('bare-select/plugins/unfolded')`
 
 **Parameters:**
 
@@ -303,7 +303,7 @@ updateCaption()
 
 Updates content displayed in the caption to match the selected option.
 
-**Importing:** `var updateCaption = require('bare-select/module/plugins/updateCaption')`
+**Importing:** `var updateCaption = require('bare-select/plugins/updateCaption')`
 
 **Parameters:**
 
@@ -326,7 +326,7 @@ Adds support for the attribute `value`. Changing the selection will update
 the attribute `value` within the `<bare-select>`. Changing the attribute
 will update the selection.
 
-**Importing:** `var value = require('bare-select/module/plugins/value')`
+**Importing:** `var value = require('bare-select/plugins/value')`
 
 **Parameters:**
 

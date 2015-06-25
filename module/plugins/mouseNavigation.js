@@ -3,7 +3,7 @@ var requestFrame = require('ainojs-requestframe');
  /**
   * Great mouse navigation.
   *
-  * @module     {Function}  bare-select/module/plugins/mouseNavigation
+  * @module     {Function}  bare-select/plugins/mouseNavigation
   *
   * @returns  {pluginMaker}  mouseNavigationPlugin
   */

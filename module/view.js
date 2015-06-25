@@ -24,7 +24,7 @@ var domChannel = require('./view/domChannel');
   *
   * Have a look at <../Readme.md> to see an example of the markup.
   *
-  * @module  {Function}  bare-select/module/view
+  * @module  {Function}  bare-select/view
   *
   * @param  {Object}  options
   * @param  {Object}  [options.selectors={}]
