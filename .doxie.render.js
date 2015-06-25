@@ -1,3 +1,7 @@
+var compose = require('1-liners/compose');
+var not = require('1-liners/not');
+var isFalsy = require('1-liners/isFalsy');
+
 var paramParser = new RegExp(
   '(?:\\{(.+)\\})?' + '\\s*' +          // (1) Type
   '(?:' +
@@ -42,10 +46,10 @@ module.exports = function (doc) {
           ).trim().replace(/\s/g, ' ') + '`**') +
 
           ('  \n  <sup>' + [
-            (data[1] ? 'type: `' + data[1] + '`' : undefined),
-            (data[4] ? 'default: `' + data[4] + '`' : undefined),
-            (typeof data[2] === 'undefined' ? 'optional' : 'required'),
-          ].join('&ensp;|&ensp;') + '</sup>') +
+            (data[1] && 'type: `' + data[1] + '`'),
+            (data[4] && 'default: `' + data[4] + '`'),
+            (data[2] ? 'required' : 'optional'),
+          ].filter(compose(isFalsy, not)).join('&ensp;|&ensp;') + '</sup>') +
 
           (data[5] ? '  \n  ' + data[5] : '')
         );

@@ -166,10 +166,10 @@ Have a look at <../Readme.md> to see an example of the markup.
 **Parameters:**
 
 * **`options`**  
-  <sup>type: `Object`&ensp;|&ensp;&ensp;|&ensp;required</sup>
+  <sup>type: `Object`&ensp;|&ensp;required</sup>
 
 * **`options.selectors`**  
-  <sup>type: `Object`&ensp;|&ensp;&ensp;|&ensp;required</sup>
+  <sup>type: `Object`&ensp;|&ensp;required</sup>
 
 * **`options.selectors.caption`**  
   <sup>type: `String`&ensp;|&ensp;default: `'bare-select > label'`&ensp;|&ensp;optional</sup>
