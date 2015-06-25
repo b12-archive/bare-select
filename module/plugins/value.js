@@ -7,7 +7,6 @@ var getSelectedValue = require('./value/getSelectedValue');
   * will update the selection.
   *
   * @module     {Function}  bare-select/module/plugins/value
-  * @protected
   *
   * @returns  {pluginMaker}
   */

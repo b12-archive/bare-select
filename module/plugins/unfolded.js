@@ -8,7 +8,6 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   * fold it.
   *
   * @module     {Function}  bare-select/module/plugins/unfolded
-  * @protected
   *
   * @returns  {pluginMaker}
   */

@@ -4,7 +4,6 @@ var requestFrame = require('ainojs-requestframe');
   * Great mouse navigation.
   *
   * @module     {Function}  bare-select/module/plugins/mouseNavigation
-  * @protected
   *
   * @returns  {pluginMaker}
   */

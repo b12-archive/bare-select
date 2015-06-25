@@ -6,7 +6,6 @@ var error = require('./updateCaption/error');
   * Updates content displayed in the caption to match the selected option.
   *
   * @module     {Function}  bare-select/module/plugins/updateCaption
-  * @protected
   *
   * @returns  {pluginMaker}
   */
