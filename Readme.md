@@ -131,16 +131,13 @@ This function should only be called once.
 **Parameters:**
 
 * **`options`**  
-  <sup>type: `Object`&ensp;|&ensp;default: `{}`&ensp;|&ensp;optional</sup>  
-
+  <sup>type: `Object`&ensp;|&ensp;default: `{}`&ensp;|&ensp;optional</sup>
 
 * **`options.view`**  
-  <sup>type: `viewMaker`&ensp;|&ensp;default: `require('bare-select/module/view')()`&ensp;|&ensp;optional</sup>  
-
+  <sup>type: `viewMaker`&ensp;|&ensp;default: `require('bare-select/module/view')()`&ensp;|&ensp;optional</sup>
 
 * **`options.model`**  
-  <sup>type: `modelMaker`&ensp;|&ensp;default: `require('bare-select/module/model')()`&ensp;|&ensp;optional</sup>  
-
+  <sup>type: `modelMaker`&ensp;|&ensp;default: `require('bare-select/module/model')()`&ensp;|&ensp;optional</sup>
 
 * **`options.plugins`**  
   <sup>type: `pluginMaker[]`&ensp;|&ensp;default: `[require('bare-select/module/plugins/keyboardNavigation')(), require('bare-select/module/plugins/mouseNavigation')(), require('bare-select/module/plugins/unfolded')(), require('bare-select/module/plugins/updateCaption')(), require('bare-select/module/plugins/value')()]`&ensp;|&ensp;optional</sup>  
@@ -169,40 +166,31 @@ Have a look at <../Readme.md> to see an example of the markup.
 **Parameters:**
 
 * **`options`**  
-  <sup>type: `Object`&ensp;|&ensp;&ensp;|&ensp;required</sup>  
-
+  <sup>type: `Object`&ensp;|&ensp;&ensp;|&ensp;required</sup>
 
 * **`options.selectors`**  
-  <sup>type: `Object`&ensp;|&ensp;&ensp;|&ensp;required</sup>  
-
+  <sup>type: `Object`&ensp;|&ensp;&ensp;|&ensp;required</sup>
 
 * **`options.selectors.caption`**  
-  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > label'`&ensp;|&ensp;optional</sup>  
-
+  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > label'`&ensp;|&ensp;optional</sup>
 
 * **`options.selectors.selectLabel`**  
-  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > label'`&ensp;|&ensp;optional</sup>  
-
+  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > label'`&ensp;|&ensp;optional</sup>
 
 * **`options.selectors.switch`**  
-  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > input[type=checkbox]'`&ensp;|&ensp;optional</sup>  
-
+  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > input[type=checkbox]'`&ensp;|&ensp;optional</sup>
 
 * **`options.selectors.dropdown`**  
-  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > ul'`&ensp;|&ensp;optional</sup>  
-
+  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > ul'`&ensp;|&ensp;optional</sup>
 
 * **`options.selectors.option`**  
-  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > ul > li'`&ensp;|&ensp;optional</sup>  
-
+  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > ul > li'`&ensp;|&ensp;optional</sup>
 
 * **`options.selectors.optionRadio`**  
-  <sup>type: `String`&ensp;|&ensp;default: `'input[type=radio]'`&ensp;|&ensp;optional</sup>  
-
+  <sup>type: `String`&ensp;|&ensp;default: `'input[type=radio]'`&ensp;|&ensp;optional</sup>
 
 * **`options.selectors.optionLabel`**  
-  <sup>type: `String`&ensp;|&ensp;default: `'label'`&ensp;|&ensp;optional</sup>  
-
+  <sup>type: `String`&ensp;|&ensp;default: `'label'`&ensp;|&ensp;optional</sup>
 
 
 ###  {Function} bare-select/module/plugins/keyboardNavigation  ###

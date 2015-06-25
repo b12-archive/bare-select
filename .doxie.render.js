@@ -35,20 +35,20 @@ module.exports = function (doc) {
         var string = param.string;
         var data = string.match(paramParser);
 
-        return [
+        return (
           ('* **`' + (data ?
             (data[2] || data[3]) :
             string
-          ).trim().replace(/\s/g, ' ') + '`**'),
+          ).trim().replace(/\s/g, ' ') + '`**') +
 
-          ('  <sup>' + [
+          ('  \n  <sup>' + [
             (data[1] ? 'type: `' + data[1] + '`' : undefined),
             (data[4] ? 'default: `' + data[4] + '`' : undefined),
             (typeof data[2] === 'undefined' ? 'optional' : 'required'),
-          ].join('&ensp;|&ensp;') + '</sup>'),
+          ].join('&ensp;|&ensp;') + '</sup>') +
 
-          (data[5] ? '  ' + data[5] : undefined)
-        ].join('  \n');
+          (data[5] ? '  \n  ' + data[5] : '')
+        );
       }).join('\n\n') + '\n' +
       '\n'
     ) : '') +
