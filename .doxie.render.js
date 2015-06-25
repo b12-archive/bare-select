@@ -1,6 +1,7 @@
 var isTruthy = require('1-liners/isTruthy');
 var curry = require('1-liners/curry');
 var match = require('1-liners/match');
+var camelize = require('camelize-identifier');
 
 var paramData = new RegExp(
   '(?:\\{(.+?)\\})?' + '\\s*' +          // (1) Type
@@ -90,7 +91,7 @@ module.exports = function (doc) {
   }
 
   var path = pathResult[1];
-  var name = parseName(path)[1];
+  var name = camelize(parseName(path)[1]);
 
   var returns = parseParam(tags.returns);
 

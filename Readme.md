@@ -121,7 +121,7 @@ null
 &nbsp;
 
 <h3><pre>
-bare-select([{[view], [model], [plugins], [logger]}])
+bareSelect([{[view], [model], [plugins], [logger]}])
   → HTMLBareSelectElement
 </pre></h3>
 
@@ -129,7 +129,7 @@ Register the <bare-select> element.
 
 This function should only be called once.
 
-**Importing:** `var bare-select = require('bare-select')`
+**Importing:** `var bareSelect = require('bare-select')`
 
 **Parameters:**
 
