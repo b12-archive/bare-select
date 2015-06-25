@@ -17,7 +17,7 @@ function proto(options) {
 
 
   // Create the prototype.
-  var result = Object.create(HTMLElement.prototype);
+  var HTMLBareSelectElement = Object.create(HTMLElement.prototype);
 
    /**
     * @class  HTMLBareSelectElement
@@ -28,7 +28,7 @@ function proto(options) {
     * @property  {Array}     plugins
     *   *[read-only]* A list of registered plugin handles.
     */
-  result.createdCallback = function createdCallback() {
+  HTMLBareSelectElement.createdCallback = function createdCallback() {
 
     // Initialize the `model` and `view`.
     var modelViewOptions = {root: this, logger: logger};
@@ -63,12 +63,12 @@ function proto(options) {
   };
 
   // Inherit `attributeChangedCallback` from the model.
-  result.attributeChangedCallback = function attributeChangedCallback() {
+  HTMLBareSelectElement.attributeChangedCallback = function attributeChangedCallback() {
     this._model.attributeChangedCallback.apply(null, arguments);
   };
 
   // Return the prototype.
-  return result;
+  return HTMLBareSelectElement;
 }
 
  /**
