@@ -6,6 +6,7 @@
   { "1-liners": "^0.2.7"
   , "ainojs-requestframe": "tomekwi/ainojs-requestframe#7eab922"
   , "array-includes": "^1.1.0"
+  , "array-find": "^1.0.0"
   , "array-from": "^1.0.0"
   , "as": "^0.4.1"
   , "es6-set": "^0.1.1"
@@ -20,6 +21,7 @@
 , "scripts":
   { "coveralls": "npm run coverage && cat coverage/lcov.info | coveralls"
   , "coverage": "istanbul cover test.js"
+  , "docs": "polydox --raw module/*.js module/*/*.js module/*/*/*.js | doxie --filter --render --inject as public"
   , "view-coverage": "echo 'Generating coverage reports...'; npm run coverage >/dev/null && echo '...done.' && xdg-open ./coverage/lcov-report/index.html >/dev/null"
   , "develop": "nodangel --ignore node_modules --ignore coverage --exec 'npm run --silent test:lite'"
   , "test": "jshint . && npm run test:lite"
@@ -28,9 +30,14 @@
 
 , "devDependencies":
   { "coveralls": "2.11.2"
+  , "doxie": "0.2.2"
+  , "doxie.filter": "0.4.1"
+  , "doxie.inject": "0.1.1"
+  , "doxie.render": "0.2.0"
   , "istanbul": "0.3.13"
   , "jshint": "2.7.0"
   , "nodangel": "1.3.8"
+  , "polydox": "0.1.0"
   , "tap-spec": "2.2.2"
 
   , "async": "1.0.0"

@@ -116,7 +116,26 @@ Configuring
 -----------
 
 <!-- @doxie.inject start public -->
-*Work in progress…*
+<!-- Don’t remove or change the comment above – that can break automatic updates. -->
+###  HTMLBareSelectElement  ###
+
+###  {Function} bare-select  ###
+
+###  {Function} bare-select/module/model  ###
+
+###  {Function} bare-select/module/view  ###
+
+###  {Function} bare-select/module/plugins/keyboardNavigation  ###
+
+###  {Function} bare-select/module/plugins/mouseNavigation  ###
+
+###  {Function} bare-select/module/plugins/unfolded  ###
+
+###  {Function} bare-select/module/plugins/updateCaption  ###
+
+###  {Function} bare-select/module/plugins/value  ###
+
+<!-- Don’t remove or change the comment below – that can break automatic updates. More info at <http://npm.im/doxie.inject>. -->
 <!-- @doxie.inject end public -->
 
 
