@@ -117,16 +117,19 @@ Configuring
 
 <!-- @doxie.inject start public -->
 <!-- Don’t remove or change the comment above – that can break automatic updates. -->
-###  HTMLBareSelectElement  ###
+null
+&nbsp;
 
-
-
-
-###  {Function} bare-select  ###
+<h3><pre>
+bare-select()
+  → HTMLBareSelectElement
+</pre></h3>
 
 Register the <bare-select> element.
 
 This function should only be called once.
+
+**Importing:** `var bare-select = require('bare-select')`
 
 **Parameters:**
 
@@ -147,8 +150,18 @@ This function should only be called once.
   <sup>type: `logger`&ensp;|&ensp;default: `console`&ensp;|&ensp;optional</sup>  
   A custom logger. Make sure `logger.info` and `logger.warn` are functions.
 
+**Return value:**
 
-###  {Function} bare-select/module/model  ###
+* **`HTMLBareSelectElement`**  
+  <sup>type: `HTMLBareSelectElement`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+model()
+  → customElementModel
+</pre></h3>
 
 A model based on a custom element.
 
@@ -156,12 +169,30 @@ The state of the model is stored as attributes on a custom element.
 Changing an attribute will update the model, and patching the model’s state
 will update the attribute.
 
+**Importing:** `var model = require('bare-select/module/model')`
 
-###  {Function} bare-select/module/view  ###
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`customElementModel`**  
+  <sup>type: `modelMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+view()
+  → pureView
+</pre></h3>
 
 A pure HTML+CSS view.
 
 Have a look at <../Readme.md> to see an example of the markup.
+
+**Importing:** `var view = require('bare-select/module/view')`
 
 **Parameters:**
 
@@ -192,35 +223,119 @@ Have a look at <../Readme.md> to see an example of the markup.
 * **`options.selectors.optionLabel`**  
   <sup>type: `String`&ensp;|&ensp;default: `'label'`&ensp;|&ensp;optional</sup>
 
+**Return value:**
 
-###  {Function} bare-select/module/plugins/keyboardNavigation  ###
+* **`pureView`**  
+  <sup>type: `viewMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+keyboardNavigation()
+  → keyboardNavigationPlugin
+</pre></h3>
 
 Great keyboard navigation.
 
+**Importing:** `var keyboardNavigation = require('bare-select/module/plugins/keyboardNavigation')`
 
-###  {Function} bare-select/module/plugins/mouseNavigation  ###
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`keyboardNavigationPlugin`**  
+  <sup>type: `pluginMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+mouseNavigation()
+  → mouseNavigationPlugin
+</pre></h3>
 
 Great mouse navigation.
 
+**Importing:** `var mouseNavigation = require('bare-select/module/plugins/mouseNavigation')`
 
-###  {Function} bare-select/module/plugins/unfolded  ###
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`mouseNavigationPlugin`**  
+  <sup>type: `pluginMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+unfolded()
+  → unfoldedPlugin
+</pre></h3>
 
 Adds support for the attribute `unfolded`. Adding the attribute to the
 `<bare-select>` will unfold the select – and removing the attribute will
 fold it.
 
+**Importing:** `var unfolded = require('bare-select/module/plugins/unfolded')`
 
-###  {Function} bare-select/module/plugins/updateCaption  ###
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`unfoldedPlugin`**  
+  <sup>type: `pluginMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+updateCaption()
+  → updateCaptionPlugin
+</pre></h3>
 
 Updates content displayed in the caption to match the selected option.
 
+**Importing:** `var updateCaption = require('bare-select/module/plugins/updateCaption')`
 
-###  {Function} bare-select/module/plugins/value  ###
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`updateCaptionPlugin`**  
+  <sup>type: `pluginMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+value()
+  → valuePlugin
+</pre></h3>
 
 Adds support for the attribute `value`. Changing the selection will update
 the attribute `value` within the `<bare-select>`. Changing the attribute
 will update the selection.
 
+**Importing:** `var value = require('bare-select/module/plugins/value')`
+
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`valuePlugin`**  
+  <sup>type: `pluginMaker`</sup>
 
 <!-- Don’t remove or change the comment below – that can break automatic updates. More info at <http://npm.im/doxie.inject>. -->
 <!-- @doxie.inject end public -->
