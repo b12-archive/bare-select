@@ -20,6 +20,7 @@
 , "scripts":
   { "coveralls": "npm run coverage && cat coverage/lcov.info | coveralls"
   , "coverage": "istanbul cover test.js"
+  , "docs": "polydox --raw module/*.js module/*/*.js module/*/*/*.js | doxie --filter --render --inject as public"
   , "view-coverage": "echo 'Generating coverage reports...'; npm run coverage >/dev/null && echo '...done.' && xdg-open ./coverage/lcov-report/index.html >/dev/null"
   , "develop": "nodangel --ignore node_modules --ignore coverage --exec 'npm run --silent test:lite'"
   , "test": "jshint . && npm run test:lite"
@@ -28,12 +29,18 @@
 
 , "devDependencies":
   { "coveralls": "2.11.2"
+  , "doxie": "0.2.2"
+  , "doxie.filter": "0.4.1"
+  , "doxie.inject": "0.1.1"
+  , "doxie.render": "0.3.0"
   , "istanbul": "0.3.13"
   , "jshint": "2.7.0"
   , "nodangel": "1.3.8"
+  , "polydox": "0.1.0"
   , "tap-spec": "2.2.2"
 
   , "async": "1.0.0"
+  , "camelize-identifier": "1.0.0"
   , "es6-weak-map": "1.0.1"
   , "is-subset": "0.1.1"
   , "jsdom": "3.1.2"

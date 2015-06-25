@@ -116,7 +116,228 @@ Configuring
 -----------
 
 <!-- @doxie.inject start public -->
-*Work in progress…*
+<!-- Don’t remove or change the comment above – that can break automatic updates. -->
+
+&nbsp;
+
+<h3><pre>
+bareSelect([{[view], [model], [plugins], [logger]}])
+  → HTMLBareSelectElement
+</pre></h3>
+
+Register the <bare-select> element.
+
+This function should only be called once.
+
+**Importing:** `var bareSelect = require('bare-select')`
+
+**Parameters:**
+
+* **`options`**  
+  <sup>type: `Object`&ensp;|&ensp;default: `{}`&ensp;|&ensp;optional</sup>
+
+* **`options.view`**  
+  <sup>type: `viewMaker`&ensp;|&ensp;default: `require('bare-select/module/view')()`&ensp;|&ensp;optional</sup>
+
+* **`options.model`**  
+  <sup>type: `modelMaker`&ensp;|&ensp;default: `require('bare-select/module/model')()`&ensp;|&ensp;optional</sup>
+
+* **`options.plugins`**  
+  <sup>type: `pluginMaker[]`&ensp;|&ensp;default: `[require('bare-select/module/plugins/keyboardNavigation')(), require('bare-select/module/plugins/mouseNavigation')(), require('bare-select/module/plugins/unfolded')(), require('bare-select/module/plugins/updateCaption')(), require('bare-select/module/plugins/value')()]`&ensp;|&ensp;optional</sup>  
+  Default plugins. They’ll be registered on any newly created <bare-select>
+
+* **`options.logger`**  
+  <sup>type: `logger`&ensp;|&ensp;default: `console`&ensp;|&ensp;optional</sup>  
+  A custom logger. Make sure `logger.info` and `logger.warn` are functions.
+
+**Return value:**
+
+* **`HTMLBareSelectElement`**  
+  <sup>type: `HTMLBareSelectElement`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+model()
+  → customElementModel
+</pre></h3>
+
+A model based on a custom element.
+
+The state of the model is stored as attributes on a custom element.
+Changing an attribute will update the model, and patching the model’s state
+will update the attribute.
+
+**Importing:** `var model = require('bare-select/model')`
+
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`customElementModel`**  
+  <sup>type: `modelMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+view([{[selectors]}])
+  → pureView
+</pre></h3>
+
+A pure HTML+CSS view.
+
+Have a look at <../Readme.md> to see an example of the markup.
+
+**Importing:** `var view = require('bare-select/view')`
+
+**Parameters:**
+
+* **`options`**  
+  <sup>type: `Object`&ensp;|&ensp;required</sup>
+
+* **`options.selectors`**  
+  <sup>type: `Object`&ensp;|&ensp;default: `{}`&ensp;|&ensp;optional</sup>
+
+* **`options.selectors.caption`**  
+  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > label'`&ensp;|&ensp;optional</sup>
+
+* **`options.selectors.selectLabel`**  
+  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > label'`&ensp;|&ensp;optional</sup>
+
+* **`options.selectors.switch`**  
+  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > input[type=checkbox]'`&ensp;|&ensp;optional</sup>
+
+* **`options.selectors.dropdown`**  
+  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > ul'`&ensp;|&ensp;optional</sup>
+
+* **`options.selectors.option`**  
+  <sup>type: `String`&ensp;|&ensp;default: `'bare-select > ul > li'`&ensp;|&ensp;optional</sup>
+
+* **`options.selectors.optionRadio`**  
+  <sup>type: `String`&ensp;|&ensp;default: `'input[type=radio]'`&ensp;|&ensp;optional</sup>
+
+* **`options.selectors.optionLabel`**  
+  <sup>type: `String`&ensp;|&ensp;default: `'label'`&ensp;|&ensp;optional</sup>
+
+**Return value:**
+
+* **`pureView`**  
+  <sup>type: `viewMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+keyboardNavigation()
+  → keyboardNavigationPlugin
+</pre></h3>
+
+Great keyboard navigation.
+
+**Importing:** `var keyboardNavigation = require('bare-select/plugins/keyboardNavigation')`
+
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`keyboardNavigationPlugin`**  
+  <sup>type: `pluginMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+mouseNavigation()
+  → mouseNavigationPlugin
+</pre></h3>
+
+Great mouse navigation.
+
+**Importing:** `var mouseNavigation = require('bare-select/plugins/mouseNavigation')`
+
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`mouseNavigationPlugin`**  
+  <sup>type: `pluginMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+unfolded()
+  → unfoldedPlugin
+</pre></h3>
+
+Adds support for the attribute `unfolded`. Adding the attribute to the
+`<bare-select>` will unfold the select – and removing the attribute will
+fold it.
+
+**Importing:** `var unfolded = require('bare-select/plugins/unfolded')`
+
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`unfoldedPlugin`**  
+  <sup>type: `pluginMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+updateCaption()
+  → updateCaptionPlugin
+</pre></h3>
+
+Updates content displayed in the caption to match the selected option.
+
+**Importing:** `var updateCaption = require('bare-select/plugins/updateCaption')`
+
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`updateCaptionPlugin`**  
+  <sup>type: `pluginMaker`</sup>
+
+
+&nbsp;
+
+<h3><pre>
+value()
+  → valuePlugin
+</pre></h3>
+
+Adds support for the attribute `value`. Changing the selection will update
+the attribute `value` within the `<bare-select>`. Changing the attribute
+will update the selection.
+
+**Importing:** `var value = require('bare-select/plugins/value')`
+
+**Parameters:**
+
+None.
+
+**Return value:**
+
+* **`valuePlugin`**  
+  <sup>type: `pluginMaker`</sup>
+
+<!-- Don’t remove or change the comment below – that can break automatic updates. More info at <http://npm.im/doxie.inject>. -->
 <!-- @doxie.inject end public -->
 
 

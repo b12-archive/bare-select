@@ -7,9 +7,9 @@ var error = require('1-liners/curry')(require('../utils/error'))({
   * `<bare-select>` will unfold the select – and removing the attribute will
   * fold it.
   *
-  * @module     {Function}  bare-select/module/plugins/unfolded
+  * @module     {Function}  bare-select/plugins/unfolded
   *
-  * @returns  {pluginMaker}
+  * @returns  {pluginMaker}  unfoldedPlugin
   */
 module.exports = function() {return function (args) {
   var view = args.view;

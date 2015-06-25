@@ -16,9 +16,9 @@ var curry = require('1-liners/curry');
   * Changing an attribute will update the model, and patching the model’s state
   * will update the attribute.
   *
-  * @module  {Function}  bare-select/module/model
+  * @module  {Function}  bare-select/model
   *
-  * @returns  {modelMaker}
+  * @returns  {modelMaker}  customElementModel
   */
 module.exports = function() {return function(args) {
   var root = args.root;

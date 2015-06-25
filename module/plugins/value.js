@@ -6,9 +6,9 @@ var getSelectedValue = require('./value/getSelectedValue');
   * the attribute `value` within the `<bare-select>`. Changing the attribute
   * will update the selection.
   *
-  * @module     {Function}  bare-select/module/plugins/value
+  * @module     {Function}  bare-select/plugins/value
   *
-  * @returns  {pluginMaker}
+  * @returns  {pluginMaker}  valuePlugin
   */
 module.exports = function() {return function (args) {
   var view = args.view;
