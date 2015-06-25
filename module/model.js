@@ -18,7 +18,7 @@ var curry = require('1-liners/curry');
   *
   * @module  {Function}  bare-select/module/model
   *
-  * @returns  {modelMaker}
+  * @returns  {modelMaker}  customElementModel
   */
 module.exports = function() {return function(args) {
   var root = args.root;

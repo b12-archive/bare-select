@@ -43,7 +43,7 @@ var domChannel = require('./view/domChannel');
   * @param  {String}
   *   [options.selectors.optionLabel='label']
   *
-  * @returns  {viewMaker}
+  * @returns  {viewMaker}  pureView
   */
 module.exports = function(options) {
   if (!options) options = {};

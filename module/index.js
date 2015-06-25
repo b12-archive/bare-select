@@ -93,7 +93,7 @@ function proto(options) {
   *   [options.logger=console]
   *   A custom logger. Make sure `logger.info` and `logger.warn` are functions.
   *
-  * @returns  {HTMLBareSelectElement}
+  * @returns  {HTMLBareSelectElement}  HTMLBareSelectElement
   */
 module.exports = function(options) {
   if (!options) options = {};
