@@ -3,6 +3,9 @@
 # ====================
 #
 
+# - Built files
+/dist/
+
 # - All files and directories starting with "#"
 \#*
 
