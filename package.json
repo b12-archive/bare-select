@@ -22,6 +22,7 @@
   , "build": "webpack index.js --output-path dist --output-file bare-select.js && uglifyjs dist/bare-select.js --output dist/bare-select.min.js"
   , "develop": "nodangel --ignore node_modules --ignore coverage --exec 'npm run --silent test:lite'"
   , "docs": "polydox --raw module/*.js module/*/*.js module/*/*/*.js | doxie --filter --render --inject as public"
+  , "ensure-clean-repo": "if [ -n \"$(git status --porcelain)\" ]; then echo 'Ooops-a-daisy! Make sure the repo is clean.'; exit 1; fi"
   , "prepublish": "npm run clean-up && npm run build"
   , "test": "jshint . && npm run test:lite"
   , "test:lite": "node test.js | tap-spec"
