@@ -19,7 +19,7 @@
   { "clean-up": "git reset && echo '/node_modules/' > .gitignore && git add .gitignore && git stash save --include-untracked --keep-index '`npm run clean-up` trash can' && git clean --force -d && git reset --hard && echo '\nclean-up: All unstaged and ignored files within your git repo – except node_modules/* – have been moved to the stash. To restore them run `git stash pop --quiet; git checkout .gitignore`."
   , "coveralls": "npm run coverage && cat coverage/lcov.info | coveralls"
   , "coverage": "istanbul cover test.js"
-  , "build": "webpack index.js --output-path dist --output-file bare-select.js --library bareSelect && uglifyjs dist/bare-select.js --output dist/bare-select.min.js"
+  , "build": "webpack index.js --output-path dist --output-file bare-select.js --output-library bareSelect && uglifyjs dist/bare-select.js --output dist/bare-select.min.js"
   , "develop": "nodangel --ignore node_modules --ignore coverage --exec 'npm run --silent test:lite'"
   , "docs": "polydox --raw module/*.js module/*/*.js module/*/*/*.js | doxie --filter --render --inject as public"
   , "ensure-clean-repo": "if [ -n \"$(git status --porcelain)\" ]; then echo 'Ooops-a-daisy! Make sure the repo is clean.'; exit 1; fi"
