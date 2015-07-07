@@ -26,7 +26,7 @@
   , "prepublish": "npm run clean-up && npm run build"
   , "test": "jshint . && npm run test:lite"
   , "test:lite": "node test.js | tap-spec"
-  , "update-demo": "npm run ensure-clean-repo && npm run build && git checkout gh-pages && cp -f dist/bare-select.min.js . && git add --patch . && git commit --message='Update the demo' && git checkout --force master"
+  , "update-demo": "npm run ensure-clean-repo && npm run build && git checkout gh-pages && cp -f dist/bare-select.min.js . && git add .; git status"
   , "view-coverage": "echo 'Generating coverage reports...'; npm run coverage >/dev/null && echo '...done.' && xdg-open ./coverage/lcov-report/index.html >/dev/null"
   }
 , "devDependencies":
