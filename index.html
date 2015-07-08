@@ -1,3 +1,9 @@
+<style>
+  input[type=checkbox]:not(:checked) + ul {
+    visibility: hidden;
+  }
+</style>
+
 <header>
   <h1>&lt;bare-select&gt;</h1>
   <p>The lean alternative to &lt;select&gt;.</p>
@@ -5,38 +11,12 @@
 </header>
 
 <article>
-  <h2>UX included</h2>
+  <h2>Styles are up to you</h2>
   <div>
-    <bare-select>
-      <label for="ux-title">
+    <bare-select class="styled-select">
+      <label for="styles-switch">
         Pick your beer
-      </label><input type="checkbox" id="ux-title" />
-
-      <ul>
-        <li><input type="radio" name="ux" value="1" id="ux-option-1" /><label for="ux-option-1">
-          Żywiec Porter
-        </label></li>
-        <li><input type="radio" name="ux" value="2" id="ux-option-2" /><label for="ux-option-2">
-          Ciechan Maciejowe
-        </label></li>
-        <li><input type="radio" name="ux" value="3" id="ux-option-3" /><label for="ux-option-3">
-          Koźlak
-        </label></li>
-        <li><input type="radio" name="ux" value="4" id="ux-option-4" /><label for="ux-option-4">
-          Lwówek Książęcy
-        </label></li>
-      </ul>
-    </bare-select>
-  </div>
-</article>
-
-<article>
-  <h2>Styles up to you</h2>
-  <div>
-    <bare-select>
-      <label for="styles-title">
-        Pick your beer
-      </label><input type="checkbox" id="styles-title" />
+      </label><input type="checkbox" id="styles-switch" class="switch" />
 
       <ul>
         <li><input type="radio" name="styles" value="1" id="styles-option-1" /><label for="styles-option-1">
@@ -57,12 +37,39 @@
 </article>
 
 <article>
-  <h2>Works without JavaScript</h2>
+  <h2>Great UX included</h2>
   <div>
     <bare-select>
-      <label for="noscript-title">
+      <label for="ux-switch">
         Pick your beer
-      </label><input type="checkbox" id="noscript-title" />
+      </label>
+      <input type="checkbox" id="ux-switch" class="switch" />
+
+      <ul>
+        <li><input type="radio" name="ux" value="1" id="ux-option-1" /><label for="ux-option-1">
+          Żywiec Porter
+        </label></li>
+        <li><input type="radio" name="ux" value="2" id="ux-option-2" /><label for="ux-option-2">
+          Ciechan Maciejowe
+        </label></li>
+        <li><input type="radio" name="ux" value="3" id="ux-option-3" /><label for="ux-option-3">
+          Koźlak
+        </label></li>
+        <li><input type="radio" name="ux" value="4" id="ux-option-4" /><label for="ux-option-4">
+          Lwówek Książęcy
+        </label></li>
+      </ul>
+    </bare-select>
+  </div>
+</article>
+
+<article>
+  <h2>Works without JavaScript</h2>
+  <div>
+    <div class="styled-select">
+      <label for="noscript-switch">
+        Pick your beer
+      </label><input type="checkbox" id="noscript-switch" class="switch" />
 
       <ul>
         <li><input type="radio" name="noscript" value="1" id="noscript-option-1" /><label for="noscript-option-1">
@@ -78,7 +85,7 @@
           Lwówek Książęcy
         </label></li>
       </ul>
-    </bare-select>
+    </div>
   </div>
 </article>
 
