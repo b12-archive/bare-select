@@ -1,16 +1,60 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/tomekwi/type-css/v0.1.2/dist/type.invasive.min.css" />
 <style>
-  input[type=checkbox]:not(:checked) + ul {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Roboto light', Roboto, sans-serif;
+    font-weight: 300;
+    color: #333;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  h1 {
+    font-family: 'Roboto thin', Roboto, sans-serif;
+    font-weight: 100;
+  }
+
+  h2 {
+    font-family: inherit;
+    font-weight: inherit;
+  }
+
+  .flow {
+    margin: 0 auto;
+    padding: 0 10rem;
+    max-width: 80rem;
+  }
+
+  header {
+    background: #fcfcfc;
+  }
+
+  header::after {
+    margin-top: 5rem;
+    display: block;
+    content: ' ';
+    height: 1px;
+    border-bottom: solid 1px #333;
+    transform: scaleY(0.5);
+  }
+
+  .switch:not(:checked) + ul {
     visibility: hidden;
   }
 </style>
 
-<header>
-  <h1>&lt;bare-select&gt;</h1>
-  <p>The lean alternative to &lt;select&gt;.</p>
+<header><div class="flow">
+  <p>&lt;bare-select&gt;</p>
+  <h1>The lean alternative to&nbsp;a&nbsp;&lt;select&gt;.</h1>
   <p>No dependencies. No opinions. No styles included.</p>
-</header>
+</div></header>
 
-<article>
+<article><div class="flow">
   <h2>Styles are up to you</h2>
   <div>
     <bare-select class="styled-select">
@@ -34,9 +78,9 @@
       </ul>
     </bare-select>
   </div>
-</article>
+</div></article>
 
-<article>
+<article><div class="flow">
   <h2>Great UX included</h2>
   <div>
     <bare-select>
@@ -61,9 +105,9 @@
       </ul>
     </bare-select>
   </div>
-</article>
+</div></article>
 
-<article>
+<article><div class="flow">
   <h2>Works without JavaScript</h2>
   <div>
     <div class="styled-select">
@@ -87,7 +131,7 @@
       </ul>
     </div>
   </div>
-</article>
+</div></article>
 
 <script src="bare-select.min.js"></script>
 <script>
