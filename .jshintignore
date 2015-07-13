@@ -9,5 +9,8 @@
 # - Coverage reports
 /coverage/
 
+# - Built files
+/dist/
+
 # - Default jsDoc output
 /out/
