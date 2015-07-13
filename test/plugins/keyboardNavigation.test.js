@@ -19,8 +19,8 @@ test(
     mock.model.state.emit('value', {current: {}});
 
     // Press [↓].
-    mock.view.update.on('selection', function(selection) {is.equal(
-      selection.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '1',
       'selects the first option upon pressing [↓] if nothing has been ' +
       'selected before'
@@ -33,11 +33,11 @@ test(
       );}}
     ));
 
-    mock.view.update.off('selection');
+    mock.model.patch.off('patch');
 
     // Press [→].
-    mock.view.update.on('selection', function(selection) {is.equal(
-      selection.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '2',
       'selects the next option upon pressing [→]'
     );});
@@ -46,11 +46,11 @@ test(
       keyCodes.RIGHT_ARROW
     ));
 
-    mock.view.update.off('selection');
+    mock.model.patch.off('patch');
 
     // Press [↑].
-    mock.view.update.on('selection', function(selection) {is.equal(
-      selection.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '1',
       'selects the previous option upon pressing [↑]'
     );});
@@ -59,11 +59,11 @@ test(
       keyCodes.UP_ARROW
     ));
 
-    mock.view.update.off('selection');
+    mock.model.patch.off('patch');
 
     // Press [←].
-    mock.view.update.on('selection', function(selection) {is.equal(
-      selection.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '1',
       'doesn’t change anything upon pressing [←] when the first option is ' +
       'already selected'
@@ -73,11 +73,11 @@ test(
       keyCodes.LEFT_ARROW
     ));
 
-    mock.view.update.off('selection');
+    mock.model.patch.off('patch');
 
     // Press [END].
-    mock.view.update.on('selection', function(selection) {is.equal(
-      selection.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '3',
       'selects the last option upon pressing [END].'
     );});
@@ -86,11 +86,11 @@ test(
       keyCodes.END
     ));
 
-    mock.view.update.off('selection');
+    mock.model.patch.off('patch');
 
     // Press [HOME].
-    mock.view.update.on('selection', function(selection) {is.equal(
-      selection.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '1',
       'selects the first option upon pressing [HOME].'
     );});
@@ -99,7 +99,7 @@ test(
       keyCodes.HOME
     ));
 
-    mock.view.update.off('selection');
+    mock.model.patch.off('patch');
 
     // Prepare preselected select state.
     var preselectedMock = mockPlugin(keyboardNavigation);
@@ -110,8 +110,8 @@ test(
     preselectedMock.model.state.emit('value', {current: {value: '2'}});
 
     // Press [↓].
-    preselectedMock.view.update.on('selection', function(selection) {is.equal(
-      selection.newValue,
+    preselectedMock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '3',
       'selects the next option upon pressing [↓] if there is an initial ' +
       'selection'
@@ -121,15 +121,15 @@ test(
       keyCodes.DOWN_ARROW
     ));
 
-    preselectedMock.view.update.off('selection');
+    preselectedMock.model.patch.off('patch');
 
     // Prepare another bare select.
     var anotherMock = mockPlugin(keyboardNavigation);
     anotherMock.view.options.emit('update', {values: ['1', '2', '3']});
 
     // Press [↑].
-    anotherMock.view.update.on('selection', function(selection) {is.equal(
-      selection.newValue,
+    anotherMock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '3',
       'selects the last option upon pressing [↑] if nothing is selected'
     );});
@@ -138,7 +138,7 @@ test(
       keyCodes.UP_ARROW
     ));
 
-    anotherMock.view.update.off('selection');
+    anotherMock.model.patch.off('patch');
 
     // Finnito.
     is.end();
@@ -155,9 +155,9 @@ test(
     mock.model.state.emit('unfolded', {current: {}});
 
     // Press [SPACE].
-    mock.view.update.on('unfolded', function(unfolded) {is.equal(
-      unfolded.newValue,
-      true,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.unfolded,
+      '',
       'unfolds the dropdown with [SPACE]'
     );});
 
@@ -168,15 +168,15 @@ test(
       );}}
     ));
 
-    mock.view.update.off('unfolded');
+    mock.model.patch.off('patch');
 
     // Press [SPACE] again.
-    mock.view.update.on('unfolded', function() {is.fail(
+    mock.model.patch.on('patch', function() {is.fail(
       'doesn’t fold the dropdown back up with [SPACE]'
     );});
 
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(keyCodes.SPACE));
-    mock.view.update.off('unfolded');
+    mock.model.patch.off('patch');
 
     // Unpress [SPACE].
     mock.view.switchElement.emit('keyup', {
@@ -187,9 +187,9 @@ test(
     });
 
     // Press [TAB].
-    mock.view.update.on('unfolded', function(unfolded) {is.equal(
-      unfolded.newValue,
-      false,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.unfolded,
+      undefined,
       'folds the dropdown back up with [TAB]'
     );});
 
@@ -201,10 +201,10 @@ test(
       );}}
     ));
 
-    mock.view.update.off('unfolded');
+    mock.model.patch.off('patch');
 
     // Press [TAB] again.
-    mock.view.update.on('unfolded', function() {is.fail(
+    mock.model.patch.on('patch', function() {is.fail(
       'doesn’t unfold the dropdown with [TAB]'
     );});
 
@@ -216,36 +216,36 @@ test(
       );}}
     ));
 
-    mock.view.update.off('unfolded');
+    mock.model.patch.off('patch');
 
     // Press [ENTER].
-    mock.view.update.on('unfolded', function(unfolded) {is.equal(
-      unfolded.newValue,
-      true,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.unfolded,
+      '',
       'unfolds the dropdown with [ENTER]'
     );});
 
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(keyCodes.ENTER));
-    mock.view.update.off('unfolded');
+    mock.model.patch.off('patch');
 
     // Press [ENTER] again.
-    mock.view.update.on('unfolded', function(unfolded) {is.equal(
-      unfolded.newValue,
-      false,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.unfolded,
+      undefined,
       'folds the dropdown back up with [ENTER]'
     );});
 
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(keyCodes.ENTER));
-    mock.view.update.off('unfolded');
+    mock.model.patch.off('patch');
 
     // Prepare a mock select, initially unfolded.
     var unfoldedMock = mockPlugin(keyboardNavigation);
     unfoldedMock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
     // Press [ESCAPE].
-    unfoldedMock.view.update.on('unfolded', function(unfolded) {is.equal(
-      unfolded.newValue,
-      false,
+    unfoldedMock.model.patch.on('patch', function(patch) {is.equal(
+      patch.unfolded,
+      undefined,
       'folds the dropdown up with [ESCAPE]'
     );});
 
@@ -253,10 +253,10 @@ test(
       keyCodes.ESCAPE
     ));
 
-    unfoldedMock.view.update.off('unfolded');
+    unfoldedMock.model.patch.off('patch');
 
     // Press [ESCAPE] again.
-    unfoldedMock.view.update.on('unfolded', function() {is.fail(
+    unfoldedMock.model.patch.on('patch', function() {is.fail(
       'doesn’t unfold the dropdown with [ESCAPE]'
     );});
 
@@ -264,7 +264,7 @@ test(
       keyCodes.ESCAPE
     ));
 
-    unfoldedMock.view.update.off('unfolded');
+    unfoldedMock.model.patch.off('patch');
 
     is.end();
   }
@@ -280,8 +280,8 @@ test(
     mock.view.options.emit('update', {values: ['1', '2', '3', '4']});
 
     // Press [↓].
-    mock.view.update.on('selection', function(selection) {is.equal(
-      selection.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '1',
       'selects the first option upon pressing [↓] if we have no idea what’s ' +
       'selected'
@@ -291,12 +291,12 @@ test(
       keyCodes.DOWN_ARROW
     ));
 
-    mock.view.update.off('selection');
+    mock.model.patch.off('patch');
 
     // Update externally and press [↓] again.
     mock.model.state.emit('value', {current: {value: '3'}});
-    mock.view.update.on('selection', function(selection) {is.equal(
-      selection.newValue,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.value,
       '4',
       'selects the right option after the selection has been changed ' +
       'externally'
@@ -306,29 +306,29 @@ test(
       keyCodes.DOWN_ARROW
     ));
 
-    mock.view.update.off('selection');
+    mock.model.patch.off('patch');
 
     // Press [ENTER].
-    mock.view.update.on('unfolded', function(unfolded) {is.equal(
-      unfolded.newValue,
-      true,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.unfolded,
+      '',
       'unfolds the dropdown with [ENTER] if we don’t know what state it’s in'
     );});
 
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(keyCodes.ENTER));
-    mock.view.update.off('unfolded');
+    mock.model.patch.off('patch');
 
     // Update externally and press [ENTER] again.
     mock.model.state.emit('unfolded', {current: {}});
-    mock.view.update.on('unfolded', function(unfolded) {is.equal(
-      unfolded.newValue,
-      true,
+    mock.model.patch.on('patch', function(patch) {is.equal(
+      patch.unfolded,
+      '',
       'unfolds the dropdown again with [ENTER] after it has been externally ' +
       'folded back in'
     );});
 
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(keyCodes.ENTER));
-    mock.view.update.off('unfolded');
+    mock.model.patch.off('patch');
 
     is.end();
   }
@@ -343,42 +343,42 @@ test(
     var mock = mockPlugin(keyboardNavigation);
 
     // Press [END] before any options have been loaded.
-    mock.view.update.on(['selection', 'unfolded'], function() {is.fail(
+    mock.model.patch.on('patch', function() {is.fail(
       'fails silently if no options are loaded'
     );});
 
     mock.view.switchElement.emit('keydown', mockKeyboardEvent(keyCodes.END));
-    mock.view.update.off(['selection', 'unfolded']);
+    mock.model.patch.off('patch');
 
     // Try passing invalid options.
-    mock.view.update.catch(function(error) {is.ok(
+    mock.model.patch.catch(function(error) {is.ok(
       error.message.match(/invalid `update` message/i),
       'detects an invalid `update` from `view.options`'
     );});
 
     mock.view.options.emit('update', /invalid/);
-    mock.view.update.off('error');
+    mock.model.patch.off('error');
 
     // Pass proper options.
     mock.view.options.emit('update', {values: ['1', '2', '3', '4']});
 
     // Try passing an invalid `value`.
-    mock.view.update.catch(function(error) {is.ok(
+    mock.model.patch.catch(function(error) {is.ok(
       error.message.match(/invalid `value` message/i),
       'detects an invalid `value` from `model.state`'
     );});
 
     mock.model.state.emit('value', /invalid/);
-    mock.view.update.off('error');
+    mock.model.patch.off('error');
 
     // Try passing an invalid `unfolded` message.
-    mock.view.update.catch(function(error) {is.ok(
+    mock.model.patch.catch(function(error) {is.ok(
       error.message.match(/invalid `unfolded` message/i),
       'detects an invalid `unfolded` from `model.state`'
     );});
 
     mock.model.state.emit('unfolded', /invalid/);
-    mock.view.update.off('error');
+    mock.model.patch.off('error');
 
     is.end();
   }

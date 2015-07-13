@@ -18,9 +18,9 @@ test(
         var mock = mockPlugin(mouseNavigation);
         mock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
-        mock.view.update.on('unfolded', function(unfolded) {is.equal(
-          unfolded.newValue,
-          false,
+        mock.model.patch.on('patch', function(patch) {is.equal(
+          patch.unfolded,
+          undefined,
           'when an option is clicked'
         );});
 
@@ -37,9 +37,9 @@ test(
         var mock = mockPlugin(mouseNavigation);
         mock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
-        mock.view.update.on('unfolded', function(unfolded) {is.equal(
-          unfolded.newValue,
-          false,
+        mock.model.patch.on('patch', function(patch) {is.equal(
+          patch.unfolded,
+          undefined,
           'when the select loses focus'
         );});
 
@@ -153,7 +153,7 @@ test(
         var mock = mockPlugin(mouseNavigation);
         mock.model.state.emit('unfolded', {current: {unfolded: ''}});
 
-        mock.view.update.on('unfolded', function() {is.fail(
+        mock.model.patch.on('patch', function() {is.fail(
           'not when the blur was triggered by a click within the dropdown'
         );});
 

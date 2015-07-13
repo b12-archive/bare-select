@@ -24,7 +24,7 @@ module.exports = function () {return function (args) {
     if (
       !options ||
       !Array.isArray(values = options.values)
-    ) return view.update.emit('error', error(
+    ) return model.patch.emit('error', error(
       'Invalid `update` message from `view.options`. Make sure you pass an ' +
       '`options` object with `{String[]} options.values`.'
     ));
@@ -40,7 +40,7 @@ module.exports = function () {return function (args) {
       !state ||
       !state.current ||
       typeof (value = state.current.value || '') !== 'string'
-    ) return view.update.emit('error', error(
+    ) return model.patch.emit('error', error(
       'Invalid `value` message from `model.state`. Make sure you pass a ' +
       '`state` object with `{Object} state.current`.'
     ));
@@ -53,7 +53,7 @@ module.exports = function () {return function (args) {
     if (
       !state ||
       !state.current
-    ) return view.update.emit('error', error(
+    ) return model.patch.emit('error', error(
       'Invalid `unfolded` message from `model.state`. Make sure you pass a ' +
       '`state` object with `{Object} state.current`.'
     ));
@@ -70,7 +70,7 @@ module.exports = function () {return function (args) {
     ];
 
     // Update the model.
-    view.update.emit('selection', {newValue: selectionSnapshot});
+    model.patch.emit('patch', {value: selectionSnapshot});
   }
 
   // Handle the `keydown` event.
@@ -138,7 +138,7 @@ module.exports = function () {return function (args) {
         keyCodes.ESCAPE,
       ], keyCode)) {
         unfoldedSnapshot = false;
-        view.update.emit('unfolded', {newValue: false});
+        model.patch.emit('patch', {unfolded: undefined});
       }
 
       else if (unfoldedSnapshot === false && includes([
@@ -146,7 +146,7 @@ module.exports = function () {return function (args) {
         keyCodes.SPACE,
       ], keyCode)) {
         unfoldedSnapshot = true;
-        view.update.emit('unfolded', {newValue: true});
+        model.patch.emit('patch', {unfolded: ''});
       }
     }
   });
