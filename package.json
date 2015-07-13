@@ -57,6 +57,7 @@
   , "virtual-dom": "2.0.1"
   , "webpack": "1.10.1"
   }
+, "main": "bare-select.js"
 , "files":
   [ "/*.js"
   , "/module/"
