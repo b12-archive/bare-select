@@ -1,4 +1,4 @@
-var requestFrame = require('ainojs-requestframe');
+var requestFrame = require('micro-raf');
 
  /**
   * Great mouse navigation.
