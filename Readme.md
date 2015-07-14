@@ -30,28 +30,14 @@
 
 
 
-Installation
-------------
+Using a bundler?
+----------------
 
-```sh
-$ npm install git@git.sb12.de:js/lib/bare-select
-$ cd node_modules/bare-select
-$ npm install
-$ npm run prepublish
-```
-
-
-Once we’ve published to <http://npmjs.org>, it’ll be a lot easier:
+If you’re not using [webpack][] or the like, skip to the next section.
 
 ```sh
 $ npm install bare-select
 ```
-
-
-
-
-Usage
------
 
 You’ll likely be fine with the default settings. Just execute this to register the `<bare-select>`:
 
@@ -59,8 +45,27 @@ You’ll likely be fine with the default settings. Just execute this to register
 require('bare-select')();
 ```
 
+[webpack]:  http://webpack.github.io
 
-Then prepare your markup:
+
+
+
+Using `<script>` tags?
+----------------------
+
+Download the latest version from <https://registry.npmjs.org/bare-select/-/bare-select-0.1.0.tgz>. Unpack the file `package/dist/bare-select.drop-in.min.js`. Then add this to your `<head>`:
+
+```html
+&lt;script src="path/to/bare-select.drop-in.min.js">&lt;/script>
+```
+
+You’re all set!
+
+
+
+
+Prepare your markup
+-------------------
 
 ```html
 <bare-select>             <!-- • The custom element.                         -->
@@ -104,7 +109,9 @@ Looks complicated? How about an example:
 ```
 
 
-Now try taking the `unfolded` off your `<bare-select>`. Try setting `value="2"` on it.
+That’s it!
+
+To get a feeling of how it works, try taking the `unfolded` attribute off your `<bare-select>`. Try setting `value="2"` on it.
 
 
 
