@@ -6,6 +6,7 @@ html {
   font-family: 'roboto light', roboto, sans-serif;
   font-weight: 300;
   color: #333;
+  font-size: 22px;
 }
 
 body {
@@ -25,7 +26,7 @@ h2 {
 .flow {
   margin: 0 auto;
   padding: 0 10rem;
-  max-width: 80rem;
+  max-width: 60rem;
 }
 
 header {
@@ -71,6 +72,6 @@ nav li:not(:last-child) {
 }
 
 .demo-display {
-  padding-top: 8rem;
-  padding-bottom: 4rem;
+  padding-top: 9rem;
+  padding-bottom: 4.5rem;
 }
