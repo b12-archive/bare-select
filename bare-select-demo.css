@@ -1,0 +1,117 @@
+.demo {
+  position: relative;
+
+  display: inline-block;
+  width: 100%;
+  max-width: 25rem;
+
+  -webkit-user-select: none;
+  font-size: 1.3rem;
+}
+
+.demo * {
+  box-sizing: border-box;
+}
+
+.demo > label {
+  position: relative;
+
+  display: block;
+  line-height: 3rem;
+  padding: 0 4rem 0 1rem;
+  overflow: hidden;
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+  background:
+    url('border-top.svg') top repeat-x,
+    url('border-right.svg') right repeat-y,
+    url('border-bottom.svg') bottom repeat-x,
+    url('border-left.svg') left repeat-y
+  ;
+  background-color: white;
+}
+
+.demo > label::after {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+
+  display: block;
+  content: ' ';
+  width: 30px;
+  height: 14px;
+  margin-top: -7px;
+
+  background: url(dart.svg) no-repeat;
+  background-position: 0 -1px;
+  transition:
+    background-position
+    ease-out
+    200ms
+  ;
+}
+
+.demo[unfolded] > label::after {
+  background-position: 0 -8px;
+}
+
+.demo ul {
+  position: absolute;
+
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  overflow: hidden;
+  border-top: 1px white;
+  margin-top: -1px;
+
+  background:
+    url('border-right.svg') right repeat-y,
+    url('border-bottom.svg') bottom repeat-x,
+    url('border-left.svg') left repeat-y
+  ;
+  background-color: white;
+}
+
+.demo > input:not(:checked) + ul {
+  visibility: hidden;
+
+  transition:
+    visibility
+    step-end
+    100ms
+  ;
+}
+
+.demo ul label {
+  display: block;
+  padding: 0 1rem;
+  line-height: 3rem;
+  overflow: hidden;
+
+  transition:
+    cubic-bezier(0,0,.2,1)
+    100ms
+  ;
+  transition-property: line-height, opacity;
+}
+
+.demo > input:not(:checked) + ul label {
+  opacity: 0;
+  line-height: 0.1rem;
+}
+
+.demo ul input {
+  display: none;
+}
+
+.demo ul input:checked + label {
+  background: #333;
+  color: white;
+}
+
+.demo > input {
+  position: absolute;
+  opacity: 0;
+}

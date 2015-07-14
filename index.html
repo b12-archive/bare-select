@@ -1,6 +1,7 @@
 <head>
   <link rel="stylesheet" type="text/css" href="node_modules/tidy-type/dist/tidy-type.min.css" />
   <link rel="stylesheet" type="text/css" href="general.css" />
+  <link rel="stylesheet" type="text/css" href="bare-select-demo.css" />
 </head>
 
 <body class="tidy-type">
@@ -11,25 +12,28 @@
   </div></header>
 
   <article><div class="flow">
-    <h2>Styles are up to you</h2>
-    <div>
-      <bare-select class="styled-select">
-        <label for="styles-switch">
+    <h2 id="styles">
+      Styles are your beer
+    </h2>
+
+    <div class="tidy-type--p">
+      <bare-select class="demo">
+        <label class="box" for="styles-switch">
           Pick your beer
         </label><input type="checkbox" id="styles-switch" class="switch" />
 
-        <ul>
+        <ul class="dropdown">
           <li><input type="radio" name="styles" value="1" id="styles-option-1" /><label for="styles-option-1">
-            Żywiec Porter
+            <em>Żywiec</em> Porter
           </label></li>
           <li><input type="radio" name="styles" value="2" id="styles-option-2" /><label for="styles-option-2">
-            Ciechan Maciejowe
+            <em>Ciechan</em> Maciejowe
           </label></li>
           <li><input type="radio" name="styles" value="3" id="styles-option-3" /><label for="styles-option-3">
-            Koźlak
+            <em>Koźlak</em>
           </label></li>
           <li><input type="radio" name="styles" value="4" id="styles-option-4" /><label for="styles-option-4">
-            Lwówek Książęcy
+            <em>Lwówek Książęcy</em>
           </label></li>
         </ul>
       </bare-select>
@@ -38,7 +42,8 @@
 
   <article><div class="flow">
     <h2>Great UX included</h2>
-    <div>
+
+    <div class="tidy-type--p">
       <bare-select>
         <label for="ux-switch">
           Pick your beer
@@ -65,7 +70,8 @@
 
   <article><div class="flow">
     <h2>Works without JavaScript</h2>
-    <div>
+
+    <div class="tidy-type--p">
       <div class="styled-select">
         <label for="noscript-switch">
           Pick your beer
