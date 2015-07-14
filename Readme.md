@@ -56,7 +56,7 @@ Using `<script>` tags?
 Download the latest version from <https://registry.npmjs.org/bare-select/-/bare-select-0.1.0.tgz>. Unpack the file `package/dist/bare-select.drop-in.min.js`. Then add this to your `<head>`:
 
 ```html
-&lt;script src="path/to/bare-select.drop-in.min.js">&lt;/script>
+<script src="path/to/bare-select.drop-in.min.js"></script>
 ```
 
 You’re all set!
