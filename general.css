@@ -44,15 +44,24 @@ header::after {
   transform: scaleY(0.5);
 }
 
-header a {
+header a,
+footer a {
   color: inherit;
+}
+
+strong,
+a {
+  font-family: 'roboto bold', roboto, sans-serif;
+  font-weight: 700;
 }
 
 a {
   text-decoration: none;
   color: #c25133;
-  font-family: 'roboto bold', roboto, sans-serif;
-  font-weight: 700;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 nav ul {
