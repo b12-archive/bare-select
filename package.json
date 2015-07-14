@@ -1,6 +1,6 @@
 { "name": "bare-select"
 , "version": "0.0.0-work-in-progress"
-, "description": "An ultra-stylable replacement for <select>."
+, "description": "The lean alternative to <select>."
 , "dependencies":
   { "1-liners": "^0.2.7"
   , "ainojs-requestframe": "tomekwi/ainojs-requestframe#7eab922"
