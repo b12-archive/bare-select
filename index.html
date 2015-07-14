@@ -1,4 +1,8 @@
 <head>
+  <title>The lean custom &lt;select&gt; · &lt;bare-select&gt;</title>
+
+  <meta charset="utf-8" />
+
   <link rel="stylesheet" type="text/css" href="node_modules/tidy-type/dist/tidy-type.min.css" />
   <link rel="stylesheet" type="text/css" href="general.css" />
   <link rel="stylesheet" type="text/css" href="bare-select-demo.css" />
@@ -7,7 +11,7 @@
 <body class="tidy-type">
   <header><div class="flow">
     <p>&lt;bare-select&gt;</p>
-    <h1>The lean alternative to&nbsp;a&nbsp;&lt;select&gt;.</h1>
+    <h1>The lean alternative<br/>to&nbsp;&lt;select&gt;.</h1>
     <p>No dependencies. No opinions. No styles included.</p>
   </div></header>
 
@@ -40,41 +44,45 @@
         <div class="chrome"></div>
       </bare-select>
     </div>
+
+    <p>We ship no stylesheets with &lt;bare-select&gt;. It’s totally up to you how it looks on your website. Like the look above? <a href="bare-select-demo.css">Grab the stylesheet</a>. Or make it as awesome as you want. <a href="#no-styles">It’s easy</a>.</p>
   </div></article>
 
   <article><div class="flow">
-    <h2>Great UX included</h2>
+    <h2 id="drop-in">
+      Easier than ever
+    </h2>
 
-    <div class="tidy-type--p">
-      <bare-select>
-        <label for="ux-switch">
-          Pick your beer
-        </label>
-        <input type="checkbox" id="ux-switch" class="switch" />
+    <ol>
+      <li>
+        Download and import:
 
-        <ul>
-          <li><input type="radio" name="ux" value="1" id="ux-option-1" /><label for="ux-option-1">
-            Żywiec Porter
-          </label></li>
-          <li><input type="radio" name="ux" value="2" id="ux-option-2" /><label for="ux-option-2">
-            Ciechan Maciejowe
-          </label></li>
-          <li><input type="radio" name="ux" value="3" id="ux-option-3" /><label for="ux-option-3">
-            Koźlak
-          </label></li>
-          <li><input type="radio" name="ux" value="4" id="ux-option-4" /><label for="ux-option-4">
-            Lwówek Książęcy
-          </label></li>
-        </ul>
-      </bare-select>
-    </div>
+        <pre><code>
+          &lt;script src="bare-select.drop-in.js"&gt;&lt;script&gt;
+        </code></pre>
+      </li>
+
+      <li>
+        You’re set!
+      </li>
+    </ol>
+
+    <p>
+      &lt;bare-select&gt; is a custom element (aka Web Component). Its usage is as easy as <code>&lt;bare-select&gt;&lt;/bare-select&gt;</code>. No need to write JavaScript to configure, activate and deactivate elements – everything is handled for you dynamically.
+    </p>
+
+    <p>
+      By the way, &lt;bare-select&gt; doesn’t ever mutate the DOM tree. And it’s hackable down to the bone.
+    </p>
   </div></article>
 
   <article><div class="flow">
-    <h2>Works without JavaScript</h2>
+    <h2 id="no-scripts">
+      Works without JavaScript
+    </h2>
 
     <div class="tidy-type--p">
-      <div class="styled-select">
+      <div class="demo">
         <label for="noscript-switch">
           Pick your beer
         </label><input type="checkbox" id="noscript-switch" class="switch" />
@@ -93,8 +101,68 @@
             Lwówek Książęcy
           </label></li>
         </ul>
+
+        <div class="chrome"></div>
       </div>
     </div>
+
+    <p>
+      Most existing solutions are heavily based on JavaScript. But &lt;bare-select&gt; falls back gracefully to pure CSS. Why, you ask?
+    </p>
+
+    <ul>
+      <li>
+        It works before all scripts are fully loaded.
+      </li>
+      <li>
+        It plays well with your scripts.
+      </li>
+      <li>
+        It stays accessible to people and machines who don’t use JavaScript.
+      </li>
+      <li>
+        It will still work if a user saves your website locally.
+      </li>
+    </ul>
+  </div></article>
+
+  <article><div class="flow">
+    <h2 id="no-styles">
+      Works without CSS
+    </h2>
+
+    <div class="tidy-type--p">
+      <p>
+        Here’s the bare metal markup &lt;bare-select&gt; uses – without any styling:
+      </p>
+
+      <bare-select>
+        <label class="box" for="nostyles-switch">
+          Pick your beer
+        </label><input type="checkbox" id="nostyles-switch" class="switch" />
+
+        <ul class="dropdown">
+          <li><input type="radio" name="nostyles" value="1" id="nostyles-option-1" /><label for="nostyles-option-1">
+            <em>Żywiec</em> Porter
+          </label></li>
+          <li><input type="radio" name="nostyles" value="2" id="nostyles-option-2" /><label for="nostyles-option-2">
+            <em>Ciechan</em> Maciejowe
+          </label></li>
+          <li><input type="radio" name="nostyles" value="3" id="nostyles-option-3" /><label for="nostyles-option-3">
+            <em>Koźlak</em>
+          </label></li>
+          <li><input type="radio" name="nostyles" value="4" id="nostyles-option-4" /><label for="nostyles-option-4">
+            <em>Lwówek Książęcy</em>
+          </label></li>
+        </ul>
+
+        <div class="chrome"></div>
+      </bare-select>
+    </div>
+
+    <p>
+      Alright, this is a rare one. But there are times when a page is viewed without CSS styling. <a href="https://readability.com">HTML converters</a>, <a href="https://en.wikipedia.org/wiki/Text-based_web_browser">text-based browsers</a> and network errors – to name a few.
+    </p>
   </div></article>
 
   <script src="bare-select.drop-in.min.js"></script>
