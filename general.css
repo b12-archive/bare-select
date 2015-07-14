@@ -62,8 +62,16 @@ nav ul {
   text-transform: lowercase;
 }
 
+nav ul::after,
+footer::after {
+  content: ' ';
+  display: table;
+  clear: both;
+}
+
 nav li {
-  display: inline-block;
+  display: block;
+  float: left;
   padding: 0 0.5rem;
 }
 
@@ -74,4 +82,19 @@ nav li:not(:last-child) {
 .demo-display {
   padding-top: 9rem;
   padding-bottom: 4.5rem;
+}
+
+footer {
+  margin-top: 9rem;
+  padding: 0 1rem;
+  background: #333;
+  color: white;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
 }
