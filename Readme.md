@@ -10,8 +10,8 @@
  [![Code style: airbnb
 ](https://img.shields.io/badge/code%20style-airbnb-blue.svg?style=flat-square)
 ](https://github.com/airbnb/javascript)
- [![Stability: experimental
-](https://img.shields.io/badge/stability-experimental-red.svg?style=flat-square)
+ [![Stability: unstable
+](https://img.shields.io/badge/stability-unstable-yellowgreen.svg?style=flat-square)
 ](https://nodejs.org/api/documentation.html#documentation_stability_index)
 
 
