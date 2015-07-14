@@ -61,8 +61,8 @@
 , "main": "bare-select.js"
 , "files":
   [ "/*.js"
+  , "!/test.js"
   , "/module/"
-  , "/test/"
   , "/dist/"
   , "/Readme.md"
   , "/License.md"
