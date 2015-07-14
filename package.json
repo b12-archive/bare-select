@@ -1,6 +1,7 @@
 { "name": "bare-select"
 , "version": "0.0.0-work-in-progress"
 , "description": "The lean alternative to <select>."
+, "homepage": "https://studio-b12.github.io/bare-select"
 , "dependencies":
   { "1-liners": "^0.2.7"
   , "ainojs-requestframe": "tomekwi/ainojs-requestframe#7eab922"

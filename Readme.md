@@ -17,18 +17,15 @@
 
 
 
-&lt;bare-select&gt;
-===================
+[&lt;bare-select&gt;](https://studio-b12.github.io/bare-select)
+=====================
 
 **The lean alternative to &lt;select&gt;.**
 
-* [Dead-easy to style][]. Just match it to your design.
-* Usable without JavaScript. [Here’s why we care][].
+* Dead easy to style. Just match it to your design.
+* Pretty and usable without JavaScript. Usable even without CSS.
 * Mimicks the native `<select>`. Keyboard navigation included.
 * Event-driven and plugin-based. Hackable from head to toe.
-
-[Here’s why we care]:  http://aaronmbushnell.com/lets-stop-customizing-form-fields/  "Let's stop customizing form fields"
-[Dead-easy to style]:  ./dev/null  "Work in progress…"
 
 
 
