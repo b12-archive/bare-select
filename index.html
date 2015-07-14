@@ -10,16 +10,20 @@
 
 <body class="tidy-type">
   <header><div class="flow">
-    <p>&lt;bare-select&gt;</p>
+    <p>
+      <a href="/">&lt;bare-select&gt;</a>
+    </p>
+
     <h1>The lean alternative<br/>to&nbsp;&lt;select&gt;.</h1>
-    <p>No dependencies. No opinions. No styles included.</p>
+
+    <nav><ul>
+      <li><a href="#styling">Easy to customize</a></li>
+      <li><a href="#usage">No dependencies</a></li>
+      <li><a href="#without-scripts">Simple</a> and <a href="#without-styles">lightweight</a></li>
+    </ul></nav>
   </div></header>
 
-  <article><div class="flow">
-    <h2 id="styles">
-      Styles are your beer
-    </h2>
-
+  <article class="flow demo-display">
     <div class="tidy-type--p">
       <bare-select class="demo">
         <label class="box" for="styles-switch">
@@ -44,12 +48,18 @@
         <div class="chrome"></div>
       </bare-select>
     </div>
+  </article>
 
-    <p>We ship no stylesheets with &lt;bare-select&gt;. It’s totally up to you how it looks on your website. Like the look above? <a href="bare-select-demo.css">Grab the stylesheet</a>. Or make it as awesome as you want. <a href="#no-styles">It’s easy</a>.</p>
-  </div></article>
+  <article class="flow">
+    <h2 id="styling">
+      Styles are your beer
+    </h2>
 
-  <article><div class="flow">
-    <h2 id="drop-in">
+    <p>We ship no stylesheets with &lt;bare-select&gt;. It’s totally up to you how it looks on your website. Like the look above? <a href="bare-select-demo.css">Grab the stylesheet</a>. Or make it as awesome as you want. <a href="#without-styles">It’s easy</a>.</p>
+  </article>
+
+  <article class="flow">
+    <h2 id="usage">
       Easier than ever
     </h2>
 
@@ -74,10 +84,10 @@
     <p>
       By the way, &lt;bare-select&gt; doesn’t ever mutate the DOM tree. And it’s hackable down to the bone.
     </p>
-  </div></article>
+  </article>
 
-  <article><div class="flow">
-    <h2 id="no-scripts">
+  <article class="flow">
+    <h2 id="without-scripts">
       Works without JavaScript
     </h2>
 
@@ -124,10 +134,10 @@
         It will still work if a user saves your website locally.
       </li>
     </ul>
-  </div></article>
+  </article>
 
-  <article><div class="flow">
-    <h2 id="no-styles">
+  <article class="flow">
+    <h2 id="without-styles">
       Works without CSS
     </h2>
 
@@ -163,7 +173,7 @@
     <p>
       Alright, this is a rare one. But there are times when a page is viewed without CSS styling. <a href="https://readability.com">HTML converters</a>, <a href="https://en.wikipedia.org/wiki/Text-based_web_browser">text-based browsers</a> and network errors – to name a few.
     </p>
-  </div></article>
+  </article>
 
   <script src="bare-select.drop-in.min.js"></script>
 </body>

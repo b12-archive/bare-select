@@ -3,7 +3,7 @@
 }
 
 html {
-  font-family: 'Roboto light', Roboto, sans-serif;
+  font-family: 'roboto light', roboto, sans-serif;
   font-weight: 300;
   color: #333;
 }
@@ -13,7 +13,7 @@ body {
 }
 
 h1 {
-  font-family: 'Roboto thin', Roboto, sans-serif;
+  font-family: 'roboto thin', roboto, sans-serif;
   font-weight: 100;
 }
 
@@ -29,7 +29,9 @@ h2 {
 }
 
 header {
-  background: #fcfcfc;
+  background: url('header.jpg') center center #c25133;
+  background-size: cover;
+  color: white;
 }
 
 header::after {
@@ -39,4 +41,36 @@ header::after {
   height: 1px;
   border-bottom: solid 1px #333;
   transform: scaleY(0.5);
+}
+
+header a {
+  color: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: #c25133;
+  font-family: 'roboto bold', roboto, sans-serif;
+  font-weight: 700;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 -0.5rem;
+  text-transform: lowercase;
+}
+
+nav li {
+  display: inline-block;
+  padding: 0 0.5rem;
+}
+
+nav li:not(:last-child) {
+  border-right: 1px solid currentColor;
+}
+
+.demo-display {
+  padding-top: 8rem;
+  padding-bottom: 4rem;
 }
