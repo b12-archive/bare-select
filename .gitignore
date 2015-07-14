@@ -2,4 +2,5 @@
 
 /node_modules/*
 !/node_modules/tidy-type
+!/node_modules/document-register-element
 npm-debug.log

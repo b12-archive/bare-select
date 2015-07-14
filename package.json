@@ -8,6 +8,7 @@
   { "livereloadx": "0.3.8"
   }
 , "dependencies":
-  { "tidy-type": "^0.2.3"
+  { "document-register-element": "^0.4.5"
+  , "tidy-type": "^0.2.3"
   }
 }
