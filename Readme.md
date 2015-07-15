@@ -7,12 +7,12 @@
  [![David – status of dependencies
 ](https://img.shields.io/david/studio-b12/bare-select.svg?style=flat-square)
 ](https://david-dm.org/studio-b12/bare-select)
- [![Code style: airbnb
-](https://img.shields.io/badge/code%20style-airbnb-blue.svg?style=flat-square)
-](https://github.com/airbnb/javascript)
  [![Stability: unstable
 ](https://img.shields.io/badge/stability-unstable-yellowgreen.svg?style=flat-square)
 ](https://nodejs.org/api/documentation.html#documentation_stability_index)
+ [![Code style: airbnb
+](https://img.shields.io/badge/code%20style-airbnb-777777.svg?style=flat-square)
+](https://github.com/airbnb/javascript)
 
 
 
