@@ -22,10 +22,13 @@
 
 **The lean alternative to &lt;select&gt;.**
 
-* Dead easy to style. Just match it to your design.
-* Pretty and usable without JavaScript. Usable even without CSS.
-* Mimicks the native `<select>`. Keyboard navigation included.
-* Event-driven and plugin-based. Hackable from head to toe.
+* Dead easy to style. That’s the whole point.
+* Great keyboard navigation.
+* Drop-in usage. As easy as `<bare-select></bare-select>`.
+* Pretty without JavaScript. Usable without CSS.
+* [FIRST][]. Hackable from head to toe.
+
+[FIRST]:  http://addyosmani.com/first/
 
 
 
@@ -39,7 +42,7 @@ If you’re not using [webpack][] or the like, skip to the next section.
 $ npm install bare-select
 ```
 
-You’ll likely be fine with the default settings. Just execute this to register the `<bare-select>`:
+You’ll most likely be fine with the default settings. Just execute this to register the `<bare-select>`:
 
 ```js
 require('bare-select')();
