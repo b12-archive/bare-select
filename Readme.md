@@ -204,7 +204,7 @@ Have a look at <../Readme.md> to see an example of the markup.
 **Parameters:**
 
 * **`options`**  
-  <sup>type: `Object`&ensp;|&ensp;required</sup>
+  <sup>type: `Object`&ensp;|&ensp;default: `{}`&ensp;|&ensp;optional</sup>
 
 * **`options.selectors`**  
   <sup>type: `Object`&ensp;|&ensp;default: `{}`&ensp;|&ensp;optional</sup>

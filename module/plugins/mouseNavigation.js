@@ -3,7 +3,7 @@ var requestFrame = require('micro-raf');
  /**
   * Great mouse navigation.
   *
-  * @module     {Function}  bare-select/plugins/mouseNavigation
+  * @module  {Function}  bare-select/plugins/mouseNavigation
   *
   * @returns  {pluginMaker}  mouseNavigationPlugin
   */
