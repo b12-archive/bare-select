@@ -25,7 +25,8 @@ h2 {
 
 .flow {
   margin: 0 auto;
-  padding: 0 10rem;
+  padding: 0 20vw;
+  padding: 0 20%;
   max-width: 60rem;
 }
 
