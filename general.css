@@ -24,10 +24,11 @@ h2 {
 }
 
 .flow {
+  box-sizing: content-box;
   margin: 0 auto;
   padding: 0 20%;
   padding: 0 20vw;
-  max-width: 60rem;
+  max-width: 40rem;
 }
 
 header {
