@@ -118,6 +118,6 @@ footer {
   
   nav li {
     float: none;
-    border-right: none;
+    border: none;
   }
 }
