@@ -116,7 +116,7 @@ footer {
     line-height: 2.625rem;
   }
   
-  nav li {
+  nav li:not(:last-child) {
     float: none;
     border: none;
   }
