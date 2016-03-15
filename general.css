@@ -110,7 +110,7 @@ footer {
   float: left;
 }
 
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   .tidy-type h1 {
     font-size: 2rem;
     line-height: 2.625rem;
