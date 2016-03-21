@@ -23,15 +23,15 @@ module.exports = function(args) {
 
   var atLeastOneOptionValid = false;
 
-  options.forEach(function(option, index) {
+  options.forEach(function(option) {
     var radio = option.querySelector(selectors.optionRadio);
     var label = option.querySelector(selectors.optionLabel);
     if (!radio || !label) return;
 
     atLeastOneOptionValid = true;
-    values[index] = radio.value;
-    radioNodes[index] = radio;
-    labelNodes[index] = label;
+    values.push(radio.value);
+    radioNodes.push(radio);
+    labelNodes.push(label);
   });
 
   if (!atLeastOneOptionValid) return {error: error(
