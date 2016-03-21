@@ -21,19 +21,21 @@ module.exports = function(args) {
   var radioNodes = [];
   var labelNodes = [];
 
-  if (!options.every(
-    function(option, index) {
-      var radio = option.querySelector(selectors.optionRadio);
-      var label = option.querySelector(selectors.optionLabel);
-      if (!radio || !label) return false;
+  var atLeastOneOptionValid = false;
 
-      values[index] = radio.value;
-      radioNodes[index] = radio;
-      labelNodes[index] = label;
-      return true;
-    }
-  )) return {error: error(
-    'Wrong markup within options. Make sure every option (`' +
+  options.forEach(function(option, index) {
+    var radio = option.querySelector(selectors.optionRadio);
+    var label = option.querySelector(selectors.optionLabel);
+    if (!radio || !label) return;
+
+    atLeastOneOptionValid = true;
+    values[index] = radio.value;
+    radioNodes[index] = radio;
+    labelNodes[index] = label;
+  });
+
+  if (!atLeastOneOptionValid) return {error: error(
+    'Wrong markup within options. Make at least one of the options (`' +
     selectors.option +
     '`) has a radio button matching the selector `' +
     selectors.optionRadio +

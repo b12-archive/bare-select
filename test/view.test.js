@@ -211,6 +211,26 @@ test('The channel `options` fails gracefully.', function(is) {
       h('input', {type: 'checkbox'}),
       h('ul', [
         h('li', [
+          h('input', {type: 'radio'}),
+          h('label', ['Valid'])
+        ]),
+        h('li', [
+          'Invalid'
+        ])
+      ])
+    ])
+  )});} catch (error) {
+    is.fail(
+      'only requires one valid option'
+    );
+  }
+
+  try {view({root: createElement(
+    h('bare-select', [
+      h('label'),
+      h('input', {type: 'checkbox'}),
+      h('ul', [
+        h('li', [
           h('wrong')
         ])
       ])
