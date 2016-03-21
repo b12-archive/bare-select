@@ -122,6 +122,8 @@ module.exports = function(options) {
     var onUpdate = on(emitUpdate);
     channels.update = inputChannel(emitUpdate);
 
+    var optionsSnapshot;
+
      /**
       * The dropdown should be folded or unfolded.
       *
@@ -240,7 +242,6 @@ module.exports = function(options) {
       * @property  {Array}   labelNodes
       *   The options’ label nodes, in the same order as in the DOM.
       */
-    var optionsSnapshot;
     if (optionsQuery.error) throwError(optionsQuery.error);
     else {
       optionsSnapshot = optionsQuery.value;
