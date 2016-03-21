@@ -104,7 +104,7 @@ test('The channel `options` works alright.', function(is) {
   executed = false;
   viewInstance.options.when('update', function(options) {
     if (executed) is.fail(
-      'the event `update` should only come once'
+      'the event `update` only comes once'
     );
 
     is.pass(
@@ -238,7 +238,7 @@ test('The channel `options` fails gracefully.', function(is) {
   )});} catch (error) {
     is.ok(
       error.message.match(/wrong markup within options/i),
-      'when there’s no radio button in one of the options'
+      'when there’s no radio button in any of the options'
     );
   }
 
@@ -256,7 +256,7 @@ test('The channel `options` fails gracefully.', function(is) {
   )});} catch (error) {
     is.ok(
       error.message.match(/wrong markup within options/i),
-      'when there’s no label in one of the options'
+      'when there’s no label in any of the options'
     );
   }
 
