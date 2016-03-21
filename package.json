@@ -1,6 +1,6 @@
 {
   "name": "bare-select",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The lean alternative to <select>.",
   "homepage": "https://studio-b12.github.io/bare-select",
   "dependencies": {
