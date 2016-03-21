@@ -379,6 +379,7 @@ test('`selection` on the channel `update` works alright.', function(is) {
   var tree = mockTree();
   var radioElements = arrayFrom(tree.children[2].children)
     .map(function(item) {return item.children[0];})
+    .filter(function(element) {return (element !== undefined);})
   ;
   var viewInstance = view({root: tree});
 
